@@ -219,8 +219,6 @@ m
 =src/main/java/com/api/addressbook/AddressBookApplication.java,5/e/5e16e32cc50eaff12b584b0be03dd373d8427e4b
 r
 Bsrc/main/java/com/api/addressbook/controller/PersonController.java,9/7/97468c13855b3159b2fe90ebfdd4bef24fbda132
-v
-Fsrc/test/java/com/api/addressbook/repository/PersonRepositoryTest.java,9/b/9bb786222edcd2d00901079e5e02d1dfdc82e647
 r
 Bsrc/main/java/com/api/addressbook/repository/PersonRepository.java,d/0/d0d1756b7a61c0c8c4f18f57a045bff58ee935af
 s

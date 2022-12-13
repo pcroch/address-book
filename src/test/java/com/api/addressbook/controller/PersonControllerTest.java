@@ -39,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Person endpoints ")
 class PersonControllerTest {
-
+//todo the mocking with h2 is not working anymore
     public static final Logger logger = LoggerFactory.getLogger(PersonControllerTest.class);
     @Autowired
     private MockMvc mockMvc; // the error is normal
