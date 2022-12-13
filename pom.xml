@@ -59,7 +59,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>18.0.0</version>
+            <version>23.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -71,13 +71,13 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>4.2.0</version>
+            <version>4.8.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.3.0</version>
+            <version>9.8.3</version>
         </dependency>
     </dependencies>
 
@@ -93,6 +93,19 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <user>admin</user>
+                    <password>admin</password>
+                    <defaultSchema>address-book</defaultSchema>
+                    <url>jdbc:postgresql://localhost:5432/address-book-db</url>
+                    <schemas>
+                        <schema>schemaName</schema>
+                    </schemas>
                 </configuration>
             </plugin>
         </plugins>

@@ -1,1 +1,8 @@
-[//]: # (todo Adding liquibase or flyway to setup)
+
+
+### Flyway
+
+repair:  mvn clean flyway:migrate
+
+
+launch: mvn clean flyway:migrate
