@@ -1,0 +1,15 @@
+[
+  {
+    "personId": 1,
+    "firstname": "Test",
+    "secondname": "nom",
+    "lastname": "Fin"
+  },
+  {
+    "personId": 2,
+    "firstname": "Test",
+    "secondname": "nom",
+    "lastname": "Fin"
+  }
+]
+//todo how to get that file for testing
