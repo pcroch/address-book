@@ -213,16 +213,6 @@ h
 P.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_14_1.xml,6/3/63315fe43ed470460dbceecc6bac4fe6f4bc180c
 \
 ,.idea/inspectionProfiles/Project_Default.xml,4/9/496a238a6afa168dbaf6efd37bb459331589579c
-j
-:src/main/java/com/api/addressbook/entity/PersonEntity.java,b/3/b344ce3ff28104df3a7216e8e541458586ef3dd8
-m
-=src/main/java/com/api/addressbook/AddressBookApplication.java,5/e/5e16e32cc50eaff12b584b0be03dd373d8427e4b
-r
-Bsrc/main/java/com/api/addressbook/controller/PersonController.java,9/7/97468c13855b3159b2fe90ebfdd4bef24fbda132
-r
-Bsrc/main/java/com/api/addressbook/repository/PersonRepository.java,d/0/d0d1756b7a61c0c8c4f18f57a045bff58ee935af
-s
-Csrc/main/java/com/api/addressbook/repository/AddressRepository.java,0/1/01c6f61fdf8d9de1fbed6d8e0289bc2f61efd563
 w
 G.idea/sonarlint/issuestore/e/3/e3631492191c257e535ea753f84db0f0f91375fd,5/c/5c39fd7d206aa12a2cdb836cbc3896e3919eb59d
 w
@@ -419,8 +409,6 @@ w
 G.idea/sonarlint/issuestore/6/e/6e53d2f3651e5b9858e0eb93921d0ccfde534a2b,8/e/8e96e8626e7471f831aa72183eb2c7243fdd6956
 w
 G.idea/sonarlint/issuestore/3/1/31d8e49e492757fecd70124be47c6175afcced87,4/5/4591e27fae2359e22e15da650c8301ca1d8ac3e6
-w
-G.idea/sonarlint/issuestore/0/1/01c6f61fdf8d9de1fbed6d8e0289bc2f61efd563,4/9/49fecdf50cb1510d0686041dc6bb421bd3655521
 k
 ;.idea/libraries/Maven__org_mockito_mockito_inline_4_8_0.xml,6/a/6a48565c5913b54a47d57553d6a99cf6d3273472
 w
@@ -444,8 +432,8 @@ G.idea/sonarlint/issuestore/6/3/63315fe43ed470460dbceecc6bac4fe6f4bc180c,1/d/1d
 w
 G.idea/sonarlint/issuestore/3/d/3dde796ed61e5ca00148687803c73222d51bbfef,e/b/ebc91ddeb65333c7ac50a08209154f5242db36ea
 w
-G.idea/sonarlint/issuestore/d/0/d0d1756b7a61c0c8c4f18f57a045bff58ee935af,2/d/2da5cbec3e5e14fac9d82a8af8321644fa219e43
-w
 G.idea/sonarlint/issuestore/f/e/fed2d7edf507f36e6daa040b12e8197848888b86,7/6/760d518df18451d5d11bbc884d336e35be6e95d0
 w
 G.idea/sonarlint/issuestore/5/0/50a1e1e1b7a235b078edba66373949bb9e69cb3a,5/6/56cf6c6d92645359101aa67254ff5bd28c8f2f2d
+s
+Csrc/main/java/com/api/addressbook/repository/AddressRepository.java,0/1/01c6f61fdf8d9de1fbed6d8e0289bc2f61efd563

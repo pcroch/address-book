@@ -3,7 +3,7 @@ package com.api.addressbook.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "address")
+@Table(name = "address") // , schema = "addressBook"
 public class AddressEntity {
 
     @Id

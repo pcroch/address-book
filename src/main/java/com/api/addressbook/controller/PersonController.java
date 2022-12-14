@@ -31,12 +31,13 @@ public class PersonController {
     public ResponseEntity<String> getPing() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Custom-Header", "Just a ping");
-        return new ResponseEntity<>("Ping to ge Person", headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Ping to Person", headers, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<List<PersonEntity>> getAllPerson() {
+        logger.info("call for all person");
         return new ResponseEntity<>(personRepository.findAll(), HttpStatus.OK);
     }
 

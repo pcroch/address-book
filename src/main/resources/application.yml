@@ -1,29 +1,37 @@
-#spring:
-#  datasource:
-#    flyway.url: jdbc:postgresql://localhost:5432/address-book-db
-#    flyway.username: admin
-#    flyway.password: admin
-#    flyway.defaultSchema: address-book
-#    flyway.driver-class-name: org.postgresql.Driver
-#
-#spring.jpa.hibernate.ddl-auto: update
-#spring.flyway.baseline-on-migrate: true
-
+server:
+  port: 9090
 
 spring:
-  application:
-    name: address-book
+  properties:
+    hibernate:
+      globally_quoted_identifiers: true
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/address-book-db
     password: admin
     username: admin
-    testOnBorrow: true
-    testWhileIdle: true
+#    testOnBorrow: true
+#    testWhileIdle: true
+    schema: address-book
+    hikari:
+      maximum-pool-size: 5
+      idle-timeout: 600000
   flyway:
     defaultSchema: address-book
-    baseline-on-migrate: true
+    baseline-on-migrate: false
+    enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+#    show-sql: false
+    properties:
+      hibernate:
+#        format_sql: false
+        default_schema: address-book
+        jdbc:
+          lob:
+            non_contextual_creation: true
 
-
-
-#    url: jdbc:postgresql://localhost:5432/address-book-db?currentSchema=AddressBook
+#    application:
+#      name: addressBook

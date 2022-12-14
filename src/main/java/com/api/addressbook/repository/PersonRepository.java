@@ -8,6 +8,6 @@ import java.util.List;
 
 
 @Repository
-public interface PersonRepository extends CrudRepository<PersonEntity, Integer> { // extends CrudRepository<Person, Integer>
+public interface PersonRepository extends CrudRepository<PersonEntity, Integer> {
 List<PersonEntity> findAll();
 }
