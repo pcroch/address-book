@@ -1,4 +1,4 @@
-CREATE TABLE if not exists person_address (
+CREATE TABLE person_address (
                                 address_id serial,
                                 person_id serial,
                                 CONSTRAINT fk_person FOREIGN KEY(person_id) REFERENCES person(person_id),

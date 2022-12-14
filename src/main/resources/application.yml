@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 9093
 
 spring:
   properties:
@@ -13,25 +13,25 @@ spring:
 #    testOnBorrow: true
 #    testWhileIdle: true
     schema: address-book
-    hikari:
-      maximum-pool-size: 5
-      idle-timeout: 600000
+#    hikari:
+#      maximum-pool-size: 5
+#      idle-timeout: 600000
   flyway:
     defaultSchema: address-book
-    baseline-on-migrate: false
-    enabled: true
+#    baseline-on-migrate: false
+#    enabled: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: create-drop
+#      ddl-auto: auto # create-drop
 #    show-sql: false
     properties:
       hibernate:
 #        format_sql: false
         default_schema: address-book
-        jdbc:
-          lob:
-            non_contextual_creation: true
+#        jdbc:
+#          lob:
+#            non_contextual_creation: true
 
 #    application:
 #      name: addressBook
