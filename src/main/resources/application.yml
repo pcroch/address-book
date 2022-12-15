@@ -1,7 +1,9 @@
 server:
-  port: 9093
+  port: 9090
 
 spring:
+#  spring:
+#    profile: dev
   properties:
     hibernate:
       globally_quoted_identifiers: true
@@ -22,6 +24,9 @@ spring:
 #    enabled: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    # Hibernate ddl auto (create, create-drop, update): with "update" the database
+    # schema will be automatically updated accordingly to java entities found in
+    # the project
     hibernate:
 #      ddl-auto: auto # create-drop
 #    show-sql: false

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
@@ -19,13 +20,15 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 /**
  * tuto with:
  * <a href="https://www.javaguides.net/2021/07/crud-junit-tests-for-spring-data-jpa.html">...</a>
  */
 @DataJpaTest
-@ActiveProfiles
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on Person Repository ")
 class PersonRepositoryTest {
@@ -38,12 +41,13 @@ class PersonRepositoryTest {
     @DisplayName("Save a person")
     @Test
     @Order(1)
-    @Rollback(value = false) // not sure if it is usefully but good to keep in mind
+    @Rollback(value = true) // not sure if it is usefully but good to keep in mind
     void test_save_person_repository() {
         PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
-        PersonEntity personEntitySaved1 = personRepository.save(personEntity1);
-        assertEquals(1, personRepository.count());
-        assertEquals(personEntity1.getPersonId(), personEntitySaved1.getPersonId());
+        PersonEntity personEntitySaved = personRepository.save(personEntity1);
+        personRepository.findAll().forEach(a ->  logger.info(a.toString()));
+        Assertions.assertThat(personRepository.count()).isEqualTo(1L);
+        assertEquals(personEntity1.getFirstname(), personEntitySaved.getFirstname());
     }
 
     @DisplayName("Get a person")
@@ -60,7 +64,7 @@ class PersonRepositoryTest {
     @Test
     @Order(3)
     void test_findAll_person_repository() {
-        List<PersonEntity> personEntityList = new ArrayList<>();
+        List<PersonEntity> personEntityList = new ArrayList<>();;
         PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
         PersonEntity personEntity2 = new PersonEntity(2, "Test", "nom", "Fin");
         personEntityList.add(personEntity1);
@@ -68,14 +72,15 @@ class PersonRepositoryTest {
         personRepository.saveAll(personEntityList);
         personEntityList = personRepository.findAll();
         assertEquals(2, personEntityList.size());
+        personRepository.findAll().forEach(a ->  logger.info(a.toString()));
         assertEquals(personEntity1.getPersonId(), personEntityList.get(0).getPersonId());
         assertEquals(personEntity2.getPersonId(), personEntityList.get(1).getPersonId());
     }
 
-    @DisplayName("Get list of  persons")
+    @DisplayName("Update person's field")
     @Test
     @Order(4)
-    @Rollback(value = false)
+    @Rollback(value = true)
     void test_update_person_repository() {
         PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
         personRepository.save(personEntity1);
@@ -87,9 +92,8 @@ class PersonRepositoryTest {
     @DisplayName("Delete a specific persons")
     @Test
     @Order(5)
-    @Rollback(value = false)
-    void deleteEmployeeTest() {
-
+    @Rollback(value = true)
+    void deletePersonTest() {
         PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
         personRepository.save(personEntity1);
         PersonEntity personEntitySaved1 = personRepository.findById(1).get();
@@ -102,5 +106,16 @@ class PersonRepositoryTest {
             personEntity2 = optionalPerson2.get();
         }
         Assertions.assertThat(personEntity2).isNull();
+    }
+
+    @DisplayName("Delete all persons")
+    @Test
+    @Order(5)
+    @Rollback(value = true)
+    void deleteAllPersonTest() {
+        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
+        personRepository.save(personEntity1);
+        personRepository.deleteAll();
+        assertEquals(0, personRepository.count());
     }
 }

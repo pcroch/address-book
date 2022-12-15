@@ -22,10 +22,7 @@ INSERT INTO person (person_id, firstname, secondname,lastname) VALUES (2, 'Tom',
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" object-ref="schemas/address-book/tables/person" />
-      <object connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" object-ref="schemas/address-book/tables/address" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.flyway_schema_history" active-filter-id="EMPTY_FILTER" />

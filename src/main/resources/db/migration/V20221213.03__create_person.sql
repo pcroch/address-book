@@ -4,8 +4,8 @@ CREATE TABLE person (
                         secondname VARCHAR ( 50 ),
                         lastname VARCHAR ( 50 )
 );
-
-CREATE TABLE "address-book".address (
+--"address-book".
+CREATE TABLE address (
                          address_id serial PRIMARY KEY,
                          street_number VARCHAR ( 50 ) NOT NULL,
                          box_number  VARCHAR( 50 ),
