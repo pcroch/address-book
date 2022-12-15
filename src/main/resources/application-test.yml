@@ -53,8 +53,8 @@ spring:
 #    enabled: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-#    hibernate:
-#          ddl-auto: validate # create-drop
+    hibernate:
+      ddl-auto: create-drop
 #    #    show-sql: false
     properties:
       hibernate:

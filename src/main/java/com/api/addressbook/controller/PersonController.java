@@ -56,6 +56,8 @@ public class PersonController {
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
     public ResponseEntity<PersonEntity> create(@RequestBody @NonNull PersonEntity body) {
+        logger.info(body.toString());
+
         if (!body.getFirstname().isBlank()) {
             PersonEntity personEntity = personRepository.save(body);
             logger.info("A person was added: {}", personEntity);

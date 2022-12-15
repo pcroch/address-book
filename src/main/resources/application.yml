@@ -1,5 +1,5 @@
-server:
-  port: 9090
+#server:
+#  port: 9090
 
 spring:
 #  spring:
@@ -28,7 +28,7 @@ spring:
     # schema will be automatically updated accordingly to java entities found in
     # the project
     hibernate:
-#      ddl-auto: auto # create-drop
+      ddl-auto: create-drop
 #    show-sql: false
     properties:
       hibernate:

@@ -13,18 +13,18 @@ import org.jetbrains.annotations.NotNull;
 public class PersonEntity implements java.io.Serializable {
 
     @Id
-    @Column(name = "person_id")
+    @Column(name = "person_id", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer personId;
+    private Integer personId;
     @NotNull
     @Column(name = "firstname")
-    String firstname;
+    private String firstname;
 
     @Column(name = "secondname")
-    String secondname;
+    private String secondname;
 
     @Column(name = "lastname")
-    String lastname;
+    private String lastname;
 
     //todo adding the foregin key Addres Entity
     @Override
