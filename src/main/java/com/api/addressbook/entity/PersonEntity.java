@@ -35,7 +35,4 @@ public class PersonEntity implements java.io.Serializable {
     public String toString() {
         return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s}", personId, firstname, secondname, lastname);
     }
-
-
-
 }

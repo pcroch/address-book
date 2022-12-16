@@ -15,9 +15,9 @@ import lombok.Setter;
 public class PersonAddressEntity implements java.io.Serializable {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "person_address_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
+    Integer personAddressId;
 
     @Column(name = "address_id")
     private String addressId;
