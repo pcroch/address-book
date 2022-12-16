@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -26,10 +28,14 @@ public class PersonEntity implements java.io.Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    //todo adding the foregin key Addres Entity
+    @ManyToMany(mappedBy = "person")
+    private Set<AddressEntity> address;
+
     @Override
     public String toString() {
         return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s}", personId, firstname, secondname, lastname);
     }
+
+
 
 }

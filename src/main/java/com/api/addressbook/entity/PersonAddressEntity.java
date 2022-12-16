@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "person-address")
+@Table(name = "person_address")
 public class PersonAddressEntity implements java.io.Serializable {
 
     @Id

@@ -1,5 +1,5 @@
 CREATE TABLE person_address (
-                                id serial PRIMARY KEY,
+                                person_address_id serial PRIMARY KEY,
                                 address_id serial,
                                 person_id serial,
                                 CONSTRAINT fk_person FOREIGN KEY(person_id) REFERENCES person(person_id),

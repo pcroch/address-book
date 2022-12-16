@@ -1,9 +1,7 @@
-server:
-  port: 8080
+#server:
+#  port: 8080
 
 spring:
-#  spring:
-#    profile: dev
   properties:
     hibernate:
       globally_quoted_identifiers: true
@@ -20,7 +18,7 @@ spring:
 #      idle-timeout: 600000
   flyway:
     defaultSchema: address-book
-    baseline-on-migrate: false
+    baseline-on-migrate: true
     enabled: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -28,15 +26,9 @@ spring:
     # schema will be automatically updated accordingly to java entities found in
     # the project
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 #    show-sql: false
     properties:
       hibernate:
 #        format_sql: false
         default_schema: address-book
-#        jdbc:
-#          lob:
-#            non_contextual_creation: true
-
-#    application:
-#      name: addressBook

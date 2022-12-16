@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +19,7 @@ public class AddressEntity implements java.io.Serializable {
 
     @Id
     @Column(name = "address_id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     Integer addressId;
 
     @NotNull
@@ -43,6 +45,13 @@ public class AddressEntity implements java.io.Serializable {
     @Column(name = "country")
     private String country;
 
-    @Column(name = "is_private", nullable = false)
+    @Column(name = "is_private")
     private boolean isPrivate = true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "person_address",
+            joinColumns = @JoinColumn(name = "address_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private Set<PersonEntity> person;
 }

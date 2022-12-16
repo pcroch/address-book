@@ -6,6 +6,6 @@ CREATE TABLE address (
                          zipcode VARCHAR ( 50 ) NOT NULL,
                          locality VARCHAR ( 50 ) NOT NULL,
                          country VARCHAR ( 50 ) NOT NULL,
-                         is_private BOOLEAN NOT NULL DEFAULT TRUE
+                         is_private BOOLEAN DEFAULT TRUE
 );
 
