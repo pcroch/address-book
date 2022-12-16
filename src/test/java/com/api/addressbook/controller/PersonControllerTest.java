@@ -3,7 +3,6 @@ package com.api.addressbook.controller;
 import com.api.addressbook.entity.PersonEntity;
 import com.api.addressbook.repository.PersonRepository;
 import org.junit.jupiter.api.*;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+//todo check why migration 5 is not imported and postman is empty
 
 /**
  * Documentation found in
@@ -32,31 +31,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 //@SpringBootTest
 //@ExtendWith(SpringExtension.class)
-//@AutoConfigureMockMvc
-//@ActiveProfiles
-@RunWith(SpringRunner.class)
+
+//@RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles("test") // guessing?
+@ActiveProfiles("test")
+//@WebMvcTest(PersonController.class)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Person endpoints ")
 class PersonControllerTest {
-//todo the mocking with h2 is not working anymore
     public static final Logger logger = LoggerFactory.getLogger(PersonControllerTest.class);
     @Autowired
     private MockMvc mockMvc; // the error is normal
+
+    @MockBean
+    PersonController personController;
 
     @MockBean
     PersonRepository personRepository;
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup().build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonController(this.personRepository = personRepository)).build();
     }
 
     @Order(1)
     @Test
-
     @DisplayName("testing /person/ping")
     void getPing() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/person/ping"))
@@ -90,10 +90,11 @@ class PersonControllerTest {
                 .andExpect(status().isFound())
                 .andExpect(content().json("{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}"));
     }
-/*
-https://stackoverflow.com/questions/56246445/org-springframework-http-converter-httpmessagenotreadableexception-when-running
-Could be the solution on body issue
- */
+
+    /*
+    https://stackoverflow.com/questions/56246445/org-springframework-http-converter-httpmessagenotreadableexception-when-running
+    Could be the solution on body issue
+     */
     @Order(4)
     @Test
     @DisplayName("testing adding a person")
@@ -102,7 +103,7 @@ Could be the solution on body issue
         PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma");
         when(personRepository.save(any(PersonEntity.class))).thenReturn(personEntity3);
         when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
-        mockMvc.perform (MockMvcRequestBuilders.post("/person/")
+        mockMvc.perform(MockMvcRequestBuilders.post("/person/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -117,7 +118,7 @@ Could be the solution on body issue
         PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma");
         when(personRepository.save(personEntity3)).thenReturn(personEntity3);
         when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
-        mockMvc.perform (MockMvcRequestBuilders.put("/person/{id}", 1)
+        mockMvc.perform(MockMvcRequestBuilders.put("/person/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isAccepted())

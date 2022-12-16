@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -43,7 +44,7 @@ public class PersonController {
 
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity getPersonById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<PersonEntity>> getPersonById(@PathVariable("id") int id) {
 
         if (personRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id));
@@ -56,8 +57,6 @@ public class PersonController {
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
     public ResponseEntity<PersonEntity> create(@RequestBody @NonNull PersonEntity body) {
-        logger.info(body.toString());
-
         if (!body.getFirstname().isBlank()) {
             PersonEntity personEntity = personRepository.save(body);
             logger.info("A person was added: {}", personEntity);
