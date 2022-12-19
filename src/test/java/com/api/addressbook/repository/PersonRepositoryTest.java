@@ -2,7 +2,6 @@ package com.api.addressbook.repository;
 
 import com.api.addressbook.entity.PersonEntity;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 
 
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 /**
  * tuto with:
@@ -40,9 +38,9 @@ class PersonRepositoryTest {
     @DisplayName("Save a person")
     @Test
     @Order(1)
-    @Rollback(value = true) // not sure if it is usefully bcse the rool back is automatic but good to keep in mind
+    @Rollback // not sure if it is usefully bcse the rool back is automatic but good to keep in mind
     void test_save_person_repository() {
-        PersonEntity personEntity1 = new PersonEntity(null, "Alpha", "Beta", "Gamma");
+        PersonEntity personEntity1 = new PersonEntity(null, "Alpha", "Beta", "Gamma", null);
         PersonEntity personEntitySaved = personRepository.save(personEntity1);
         Assertions.assertThat(personRepository.count()).isEqualTo(1L);
         assertEquals(personEntity1.getFirstname(), personEntitySaved.getFirstname());
@@ -52,7 +50,7 @@ class PersonRepositoryTest {
     @Test
     @Order(2)
     void test_get_person_per_id_repository() {
-        PersonEntity personEntity1 = new PersonEntity(null,"Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(null,"Test", "nom", "Fin" , null);
         Integer id = personRepository.save(personEntity1).getPersonId();
         PersonEntity personEntitySaved1 = personRepository.findById(id).get();
         assertEquals(personEntity1.getPersonId(), personEntitySaved1.getPersonId());
@@ -62,9 +60,9 @@ class PersonRepositoryTest {
     @Test
     @Order(3)
     void test_findAll_person_repository() {
-        List<PersonEntity> personEntityList = new ArrayList<>();;
-        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin");
-        PersonEntity personEntity2 = new PersonEntity(null, "Test", "nom", "Fin");
+        List<PersonEntity> personEntityList = new ArrayList<>();
+        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin" , null);
+        PersonEntity personEntity2 = new PersonEntity(null, "Test", "nom", "Fin" , null);
         personEntityList.add(personEntity1);
         personEntityList.add(personEntity2);
         personRepository.saveAll(personEntityList);
@@ -77,9 +75,9 @@ class PersonRepositoryTest {
     @DisplayName("Update person's field")
     @Test
     @Order(4)
-    @Rollback(value = true)
+    @Rollback
     void test_update_person_repository() {
-        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin", null);
         personRepository.save(personEntity1);
         personEntity1.setFirstname("John");
         PersonEntity personEntityUpdated = personRepository.save(personEntity1);
@@ -89,9 +87,9 @@ class PersonRepositoryTest {
     @DisplayName("Delete a specific persons")
     @Test
     @Order(5)
-    @Rollback(value = true)
+    @Rollback
     void deletePersonTest() {
-        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin" , null);
         PersonEntity personEntitySaved1 = personRepository.save(personEntity1);
         personRepository.delete(personEntitySaved1);
 
@@ -109,7 +107,7 @@ class PersonRepositoryTest {
     @Order(5)
     @Rollback(value = true)
     void deleteAllPersonTest() {
-        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(null, "Test", "nom", "Fin", null);
         personRepository.save(personEntity1);
         personRepository.deleteAll();
         assertEquals(0, personRepository.count());

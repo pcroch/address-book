@@ -68,8 +68,8 @@ class PersonControllerTest {
     @DisplayName("testing get all person ")
     void getAllPerson() throws Exception {
         List<PersonEntity> personEntityList = new ArrayList<>();
-        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
-        PersonEntity personEntity2 = new PersonEntity(2, "Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin", null);
+        PersonEntity personEntity2 = new PersonEntity(2, "Test", "nom", "Fin", null);
         personEntityList.add(personEntity1);
         personEntityList.add(personEntity2);
 
@@ -83,7 +83,7 @@ class PersonControllerTest {
     @Test
     @DisplayName("testing get a person per id ")
     void getPersonById() throws Exception {
-        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin");
+        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin", null);
         when(personRepository.findById(1)).thenReturn(Optional.of(personEntity1));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/person/1"))
@@ -100,7 +100,7 @@ class PersonControllerTest {
     @DisplayName("testing adding a person")
     void create() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma");
+        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma",null);
         when(personRepository.save(any(PersonEntity.class))).thenReturn(personEntity3);
         when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
         mockMvc.perform(MockMvcRequestBuilders.post("/person/")
@@ -115,7 +115,7 @@ class PersonControllerTest {
     @DisplayName("testing updating a person")
     void update() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma");
+        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma", null);
         when(personRepository.save(personEntity3)).thenReturn(personEntity3);
         when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
         mockMvc.perform(MockMvcRequestBuilders.put("/person/{id}", 1)
