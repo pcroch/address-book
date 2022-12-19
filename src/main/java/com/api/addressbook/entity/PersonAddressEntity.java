@@ -1,10 +1,13 @@
 package com.api.addressbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -12,16 +15,20 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "person_address")
-public class PersonAddressEntity implements java.io.Serializable {
+public class PersonAddressEntity   {
 
     @Id
     @Column(name = "person_address_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer personAddressId;
+    private Integer personAddressId;
 
-    @Column(name = "address_id")
-    private String addressId;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "address_id")
+    private AddressEntity address;
 
-    @Column(name = "person_id")
-    private String personId;
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "person_id")
+    private PersonEntity person;
 }

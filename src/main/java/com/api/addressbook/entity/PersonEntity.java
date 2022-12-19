@@ -1,9 +1,12 @@
 package com.api.addressbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -12,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "person")
-public class PersonEntity implements java.io.Serializable {
+public class PersonEntity   {
 
     @Id
     @Column(name = "person_id", nullable = false, updatable = false)
@@ -28,8 +31,9 @@ public class PersonEntity implements java.io.Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @ManyToMany(mappedBy = "person")
-    private Set<AddressEntity> address;
+//    @JsonIgnore
+    @OneToMany(mappedBy = "person")
+    private List<PersonAddressEntity> personAddress;
 
     @Override
     public String toString() {

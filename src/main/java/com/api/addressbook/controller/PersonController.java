@@ -38,8 +38,8 @@ public class PersonController {
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<List<PersonEntity>> getAllPerson() {
-        logger.info("call for all person");
-        return new ResponseEntity<>(personRepository.findAll(), HttpStatus.OK);
+        logger.info("call for all person {}", personRepository.findAll());
+            return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
     }
 
     @RequestMapping("/{id}")
