@@ -1,11 +1,9 @@
 package com.api.addressbook.controller;
 
 import com.api.addressbook.entity.AddressEntity;
-import com.api.addressbook.entity.PersonEntity;
 import com.api.addressbook.repository.AddressRepository;
 import com.api.addressbook.repository.PersonRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +41,18 @@ class AddressControllerTest {
     PersonController personController;
 
     @MockBean
-    PersonRepository personRepository;
+    AddressController addressController;
 
-    @Mock
+
+    @MockBean
     AddressRepository addressRepository;
+
+    @MockBean
+    PersonRepository personRepository;
 
     @BeforeEach
     public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController()).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(this.addressRepository = addressRepository)).build();
     }
 
     @Order(1)

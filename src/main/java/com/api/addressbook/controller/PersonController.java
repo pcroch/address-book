@@ -98,4 +98,3 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
-//todo redirecting when not found?
