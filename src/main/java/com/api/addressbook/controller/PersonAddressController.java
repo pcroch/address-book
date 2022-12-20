@@ -16,6 +16,6 @@ public class PersonAddressController {
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<String> getPingPersonAddress() {
         HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>("You are on PersonAddress Endpoints", headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("You have reached on PersonAddress Endpoints", headers, HttpStatus.ACCEPTED);
     }
 }
