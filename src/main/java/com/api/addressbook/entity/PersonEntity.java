@@ -35,6 +35,7 @@ public class PersonEntity implements Serializable {
 //    @OneToMany(mappedBy = "person")
 //    private List<PersonAddressEntity> personAddress;
 
+    @Transient
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "person_address",

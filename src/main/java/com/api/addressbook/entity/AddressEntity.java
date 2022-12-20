@@ -52,7 +52,7 @@ public class AddressEntity  implements Serializable   {
     private boolean isPrivate = true;
 
     @Transient
-    @ManyToMany( cascade = CascadeType.ALL, mappedBy = "address")
+    @ManyToMany( cascade = CascadeType.ALL) // , mappedBy = "address"
     private Set<PersonEntity> personEntity;
 
     @Override
