@@ -1,11 +1,13 @@
 package com.api.addressbook.controller;
 
 import com.api.addressbook.entity.PersonEntity;
+import com.api.addressbook.repository.AddressRepository;
 import com.api.addressbook.repository.PersonRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Slf4j
@@ -21,9 +24,13 @@ import java.util.List;
 public class PersonController {
     public static final Logger logger = LoggerFactory.getLogger(PersonController.class);
     private final PersonRepository personRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     public PersonController(PersonRepository personRepository) {
+
         this.personRepository = personRepository;
+//        this.addressRepository= addressRepository;
     }
 
     @RequestMapping("/ping")
@@ -31,18 +38,19 @@ public class PersonController {
     public ResponseEntity<String> getPing() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Custom-Header", "Just a ping");
-        return new ResponseEntity<>("Ping to ge Person", headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Ping to Person", headers, HttpStatus.ACCEPTED);
     }
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<List<PersonEntity>> getAllPerson() {
-        return new ResponseEntity<>(personRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<Iterable<PersonEntity>> getAllPerson() {
+        logger.info("call for all person {}", personRepository.findAll());
+            return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
     }
 
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity getPersonById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<PersonEntity>> getPersonById(@PathVariable("id") int id) {
 
         if (personRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id));
@@ -55,8 +63,10 @@ public class PersonController {
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
     public ResponseEntity<PersonEntity> create(@RequestBody @NonNull PersonEntity body) {
+        logger.info("body: {}", body.getAddress());
         if (!body.getFirstname().isBlank()) {
             PersonEntity personEntity = personRepository.save(body);
+            addressRepository.saveAll(body.getAddress());
             logger.info("A person was added: {}", personEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(personEntity);
         }
@@ -90,4 +100,4 @@ public class PersonController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 }
-//todo redicting when not found?
+//todo redirecting when not found?

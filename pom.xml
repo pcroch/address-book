@@ -51,11 +51,11 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-<!--            <scope>test</scope>-->
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.h2database</groupId>-->
+<!--            <artifactId>h2</artifactId>-->
+<!--&lt;!&ndash;            <scope>test</scope>&ndash;&gt;-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
@@ -93,19 +93,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-maven-plugin</artifactId>
-                <configuration>
-                    <user>admin</user>
-                    <password>admin</password>
-                    <defaultSchema>address-book</defaultSchema>
-                    <url>jdbc:postgresql://localhost:5432/address-book-db</url>
-                    <schemas>
-                        <schema>schemaName</schema>
-                    </schemas>
                 </configuration>
             </plugin>
         </plugins>
