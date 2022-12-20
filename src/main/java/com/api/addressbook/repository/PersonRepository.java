@@ -6,8 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface PersonRepository extends CrudRepository<PersonEntity, Integer> {
-List<PersonEntity> findAll();
+    List<PersonEntity> findAll();
 }

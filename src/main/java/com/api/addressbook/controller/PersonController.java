@@ -33,10 +33,12 @@ public class PersonController {
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> getPing() {
+    public ResponseEntity<String> pingPerson() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "Just a ping");
-        return new ResponseEntity<>("Ping to Person", headers, HttpStatus.ACCEPTED);
+        headers.add("Custom-Header", "Person has been pinged");
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .headers(headers)
+                .body("Ping to Person");
     }
 
     @RequestMapping("")
@@ -53,14 +55,12 @@ public class PersonController {
         if (personRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id));
         }
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
     }
 
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<PersonEntity> create(@RequestBody @NonNull PersonEntity body) {
+    public ResponseEntity<PersonEntity> createPerson(@RequestBody @NonNull PersonEntity body) {
         logger.info("body: {}", body.getAddress());
         if (!body.getFirstname().isBlank()) {
             PersonEntity personEntity = personRepository.save(body);
@@ -72,7 +72,7 @@ public class PersonController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<PersonEntity> update(@PathVariable("id") Integer id, @RequestBody @NonNull PersonEntity body) {
+    public ResponseEntity<PersonEntity> updatePerson(@PathVariable("id") Integer id, @RequestBody @NonNull PersonEntity body) {
         PersonEntity personEntity = personRepository.findById(id).map(address -> {
             address.setFirstname(body.getFirstname());
             address.setSecondname(body.getSecondname());
@@ -82,19 +82,21 @@ public class PersonController {
             return personRepository.save(body);
         });
         logger.info("A person was updated: {}", personEntity);
-        return new ResponseEntity<>(personEntity, HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(personEntity);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Integer> delete(@PathVariable("id") Integer id) {
-        personRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public ResponseEntity<Integer> deleteAllPerson(@PathVariable("id") Integer id) {
+        if (personRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/deleteAll")
-    //todo error if not existing
-    public ResponseEntity<Integer> deletePerson() {
+    public ResponseEntity<Integer> deletePersonPerId() {
         personRepository.deleteAll();
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 }
+

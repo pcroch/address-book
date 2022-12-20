@@ -1,12 +1,10 @@
 package com.api.addressbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -30,10 +28,6 @@ public class PersonEntity implements Serializable {
 
     @Column(name = "lastname")
     private String lastname;
-
-//    @JsonIgnore
-//    @OneToMany(mappedBy = "person")
-//    private List<PersonAddressEntity> personAddress;
 
     @Transient
     @ManyToMany(cascade = CascadeType.ALL)
