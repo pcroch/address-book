@@ -28,9 +28,7 @@ public class PersonController {
     private AddressRepository addressRepository;
 
     public PersonController(PersonRepository personRepository) {
-
         this.personRepository = personRepository;
-//        this.addressRepository= addressRepository;
     }
 
     @RequestMapping("/ping")
@@ -43,9 +41,9 @@ public class PersonController {
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Iterable<PersonEntity>> getAllPerson() {
+    public ResponseEntity<List<PersonEntity>> getAllPerson() {
         logger.info("call for all person {}", personRepository.findAll());
-            return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
+        return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
     }
 
     @RequestMapping("/{id}")

@@ -427,11 +427,5 @@ w
 G.idea/sonarlint/issuestore/f/e/fed2d7edf507f36e6daa040b12e8197848888b86,7/6/760d518df18451d5d11bbc884d336e35be6e95d0
 w
 G.idea/sonarlint/issuestore/5/0/50a1e1e1b7a235b078edba66373949bb9e69cb3a,5/6/56cf6c6d92645359101aa67254ff5bd28c8f2f2d
-s
-Csrc/main/java/com/api/addressbook/repository/AddressRepository.java,0/1/01c6f61fdf8d9de1fbed6d8e0289bc2f61efd563
 m
 =src/main/java/com/api/addressbook/AddressBookApplication.java,5/e/5e16e32cc50eaff12b584b0be03dd373d8427e4b
-r
-Bsrc/main/java/com/api/addressbook/repository/PersonRepository.java,d/0/d0d1756b7a61c0c8c4f18f57a045bff58ee935af
-s
-Csrc/main/java/com/api/addressbook/controller/AddressController.java,d/2/d2eb111534330b1e3b284ed9f8663b39e1036b6b
