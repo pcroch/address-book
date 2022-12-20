@@ -1,4 +1,4 @@
-package com.api.addressbook.service;
+package api.addressbook.service;
 
 
 import org.springframework.stereotype.Service;

@@ -1,7 +1,10 @@
-package com.api.addressbook.entity;
+package api.addressbook.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;

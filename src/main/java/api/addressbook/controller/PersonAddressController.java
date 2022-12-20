@@ -1,4 +1,4 @@
-package com.api.addressbook.controller;
+package api.addressbook.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
