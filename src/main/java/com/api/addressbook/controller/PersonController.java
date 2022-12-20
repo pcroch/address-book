@@ -1,11 +1,13 @@
 package com.api.addressbook.controller;
 
 import com.api.addressbook.entity.PersonEntity;
+import com.api.addressbook.repository.AddressRepository;
 import com.api.addressbook.repository.PersonRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,13 @@ import java.util.Optional;
 public class PersonController {
     public static final Logger logger = LoggerFactory.getLogger(PersonController.class);
     private final PersonRepository personRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     public PersonController(PersonRepository personRepository) {
+
         this.personRepository = personRepository;
+//        this.addressRepository= addressRepository;
     }
 
     @RequestMapping("/ping")
@@ -37,7 +43,7 @@ public class PersonController {
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<List<PersonEntity>> getAllPerson() {
+    public ResponseEntity<Iterable<PersonEntity>> getAllPerson() {
         logger.info("call for all person {}", personRepository.findAll());
             return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
     }
@@ -57,8 +63,10 @@ public class PersonController {
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
     public ResponseEntity<PersonEntity> create(@RequestBody @NonNull PersonEntity body) {
+        logger.info("body: {}", body.getAddress());
         if (!body.getFirstname().isBlank()) {
             PersonEntity personEntity = personRepository.save(body);
+            addressRepository.saveAll(body.getAddress());
             logger.info("A person was added: {}", personEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(personEntity);
         }

@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "person")
-public class PersonEntity   {
+public class PersonEntity implements Serializable {
 
     @Id
     @Column(name = "person_id", nullable = false, updatable = false)
@@ -32,8 +32,15 @@ public class PersonEntity   {
     private String lastname;
 
 //    @JsonIgnore
-    @OneToMany(mappedBy = "person")
-    private List<PersonAddressEntity> personAddress;
+//    @OneToMany(mappedBy = "person")
+//    private List<PersonAddressEntity> personAddress;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "person_address",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private Set<AddressEntity> address;
 
     @Override
     public String toString() {

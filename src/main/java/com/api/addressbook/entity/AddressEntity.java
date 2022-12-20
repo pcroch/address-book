@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-public class AddressEntity    {
+public class AddressEntity  implements Serializable   {
 
     @Id
     @Column(name = "address_id")
@@ -52,6 +52,10 @@ public class AddressEntity    {
     private boolean isPrivate = true;
 
 //    @JsonIgnore
-    @OneToMany( mappedBy = "address")
-    private List<PersonAddressEntity> personAddress;
+//    @OneToMany( mappedBy = "address")
+//    private List<PersonAddressEntity> personAddress;
+
+    @JsonIgnore
+    @ManyToMany( cascade = CascadeType.ALL, mappedBy = "address")
+    private Set<PersonEntity> personEntity;
 }
