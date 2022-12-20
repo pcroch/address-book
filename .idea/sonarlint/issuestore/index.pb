@@ -5,8 +5,6 @@ Isrc/main/java/com/api/addressbook/controller/PersonAddressController.java,d/4/
 .src/test/java/resources/mock/personEntity.json,0/3/03c4cc389a8ff8133afb043e03b4d499b310810b
 m
 =src/main/java/com/api/addressbook/service/AddressService.java,6/8/688ee966cfb1f79499884a06744687b69925c95e
-r
-Bsrc/test/java/com/api/addressbook/AddressBookApplicationTests.java,9/7/9790af156a3453aabba02fd0169a72c0b578d2a8
 8
 mvnw.cmd,1/f/1f1763f358c257ea3515417352b82b0165647ad1
 4
