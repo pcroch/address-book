@@ -51,11 +51,12 @@ public class AddressEntity  implements Serializable   {
     @Column(name = "is_private")
     private boolean isPrivate = true;
 
-//    @JsonIgnore
-//    @OneToMany( mappedBy = "address")
-//    private List<PersonAddressEntity> personAddress;
-
-    @JsonIgnore
+    @Transient
     @ManyToMany( cascade = CascadeType.ALL, mappedBy = "address")
     private Set<PersonEntity> personEntity;
+
+    @Override
+    public String toString() {
+        return String.format("{addressId: %s, streetNumber: %s, streetName: %s, personEntity: %s}", addressId, streetNumber, streetName, personEntity);
+    }
 }

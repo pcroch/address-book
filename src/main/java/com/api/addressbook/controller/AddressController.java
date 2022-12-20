@@ -21,14 +21,10 @@ public class AddressController {
     @Autowired
     private AddressRepository addressRepository;
 
-//    public AddressController(AddressRepository addressRepository) {
-//        this.addressRepository = addressRepository;
-//    }
-
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<Iterable<AddressEntity>> getAllPerson() {
-        logger.info("call for all person {}", addressRepository.findAll());
+        logger.info("call for all address {}", addressRepository.findAll());
         return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll());
     }
 

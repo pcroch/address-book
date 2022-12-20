@@ -44,6 +44,6 @@ public class PersonEntity implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s}", personId, firstname, secondname, lastname);
+        return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s, Address' List: %s}", personId, firstname, secondname, lastname, address);
     }
 }
