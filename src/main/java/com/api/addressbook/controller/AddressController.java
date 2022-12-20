@@ -31,10 +31,12 @@ public class AddressController {
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> getPing() {
+    public ResponseEntity<String> pingAddress() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "Just a ping");
-        return new ResponseEntity<>("Ping to Address", headers, HttpStatus.ACCEPTED);
+        headers.add("Custom-Header", "Address has been pinged");
+        return ResponseEntity.status(HttpStatus.ACCEPTED)
+                .headers(headers)
+                .body("Ping to Address");
     }
 
     @RequestMapping("")
@@ -51,7 +53,6 @@ public class AddressController {
         if (addressRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id));
         }
-
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
     }
@@ -82,21 +83,24 @@ public class AddressController {
         }).orElseGet(() -> {
             return addressRepository.save(body);
         });
-        logger.info("A address has been updated: {}", addressEntity);
-        return new ResponseEntity<>(addressEntity, HttpStatus.ACCEPTED);
+        logger.info("An address has been updated: {}", addressEntity);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(addressEntity);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Integer> deleteAddress(@PathVariable("id") Integer id) {
-        addressRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    public ResponseEntity<Integer> deleteAllAddress(@PathVariable("id") Integer id) {
+        if (addressRepository.existsById(id)) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+
     }
 
     @DeleteMapping("/deleteAll")
-    //todo error if not existing
     public ResponseEntity<Integer> deleteAddressPerId() {
         addressRepository.deleteAll();
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
 }
