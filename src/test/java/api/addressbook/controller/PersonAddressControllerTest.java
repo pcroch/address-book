@@ -1,4 +1,4 @@
-package com.api.addressbook.controller;
+package api.addressbook.controller;
 
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;

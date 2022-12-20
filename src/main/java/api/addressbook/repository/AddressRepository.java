@@ -1,7 +1,7 @@
-package com.api.addressbook.repository;
+package api.addressbook.repository;
 
 
-import com.api.addressbook.entity.AddressEntity;
+import api.addressbook.entity.AddressEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
