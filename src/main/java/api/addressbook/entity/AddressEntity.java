@@ -1,4 +1,4 @@
-package com.api.addressbook.entity;
+package api.addressbook.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

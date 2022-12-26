@@ -1,6 +1,6 @@
-package com.api.addressbook.repository;
+package api.addressbook.repository;
 
-import com.api.addressbook.entity.PersonEntity;
+import api.addressbook.entity.PersonEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 

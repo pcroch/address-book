@@ -1,4 +1,4 @@
-package com.api.addressbook;
+package api.addressbook;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

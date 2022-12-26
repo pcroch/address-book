@@ -1,8 +1,8 @@
-package com.api.addressbook.controller;
+package api.addressbook.controller;
 
-import com.api.addressbook.entity.AddressEntity;
-import com.api.addressbook.repository.AddressRepository;
-import com.api.addressbook.repository.PersonRepository;
+import api.addressbook.entity.AddressEntity;
+import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonRepository;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

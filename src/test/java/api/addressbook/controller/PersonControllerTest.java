@@ -1,7 +1,7 @@
-package com.api.addressbook.controller;
+package api.addressbook.controller;
 
-import com.api.addressbook.entity.PersonEntity;
-import com.api.addressbook.repository.PersonRepository;
+import api.addressbook.entity.PersonEntity;
+import api.addressbook.repository.PersonRepository;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
