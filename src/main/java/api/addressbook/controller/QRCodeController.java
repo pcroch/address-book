@@ -8,14 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/person-address")
-public class PersonAddressController {
-    //todo rendering a full address as a string for printing or manual writting
+@RequestMapping("/qr-code")
+public class QRCodeController {
 
-    @RequestMapping("/ping")
+        @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<String> getPingPersonAddress() {
         HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>("You have reached on PersonAddress Endpoints", headers, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("You have reached on QRCode Endpoints", headers, HttpStatus.ACCEPTED);
     }
 }

@@ -1,8 +1,6 @@
 
 ^
 .src/test/java/resources/mock/personEntity.json,0/3/03c4cc389a8ff8133afb043e03b4d499b310810b
-m
-=src/main/java/com/api/addressbook/service/AddressService.java,6/8/688ee966cfb1f79499884a06744687b69925c95e
 8
 mvnw.cmd,1/f/1f1763f358c257ea3515417352b82b0165647ad1
 4
@@ -234,8 +232,6 @@ G.idea/sonarlint/issuestore/0/3/03c4cc389a8ff8133afb043e03b4d499b310810b,c/7/c7
 w
 G.idea/sonarlint/issuestore/8/7/873079dcfa9abf881a19d5f558c1dad6255b53c6,a/5/a56d6eac24fdebcc235f4a3593b4fcf749bf688d
 w
-G.idea/sonarlint/issuestore/d/2/d2eb111534330b1e3b284ed9f8663b39e1036b6b,6/9/69d8d98c51c22de2df828ad42dd05d1b40019426
-w
 G.idea/sonarlint/issuestore/a/b/ab2ca073e0b5f5583ab87a4478c4e541568f5ba5,7/2/72e945f37de120134650d1f6499458eecd65f0bd
 w
 G.idea/sonarlint/issuestore/e/7/e784fab8e45e751598ae4831bb5fcd3042c13314,d/c/dc7043b65ddaa630184081116285e31d87f1c377
@@ -245,8 +241,6 @@ w
 G.idea/sonarlint/issuestore/b/d/bdc3256b944652b3ead4059c2fc9d9dff05deafd,9/b/9bdc80ce22f2feb715dc372e97241767b2c99e1f
 Š
 Z.idea/libraries/Maven__com_fasterxml_jackson_dataformat_jackson_dataformat_toml_2_14_1.xml,6/d/6d20ba61485842fbec4473cb6699ec874b40eda0
-w
-G.idea/sonarlint/issuestore/4/1/41489c8493f2c009cafb1107eb61430791d956f2,f/8/f8dae5850a66a28924522d9c058bc98fd69d704f
 i
 9.idea/libraries/Maven__org_flywaydb_flyway_core_9_8_3.xml,6/d/6df512f313d24a1f11ad49b70d80403afc473e16
 w
@@ -423,5 +417,3 @@ w
 G.idea/sonarlint/issuestore/f/e/fed2d7edf507f36e6daa040b12e8197848888b86,7/6/760d518df18451d5d11bbc884d336e35be6e95d0
 w
 G.idea/sonarlint/issuestore/5/0/50a1e1e1b7a235b078edba66373949bb9e69cb3a,5/6/56cf6c6d92645359101aa67254ff5bd28c8f2f2d
-m
-=src/main/java/com/api/addressbook/AddressBookApplication.java,5/e/5e16e32cc50eaff12b584b0be03dd373d8427e4b

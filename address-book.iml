@@ -112,5 +112,6 @@
     <orderEntry type="library" name="Maven: org.flywaydb:flyway-core:9.8.3" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.dataformat:jackson-dataformat-toml:2.14.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.14.1" level="project" />
+    <orderEntry type="library" name="Maven: com.google.zxing:core:3.4.0" level="project" />
   </component>
 </module>

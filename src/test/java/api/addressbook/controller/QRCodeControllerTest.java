@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on PersonAddress endpoints ")
-class PersonAddressControllerTest {
+class QRCodeControllerTest {
 
     public static final Logger logger = LoggerFactory.getLogger(AddressControllerTest.class);
     @Autowired
@@ -27,7 +27,7 @@ class PersonAddressControllerTest {
     @Test
     @DisplayName("Ping the personAddress endpoint")
     void getPingPersonAddress() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/person-address/ping"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/ping"))
                 .andExpect(status().isAccepted());
     }
 
