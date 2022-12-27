@@ -1,11 +1,9 @@
 package api.addressbook.repository;
 
-import api.addressbook.entity.PersonEntity;
+import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.QRCodeEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,8 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Unit Testing on Qr_code Repository ")
 class QRCodeRepositoryTest {
 
-    public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
-
     @Autowired
     private QRCodeRepository qrcodeRepository;
 
@@ -33,7 +29,8 @@ class QRCodeRepositoryTest {
     @Order(1)
     @Rollback
     void test_save_qr_code_repository() {
-        QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20});
+        PersonAddressEntity personAddressEntity = new PersonAddressEntity(1,1,1);
+        QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20}, personAddressEntity);
         QRCodeEntity qrcodeEntitySaved = qrcodeRepository.save(qrcodeEntity);
         Assertions.assertThat(qrcodeRepository.count()).isEqualTo(1L);
         assertEquals(qrcodeEntity.getQrCodeName(), qrcodeEntitySaved.getQrCodeName());
@@ -44,7 +41,8 @@ class QRCodeRepositoryTest {
     @Order(1)
     @Rollback
     void test_get_qr_code_repository() {
-        QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20});
+        PersonAddressEntity personAddressEntity = new PersonAddressEntity(1,1,1);
+        QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20}, personAddressEntity);
         Integer id = qrcodeRepository.save(qrcodeEntity).getPersonAddressId();
         QRCodeEntity qrcodeEntitySaved = qrcodeRepository.findById(id).get();
         assertEquals(qrcodeEntity.getQrCodeName(), qrcodeEntitySaved.getQrCodeName());
@@ -56,7 +54,8 @@ class QRCodeRepositoryTest {
     @Order(1)
     @Rollback
     void test_delete_qr_code_repository() {
-        QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20});
+            PersonAddressEntity personAddressEntity = new PersonAddressEntity(1,1,1);
+            QRCodeEntity qrcodeEntity = new QRCodeEntity(1, "TestImage", new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20}, personAddressEntity);
         QRCodeEntity qrcodeEntitySaved = qrcodeRepository.save(qrcodeEntity);
         qrcodeRepository.delete(qrcodeEntitySaved);
 

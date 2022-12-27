@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
@@ -28,8 +27,10 @@ public class QRCodeEntity implements Serializable {
     @Column(name = "qr_code_image")
     private byte[] qrCodeImage;
 
-//    @Transient
-//    @OneToOne(cascade = CascadeType.ALL) // , mappedBy = "address"
-//    private AddressPerson addressPerason;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @Transient
+    @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id")
+    private PersonAddressEntity personAddress;
 
 }
