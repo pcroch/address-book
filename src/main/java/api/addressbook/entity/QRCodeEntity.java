@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "qr-code")
+@Table(name = "qr_code")
 public class QRCodeEntity implements Serializable {
 
     @Id

@@ -1,10 +1,14 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
+import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.PersonEntity;
 import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonAddressRepository;
+import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
+import api.addressbook.service.QRCodeGeneratorService;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
@@ -42,7 +46,16 @@ public class QRCodeController {
     private QRCodeRepository qrcodeRepository;
 
     @Autowired
+    private PersonAddressRepository personAddressRepository;
+
+    @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private QRCodeGeneratorService qrcodeGeneratorService;
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
@@ -61,7 +74,7 @@ public class QRCodeController {
         logger.info("here is get: {}", f.getAbsolutePath());
         FileInputStream fl = new FileInputStream(f);
         var byteArray = fl.readAllBytes();
-        logger.info("byteArray {}",byteArray );
+        logger.info("byteArray {}", byteArray);
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.CONTENT_DISPOSITION)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
@@ -71,26 +84,37 @@ public class QRCodeController {
     @RequestMapping("/{addressId}/{personId}")
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
-//        QRCodeEntity qrcodeEntity = qrcodeRepository.findByPersonIdAndAddressId(addressId, personId);
         Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
-        logger.info("address {}",addressEntity );
-        var url = concatAddress(addressEntity);
-        logger.info("formatted address {}", url);
-       var tmp = generateQRCodeImage(url, 125,125);
+        logger.info("address {}", addressEntity);
+        byte[] qrCodeImage = generateQRCodeImage(concatAddress(addressEntity), 125, 125);
+        PersonAddressEntity personAddressEntity = personAddressRepository.findByPersonIdAndAddressId(personId, addressId);
+        QRCodeEntity qrcodeEntity = new QRCodeEntity(personAddressEntity.getPersonAddressId(),
+                QRCodeGeneratorService.generateQRCodeName(personRepository.findById(personId), addressEntity),
+                qrCodeImage,
+                personAddressEntity);
+        qrcodeRepository.save(qrcodeEntity);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
-                body(tmp);
+                body(qrCodeImage);
+
+        // custom error if name not unique
+    }
+
+    @RequestMapping("/findByName={qrCodeName}")
+    @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> findQRCodeByName(@PathVariable("qrCodeName") String qrCodeName) {
+        try {
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
+                    body(qrcodeRepository.findByQrCodeName(qrCodeName).getQrCodeImage());
+        } catch (NullPointerException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 }
 
-
-// next steps:
-// part 1
-// creating a qr-code on the tmp cache system and print it postman
-    // creating a qr code with the url of the address: https://medium.com/nerd-for-tech/how-to-generate-qr-code-in-java-spring-boot-134adb81f10d
-// save  the qr code on the db
-//export the qr code when consuming the api
 
 // part 2
 // gnerate a nice concat of the addres to writte it by hand

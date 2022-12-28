@@ -24,7 +24,7 @@ public class AddressService {
     private PersonRepository personRepository;
 
     public static String concatAddress(Optional<AddressEntity> addressEntity) throws MalformedURLException {
-        String interpolation = addressEntity.get().getStreetName()+"+"+  addressEntity.get().getStreetNumber()+",+"+addressEntity.get().getZipcode()+"+"+ addressEntity.get().getLocality();
+        String interpolation = addressEntity.get().getStreetName()+"+"+  addressEntity.get().getStreetNumber()+",+"+addressEntity.get().getZipcode()+"+"+ addressEntity.get().getLocality()+"+"+addressEntity.get().getCountry();
         URL url = new URL("https://www.google.com/maps/place/"+interpolation);
          logger.info("URL: {}", new URL(url.toString()));
         return url.toString();

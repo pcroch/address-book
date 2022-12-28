@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface QRCodeRepository extends CrudRepository<QRCodeEntity, Integer> {
-//    QRCodeEntity findByPersonIdAndAddressId(Integer personId, Integer addressId);
+    QRCodeEntity findByQrCodeName(String name);
 }
 
