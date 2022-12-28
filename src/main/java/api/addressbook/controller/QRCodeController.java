@@ -9,12 +9,7 @@ import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
 import api.addressbook.service.QRCodeGeneratorService;
-import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
-import org.apache.commons.io.IOUtils;
-import org.hibernate.annotations.Any;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Optional;
 
@@ -40,7 +32,7 @@ import static api.addressbook.service.QRCodeGeneratorService.generateQRCodeImage
 @RequestMapping("/qr-code")
 public class QRCodeController {
 
-    public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(QRCodeController.class);
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
@@ -67,38 +59,14 @@ public class QRCodeController {
     /**
      * It will get a  QR code based on qr_code id
      */
-    @RequestMapping("/")
+    @RequestMapping("/id={person_address_id}")
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getQRCodeById() throws IOException {
-        File f = new File("src/main/resources/images/code.png");
-        logger.info("here is get: {}", f.getAbsolutePath());
-        FileInputStream fl = new FileInputStream(f);
-        var byteArray = fl.readAllBytes();
-        logger.info("byteArray {}", byteArray);
-        return ResponseEntity.status(HttpStatus.FOUND)
-                .header(HttpHeaders.CONTENT_DISPOSITION)
-                .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
-                body(byteArray);
-    }
+    public ResponseEntity<byte[]> getQRCodeById(@PathVariable("person_address_id") Integer personAddressId) {
 
-    @RequestMapping("/{addressId}/{personId}")
-    @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
-        Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
-        logger.info("address {}", addressEntity);
-        byte[] qrCodeImage = generateQRCodeImage(concatAddress(addressEntity), 125, 125);
-        PersonAddressEntity personAddressEntity = personAddressRepository.findByPersonIdAndAddressId(personId, addressId);
-        QRCodeEntity qrcodeEntity = new QRCodeEntity(personAddressEntity.getPersonAddressId(),
-                QRCodeGeneratorService.generateQRCodeName(personRepository.findById(personId), addressEntity),
-                qrCodeImage,
-                personAddressEntity);
-        qrcodeRepository.save(qrcodeEntity);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.CONTENT_DISPOSITION)
+        Optional<QRCodeEntity> qrcodeEntity = qrcodeRepository.findById(personAddressId);
+        return qrcodeEntity.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
-                body(qrCodeImage);
-
-        // custom error if name not unique
+                body(qrCodeEntity.getQrCodeImage())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @RequestMapping("/findByName={qrCodeName}")
@@ -113,6 +81,42 @@ public class QRCodeController {
         }
 
     }
+
+    @RequestMapping("/{addressId}/{personId}")
+    @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
+
+        Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
+        Optional<PersonEntity> personEntity = personRepository.findById(personId);
+        PersonAddressEntity personAddressEntity = personAddressRepository.findByPersonIdAndAddressId(personId, addressId);
+
+        if (personEntity.isEmpty() || addressEntity.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        byte[] qrCodeImage = generateQRCodeImage(concatAddress(addressEntity.get()), 125, 125);
+        String qrCodeName = QRCodeGeneratorService.generateQRCodeName(personEntity.get(), addressEntity.get());
+
+        if (qrcodeRepository.existsByQrCodeName(qrCodeName)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        QRCodeEntity qrcodeEntity = new QRCodeEntity(personAddressEntity.getPersonAddressId(),
+                qrCodeName,
+                qrCodeImage,
+                personAddressEntity);
+        logger.info("qrcode saved {}", qrcodeRepository.save(qrcodeEntity));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
+                body(qrCodeImage);
+
+    }
+
+
+
+
 }
 
 

@@ -21,7 +21,7 @@ public class QRCodeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer personAddressId;
 
-    @Column(name = "qr_code_name")
+    @Column(name = "qr_code_name", unique=true)
     private String qrCodeName;
 
     @Column(name = "qr_code_image")
