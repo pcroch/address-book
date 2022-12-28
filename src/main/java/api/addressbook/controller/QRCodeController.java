@@ -1,5 +1,6 @@
 package api.addressbook.controller;
 
+import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.PersonEntity;
 import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.repository.AddressRepository;
@@ -28,6 +29,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Optional;
 
+import static api.addressbook.service.AddressService.*;
 import static api.addressbook.service.QRCodeGeneratorService.generateQRCodeImage;
 
 @Controller
@@ -38,6 +40,9 @@ public class QRCodeController {
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
@@ -63,12 +68,15 @@ public class QRCodeController {
                 body(byteArray);
     }
 
-    @RequestMapping("/create")
+    @RequestMapping("/{addressId}/{personId}")
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> createQRCode() throws IOException, WriterException {
-        String url1 = "https://www.google.com/maps/place/Av.+de+Mersch+103,+6700+Arlon/@49.6872803,5.8277855,17z/data=!3m1!4b1!4m5!3m4!1s0x47eab048197e1e49:0x51a4775d53f430f8!8m2!3d49.6872803!4d5.8299742";
-        String url = "https://www.google.com/maps/place/Rue+des+D%C3%A9port%C3%A9s+78,+6700+Arlon/@49.6807691,5.8195074,20z/data=!4m5!3m4!1s0x47eab0439f7d694d:0xcf5fa2ab8ea056cd!8m2!3d49.6807691!4d5.8197009";
- var tmp = generateQRCodeImage(url1, 125,125);
+    public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
+//        QRCodeEntity qrcodeEntity = qrcodeRepository.findByPersonIdAndAddressId(addressId, personId);
+        Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
+        logger.info("address {}",addressEntity );
+        var url = concatAddress(addressEntity);
+        logger.info("formatted address {}", url);
+       var tmp = generateQRCodeImage(url, 125,125);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
