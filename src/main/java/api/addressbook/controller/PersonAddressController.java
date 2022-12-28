@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/personAddress")
+@RequestMapping("/person-address")
 public class PersonAddressController {
     //todo rendering a full address as a string for printing or manual writting
 
