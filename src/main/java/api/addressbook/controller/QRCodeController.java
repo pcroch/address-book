@@ -120,9 +120,12 @@ public class QRCodeController {
 }
 
 
-// part 2
+// part 2 a
 // gnerate a nice concat of the addres to writte it by hand
 
+// part 2 b
+
+//adding Unit testing and integration testing
 // part 3
 // improving the readme to explain a bit more the api
 // see for versionning othe the api like v1 , v2 etc...
