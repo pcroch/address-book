@@ -79,7 +79,6 @@ public class QRCodeController {
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 
     @RequestMapping("/{addressId}/{personId}")
@@ -113,19 +112,4 @@ public class QRCodeController {
                 body(qrCodeImage);
 
     }
-
-
-
-
 }
-
-
-// part 2 a
-// gnerate a nice concat of the addres to writte it by hand
-
-// part 2 b
-
-//adding Unit testing and integration testing
-// part 3
-// improving the readme to explain a bit more the api
-// see for versionning othe the api like v1 , v2 etc...
