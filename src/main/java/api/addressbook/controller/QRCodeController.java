@@ -79,7 +79,6 @@ public class QRCodeController {
         } catch (NullPointerException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
     }
 
     @RequestMapping("/{addressId}/{personId}")
@@ -113,10 +112,6 @@ public class QRCodeController {
                 body(qrCodeImage);
 
     }
-
-
-
-
 }
 
 
@@ -129,3 +124,13 @@ public class QRCodeController {
 // part 3
 // improving the readme to explain a bit more the api
 // see for versionning othe the api like v1 , v2 etc...
+
+// part 4 a
+
+// adding a search algorithm
+
+// part 4 b
+
+// refactoring the whole app for duplicate codes
+
+// part 5 start a new project with camunda?

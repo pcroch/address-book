@@ -43,7 +43,6 @@ INSERT INTO person (person_id, firstname, secondname,lastname) VALUES (2, 'Tom',
   </component>
   <component name="DBNavigator.Project.FileConnectionMappingManager">
     <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/migration/V20221213.02__create_address.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="" />
-    <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/migration/V20221222.01__create_qrcode_table.sql" connection-id="virtual-postgres-connection" session-id="" current-schema="" />
     <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/migration/V20221213.03__create_person.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="" />
     <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/migration/V20221213.01__drop_db.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="" />
     <mapping file-url="file://$PROJECT_DIR$/src/main/resources/db/migration/V20221213.04__create_person_address.sql" connection-id="virtual-postgres-connection" session-id="MAIN" current-schema="" />
