@@ -4,15 +4,8 @@ import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.PersonEntity;
 import api.addressbook.entity.QRCodeEntity;
-import api.addressbook.repository.AddressRepository;
-import api.addressbook.repository.PersonAddressRepository;
-import api.addressbook.repository.PersonRepository;
-import api.addressbook.repository.QRCodeRepository;
 import api.addressbook.service.QRCodeGeneratorService;
 import com.google.zxing.WriterException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,31 +23,7 @@ import static api.addressbook.service.QRCodeGeneratorService.generateQRCodeImage
 
 @Controller
 @RequestMapping("/qr-code")
-public class QRCodeController {
-
-    private static final Logger logger = LoggerFactory.getLogger(QRCodeController.class);
-
-    @Autowired
-    private QRCodeRepository qrcodeRepository;
-
-    @Autowired
-    private PersonAddressRepository personAddressRepository;
-
-    @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private QRCodeGeneratorService qrcodeGeneratorService;
-
-    @RequestMapping("/ping")
-    @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> getPingPersonAddress() {
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>("You have reached on QRCode Endpoints", headers, HttpStatus.ACCEPTED);
-    }
+public class QRCodeController extends AbstractController {
 
     /**
      * It will get a  QR code based on qr_code id

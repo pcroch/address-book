@@ -2,9 +2,6 @@ package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.PersonEntity;
-import api.addressbook.repository.AddressRepository;
-import api.addressbook.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +16,7 @@ import static api.addressbook.service.AddressService.concatAddress;
 
 @Controller
 @RequestMapping("/person-address")
-public class PersonAddressController {
-
-    @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @RequestMapping("/ping")
-    @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> getPingPersonAddress() {
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>("You have reached on PersonAddress Endpoints", headers, HttpStatus.ACCEPTED);
-    }
+public class PersonAddressController extends AbstractController{
 
     @RequestMapping("/concat/{addressId}/{personId}")
     @GetMapping(value = "/url", produces = "application/json")
