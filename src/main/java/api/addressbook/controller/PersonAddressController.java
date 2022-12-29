@@ -19,7 +19,7 @@ import static api.addressbook.service.AddressService.concatAddress;
 public class PersonAddressController extends AbstractController{
 
     @RequestMapping("/concat/{addressId}/{personId}")
-    @GetMapping(value = "/url", produces = "application/json")
+    @GetMapping(value = "/url")
     public ResponseEntity<String> concatPersonAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) {
         Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
         Optional<PersonEntity> personEntity = personRepository.findById(personId);
