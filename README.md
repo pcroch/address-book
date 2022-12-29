@@ -1,10 +1,10 @@
-# Address-book
+# Address-book QR-code generator
 
 ## I. General description
 
 This a simple api that provides me the opportunity to consolidate my learning and develop important others skills.
 
-The api is an address book where the user can add professional or private address for a person.
+The api is an address book where the user can add professional or private address for a person. But hte user can generate either a nice formatted address  for a specific person or the user can generate a QR-Code to point on google map the address
 
 ## II. Technical description
 

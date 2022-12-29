@@ -115,9 +115,6 @@ public class QRCodeController {
 }
 
 
-// part 2 a
-// gnerate a nice concat of the addres to writte it by hand
-
 // part 2 b
 
 //adding Unit testing and integration testing
