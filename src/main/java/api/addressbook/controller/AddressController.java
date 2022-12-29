@@ -19,25 +19,12 @@ import java.util.Optional;
 @RequestMapping("/address")
 public class AddressController extends AbstractController{
 
-    public static final Logger logger = LoggerFactory.getLogger(AddressController.class);
-
     private final AddressRepository addressRepository;
-    @Autowired
-    private PersonRepository personRepository;
 
     public AddressController(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
 
-    @RequestMapping("/ping")
-    @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> pingAddress() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", "Address has been pinged");
-        return ResponseEntity.status(HttpStatus.ACCEPTED)
-                .headers(headers)
-                .body("Ping to Address");
-    }
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
