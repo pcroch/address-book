@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/address")
-public class AddressController {
+public class AddressController extends AbstractController{
 
     public static final Logger logger = LoggerFactory.getLogger(AddressController.class);
 
