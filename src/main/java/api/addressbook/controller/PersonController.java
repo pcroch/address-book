@@ -44,10 +44,10 @@ public class PersonController extends AbstractController {
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
     public ResponseEntity<PersonEntity> createPerson(@RequestBody @NonNull PersonEntity body) {
-        logger.info("body: {}", body.getAddress());
         if (!body.getFirstname().isBlank()) {
-            PersonEntity personEntity = personRepository.save(body);
             addressRepository.saveAll(body.getAddress());
+            PersonEntity personEntity = personRepository.save(body);
+
             logger.info("A person was added: {}", personEntity);
             return ResponseEntity.status(HttpStatus.CREATED).body(personEntity);
         }

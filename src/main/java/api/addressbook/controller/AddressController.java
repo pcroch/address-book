@@ -31,7 +31,6 @@ public class AddressController extends AbstractController{
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<Optional<AddressEntity>> getPersonById(@PathVariable("id") int id) {
-
         if (addressRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id));
         }

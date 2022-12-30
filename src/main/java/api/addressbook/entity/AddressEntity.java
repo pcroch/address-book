@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -49,9 +50,8 @@ public class AddressEntity implements Serializable {
     @Column(name = "is_private")
     private boolean isPrivate = true;
 
-    @Transient
-    @ManyToMany(cascade = CascadeType.ALL) // , mappedBy = "address"
-    private Set<PersonEntity> person;
+    @ManyToMany(mappedBy = "address")
+    private Set<PersonEntity> person= new HashSet<>();
 
     @Override
     public String toString() {
