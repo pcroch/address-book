@@ -1,6 +1,7 @@
 package api.addressbook.controller;
 
 
+import api.addressbook.mapper.PersonMapper;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
@@ -32,6 +33,9 @@ public abstract class AbstractController {
 
     @Autowired
     protected QRCodeGeneratorService qrcodeGeneratorService;
+
+    @Autowired
+    protected PersonMapper personMapper;
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
