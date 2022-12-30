@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface AddressRepository extends CrudRepository<Address, Integer> {
+    @Override
     List<Address> findAll();
 }

@@ -4,6 +4,7 @@ import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import api.addressbook.model.PersonAddress;
+import api.addressbook.model.QRCode;
 import api.addressbook.service.QRCodeGeneratorService;
 import com.google.zxing.WriterException;
 import org.springframework.http.HttpHeaders;
@@ -32,8 +33,8 @@ public class QRCodeController extends AbstractController {
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getQRCodeById(@PathVariable("person_address_id") Integer personAddressId) {
 
-        Optional<QRCodeEntity> qrcodeEntity = qrcodeRepository.findById(personAddressId);
-        return qrcodeEntity.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
+        Optional<QRCode> qrcode = qrcodeRepository.findById(personAddressId);
+        return qrcode.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
                 body(qrCodeEntity.getQrCodeImage())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
@@ -68,11 +69,12 @@ public class QRCodeController extends AbstractController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
-        QRCodeEntity qrcodeEntity = new QRCodeEntity(personAddress.getPersonAddressId(),
-                qrCodeName,
-                qrCodeImage,
-                personAddress);
-        logger.info("qrcode saved {}", qrcodeRepository.save(qrcodeEntity));
+        QRCode qrcode = QRCode.builder()
+                .qrCodeImage(qrCodeImage)
+                .qrCodeName(qrCodeName)
+                .personAddress(personAddress)
+                .build();
+        logger.info("qrcode saved {}", qrcodeRepository.save(qrcode));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)

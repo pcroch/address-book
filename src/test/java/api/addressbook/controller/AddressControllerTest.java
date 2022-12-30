@@ -1,8 +1,10 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
+import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
+import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Address endpoints ")
 class AddressControllerTest {
+
+    private Address address1, address2,  addressSaved = Address.builder().build();
     public static final Logger logger = LoggerFactory.getLogger(AddressControllerTest.class);
     @Autowired
     private MockMvc mockMvc; // the error is normal
@@ -50,10 +54,37 @@ class AddressControllerTest {
     @MockBean
     PersonRepository personRepository;
 
+//    @BeforeEach
+//    public void setUp() {
+//        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(this.addressRepository = addressRepository)).build();
+//    }
+
     @BeforeEach
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(this.addressRepository = addressRepository)).build();
+    public void setUp(){
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController()).build();
+
+        address1 = Address.builder()
+                .addressId(1)
+                .streetName("1")
+                .boxNumber(null)
+                .streetName("test street")
+                .zipcode("1111")
+                .locality("Test City")
+                .country("Test Country")
+                .isPrivate(false)
+                .person(null).build();
+        address2 = Address.builder()
+                .addressId(1)
+                .streetName("1")
+                .boxNumber(null)
+                .streetName("test street")
+                .zipcode("1111")
+                .locality("Test City")
+                .country("Test Country")
+                .isPrivate(false)
+                .person(null).build();
     }
+
 
     @Order(1)
     @Test
@@ -67,13 +98,11 @@ class AddressControllerTest {
     @Test
     @DisplayName("testing get all address ")
     void getAllAddresses() throws Exception {
-        List<AddressEntity> addressEntityList = new ArrayList<>();
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        AddressEntity addressEntity2 = new AddressEntity(2, "2", "A", "Test street 2", "2222", "Test City 2", "Test Country 2", true, null);
-        addressEntityList.add(addressEntity1);
-        addressEntityList.add(addressEntity2);
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(address1);
+        addressList.add(address2);
 
-        when(addressRepository.findAll()).thenReturn(addressEntityList);
+        when(addressRepository.findAll()).thenReturn(addressList);
         mockMvc.perform(MockMvcRequestBuilders.get("/address"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" +
@@ -86,8 +115,7 @@ class AddressControllerTest {
     @Test
     @DisplayName("testing get a address per id ")
     void getAddressById() throws Exception {
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(addressEntity1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/address/1"))
                 .andExpect(status().isFound())
@@ -99,9 +127,8 @@ class AddressControllerTest {
     @DisplayName("testing adding a address")
     void createAddress() throws Exception {
         String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(addressEntity1));
+        when(addressRepository.save(any(Address.class))).thenReturn(address1);
+        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
         mockMvc.perform(MockMvcRequestBuilders.post("/address/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -114,9 +141,8 @@ class AddressControllerTest {
     @DisplayName("testing updating a address")
     void updateAddress() throws Exception {
         String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        when(addressRepository.save(addressEntity1)).thenReturn(addressEntity1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(addressEntity1));
+        when(addressRepository.save(any(Address.class))).thenReturn(address1);
+        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
         mockMvc.perform(MockMvcRequestBuilders.put("/address/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

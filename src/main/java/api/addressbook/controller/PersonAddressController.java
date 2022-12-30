@@ -1,7 +1,5 @@
 package api.addressbook.controller;
 
-import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.PersonEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import org.springframework.http.HttpHeaders;

@@ -1,6 +1,5 @@
 package api.addressbook.repository;
 
-import api.addressbook.entity.AddressEntity;
 import api.addressbook.model.Address;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -25,16 +24,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Unit Testing on Address Repository ")
 class AddressRepositoryTest {
 
+    private Address address1;
+    private Address address2;
     public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
     @Autowired
     private AddressRepository addressRepository;
 
-    @DisplayName("Save a address")
-    @Test
-    @Order(1)
-    @Rollback(value = false)
-    void test_save_address_repository() {
-        Address address1 = Address.builder()
+    @BeforeEach
+    public void setUp() {
+        address1 = Address.builder()
                 .addressId(1)
                 .streetName("1")
                 .boxNumber(null)
@@ -43,7 +41,26 @@ class AddressRepositoryTest {
                 .locality("Test City")
                 .country("Test Country")
                 .isPrivate(false)
-                .person(null).build();
+                .person(null)
+                .build();
+        address2 = Address.builder()
+                .addressId(1)
+                .streetName("1")
+                .boxNumber(null)
+                .streetName("test street")
+                .zipcode("1111")
+                .locality("Test City")
+                .country("Test Country")
+                .isPrivate(false)
+                .person(null)
+                .build();
+    }
+
+    @DisplayName("Save a address")
+    @Test
+    @Order(1)
+    @Rollback(value = false)
+    void test_save_address_repository() { // making abstract class for the testing et repo
         Address addressSaved = addressRepository.save(address1);
         Assertions.assertThat(addressRepository.count()).isEqualTo(1L);
         assertEquals(address1.getCountry(), addressSaved.getCountry());
@@ -54,7 +71,6 @@ class AddressRepositoryTest {
     @Order(2)
     @Rollback(value = false)
     void test_get_address_per_id_repository() {
-        Address address1 = new Address(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
         Integer id = addressRepository.save(address1).getAddressId();
         Address addressSaved1 = addressRepository.findById(id).get();
         assertEquals(address1.getAddressId(), addressSaved1.getAddressId());
@@ -65,8 +81,6 @@ class AddressRepositoryTest {
     @Order(3)
     void test_findAll_address_repository() {
         List<Address> addressList = new ArrayList<>();
-        Address address1 = new Address(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        Address address2 = new Address(2, "2", "A", "Test street 2", "2222", "Test City 2", "Test Country 2", true, null);
         addressList.add(address1);
         addressList.add(address2);
         addressRepository.saveAll(addressList);
@@ -81,7 +95,6 @@ class AddressRepositoryTest {
     @Order(4)
     @Rollback(value = false)
     void test_update_address_repository() {
-        Address address1 = new Address(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
         addressRepository.save(address1);
         address1.setCountry("Dream Land");
         Address addressUpdated = addressRepository.save(address1);
@@ -93,7 +106,6 @@ class AddressRepositoryTest {
     @Order(5)
     @Rollback(value = false)
     void deleteaddressTest() {
-        Address address1 = new Address(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
         Address addressSaved1 = addressRepository.save(address1);
         addressRepository.delete(addressSaved1);
 
@@ -111,7 +123,6 @@ class AddressRepositoryTest {
     @Order(5)
     @Rollback(value = false)
     void deleteAlladdressTest() {
-        Address address1 = new Address(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
         addressRepository.save(address1);
         addressRepository.deleteAll();
         assertEquals(0, addressRepository.count());
