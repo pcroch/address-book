@@ -1,6 +1,5 @@
 package api.addressbook.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,21 +33,12 @@ public class PersonEntity implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    //    @Transient
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "person_address",
-//            joinColumns = @JoinColumn(name = "person_id"),
-//            inverseJoinColumns = @JoinColumn(name = "address_id"))
-//    private Set<AddressEntity> address;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "person_address",
             joinColumns = {@JoinColumn(name = "person_fk",
                     referencedColumnName = "person_id")},
             inverseJoinColumns = {@JoinColumn(name = "address_fk",
                     referencedColumnName = "address_id")})
-//    @JsonIgnore
-//    @Transient
     private Set<AddressEntity> address = new HashSet<>();
 
     @Override

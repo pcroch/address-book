@@ -1,5 +1,6 @@
 package api.addressbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -50,11 +51,12 @@ public class AddressEntity implements Serializable {
     @Column(name = "is_private")
     private boolean isPrivate = true;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "address")
     private Set<PersonEntity> person= new HashSet<>();
 
     @Override
     public String toString() {
-        return String.format("{addressId: %s, streetNumber: %s, streetName: %s, personEntity: %s}", addressId, streetNumber, streetName, person);
+        return String.format("{addressId: %s, streetNumber: %s, streetName: %s}", addressId, streetNumber, streetName);
     }
 }

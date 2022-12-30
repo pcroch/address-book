@@ -27,10 +27,8 @@ public class QRCodeEntity implements Serializable {
     @Column(name = "qr_code_image")
     private byte[] qrCodeImage;
 
-
-    @Transient
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id")
-    private PersonAddressEntity personAddress;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id")
+//    private PersonAddressEntity personAddress;
 
 }
