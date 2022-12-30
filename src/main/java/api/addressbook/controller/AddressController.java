@@ -1,6 +1,7 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
+import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import lombok.NonNull;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/address")
-public class AddressController extends AbstractController{
+public class AddressController extends AbstractController {
 
     private final AddressRepository addressRepository;
 
@@ -23,14 +24,14 @@ public class AddressController extends AbstractController{
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Iterable<AddressEntity>> getAllPerson() {
+    public ResponseEntity<Iterable<Address>> getAllPerson() {
         logger.info("call for all address {}", addressRepository.findAll());
         return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll());
     }
 
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Optional<AddressEntity>> getPersonById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<Address>> getPersonById(@PathVariable("id") int id) {
         if (addressRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id));
         }
@@ -40,32 +41,32 @@ public class AddressController extends AbstractController{
 
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<AddressEntity> createAddress(@RequestBody @NonNull AddressEntity body) {
+    public ResponseEntity<Address> createAddress(@RequestBody @NonNull Address body) {
         if (!body.getStreetNumber().isBlank()) {
-            AddressEntity addressEntity = addressRepository.save(body);
+            Address address = addressRepository.save(body);
             personRepository.saveAll(body.getPerson());
-            logger.info("An address was added: {}", addressEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(addressEntity);
+            logger.info("An address was added: {}", address);
+            return ResponseEntity.status(HttpStatus.CREATED).body(address);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<AddressEntity> updateAddress(@PathVariable("id") Integer id, @RequestBody @NonNull AddressEntity body) {
-        AddressEntity addressEntity = addressRepository.findById(id).map(address -> {
-            address.setCountry(body.getCountry());
-            address.setPrivate(body.isPrivate());
-            address.setLocality(body.getLocality());
-            address.setPerson(body.getPerson());
-            address.setStreetName(body.getStreetName());
-            address.setBoxNumber(body.getBoxNumber());
-            address.setStreetNumber(body.getStreetNumber());
-            return addressRepository.save(address);
+    public ResponseEntity<Address> updateAddress(@PathVariable("id") Integer id, @RequestBody @NonNull Address body) {
+        Address address = addressRepository.findById(id).map(ad -> {
+            ad.setCountry(body.getCountry());
+            ad.setPrivate(body.isPrivate());
+            ad.setLocality(body.getLocality());
+            ad.setPerson(body.getPerson());
+            ad.setStreetName(body.getStreetName());
+            ad.setBoxNumber(body.getBoxNumber());
+            ad.setStreetNumber(body.getStreetNumber());
+            return addressRepository.save(ad);
         }).orElseGet(() -> {
             return addressRepository.save(body);
         });
-        logger.info("An address has been updated: {}", addressEntity);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(addressEntity);
+        logger.info("An address has been updated: {}", address);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(address);
     }
 
     @DeleteMapping(value = "/{id}")

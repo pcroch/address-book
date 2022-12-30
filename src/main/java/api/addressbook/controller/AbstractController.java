@@ -2,6 +2,7 @@ package api.addressbook.controller;
 
 
 import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
 import api.addressbook.service.QRCodeGeneratorService;
@@ -23,6 +24,8 @@ public abstract class AbstractController {
     @Autowired
     protected AddressRepository addressRepository;
 
+    @Autowired
+    protected PersonAddressRepository personAddressRepository;
 
     @Autowired
     protected QRCodeRepository qrcodeRepository;
