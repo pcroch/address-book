@@ -1,5 +1,6 @@
 package api.addressbook.controller;
 
+import api.addressbook.entity.AddressEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,8 @@ public class PersonAddressController extends AbstractController{
     @RequestMapping("/concat/{addressId}/{personId}")
     @GetMapping(value = "/url")
     public ResponseEntity<String> concatPersonAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) {
-        Optional<Address> address = addressRepository.findById(addressId);
-        Optional<Person> person= personRepository.findById(personId);
+        Optional<AddressEntity> address = addressRepository.findById(addressId);
+        Optional<Person> person= personRepository.findById(personId).map(personMapper::toDomain);
 
         if (person.isEmpty() || address.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

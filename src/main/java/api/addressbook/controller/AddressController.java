@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -26,16 +28,16 @@ public class AddressController extends AbstractController {
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Iterable<Address>> getAllPerson() {
+    public ResponseEntity<List<Address>> getAllPerson() {
         logger.info("call for all address {}", addressRepository.findAll());
-        return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll());
+        return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll().stream().map(addressMapper::toDomain).collect(Collectors.toList()));
     }
 
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<Optional<Address>> getPersonById(@PathVariable("id") int id) {
         if (addressRepository.findById(id).isPresent()) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id).map(addressMapper::toDomain));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
@@ -43,9 +45,9 @@ public class AddressController extends AbstractController {
 
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Address> createAddress(@RequestBody @NonNull Address body) {
+    public ResponseEntity<Address> createAddress(@RequestBody @NonNull AddressEntity body) {
         if (!body.getStreetNumber().isBlank()) {
-            Address address = addressRepository.save(body);
+            Address address = addressMapper.toDomain(addressRepository.save(body));
             personRepository.saveAll(body.getPerson());
             logger.info("An address was added: {}", address);
             return ResponseEntity.status(HttpStatus.CREATED).body(address);
@@ -54,7 +56,7 @@ public class AddressController extends AbstractController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Address> updateAddress(@PathVariable("id") Integer id, @RequestBody @NonNull Address body) {
+    public ResponseEntity<Address> updateAddress(@PathVariable("id") Integer id, @RequestBody @NonNull AddressEntity body) {
         Address address = addressRepository.findById(id).map(ad -> {
             ad.setCountry(body.getCountry());
             ad.setPrivate(body.isPrivate());
@@ -64,8 +66,8 @@ public class AddressController extends AbstractController {
             ad.setBoxNumber(body.getBoxNumber());
             ad.setStreetNumber(body.getStreetNumber());
             return addressRepository.save(ad);
-        }).orElseGet(() -> {
-            return addressRepository.save(body);
+        }).map(addressMapper::toDomain).orElseGet(() -> {
+            return addressMapper.toDomain(addressRepository.save(body));
         });
         logger.info("An address has been updated: {}", address);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(address);

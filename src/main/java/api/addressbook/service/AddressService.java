@@ -1,5 +1,6 @@
 package api.addressbook.service;
 
+import api.addressbook.entity.AddressEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import api.addressbook.repository.AddressRepository;
@@ -22,14 +23,14 @@ public class AddressService {
     @Autowired
     private PersonRepository personRepository;
 
-    public static String concatAddress(Address address) throws MalformedURLException {
+    public static String concatAddress(AddressEntity address) throws MalformedURLException {
         String interpolation = address.getStreetName() + "+" + address.getStreetNumber() + ",+" + address.getZipcode() + "+" + address.getLocality() + "+" + address.getCountry();
         URL url = new URL("https://www.google.com/maps/place/" + interpolation);
         logger.info("URL: {}", new URL(url.toString()));
         return url.toString();
     }
 
-    public static String concatAddress(Address address, Person person) {
+    public static String concatAddress(AddressEntity address, Person person) {
 
         String box = " ";
         if (address.getBoxNumber() != null) {

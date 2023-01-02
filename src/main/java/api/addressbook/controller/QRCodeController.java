@@ -1,5 +1,6 @@
 package api.addressbook.controller;
 
+import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
@@ -31,9 +32,9 @@ public class QRCodeController extends AbstractController {
      */
     @RequestMapping("/id={person_address_id}")
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> getQRCodeById(@PathVariable("person_address_id") Integer personAddressId) {
+    public ResponseEntity<byte[]> getQRCodeById(@PathVariable("person_address_id") int personAddressId) {
 
-        Optional<QRCode> qrcode = qrcodeRepository.findById(personAddressId);
+        Optional<QRCode> qrcode = qrcodeRepository.findById(personAddressId).map(qrcodeMapper::toDomain);
         return qrcode.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
                 .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
                 body(qrCodeEntity.getQrCodeImage())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -55,9 +56,9 @@ public class QRCodeController extends AbstractController {
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
 
-        Optional<Address> address = addressRepository.findById(addressId);
-        Optional<Person> person = personRepository.findById(personId);
-        PersonAddress personAddress = personAddressRepository.findByPersonIdAndAddressId(personId, addressId);
+        Optional<AddressEntity> address = addressRepository.findById(addressId);
+        Optional<Person> person = personRepository.findById(personId).map(personMapper::toDomain);
+        PersonAddress personAddress = personAddressMapper.toDomain(personAddressRepository.findByPersonIdAndAddressId(personId, addressId));
         if (person.isEmpty() || address.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -74,7 +75,7 @@ public class QRCodeController extends AbstractController {
                 .qrCodeName(qrCodeName)
                 .personAddress(personAddress)
                 .build();
-        logger.info("qrcode saved {}", qrcodeRepository.save(qrcode));
+        logger.info("qrcode saved {}", qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode)));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)

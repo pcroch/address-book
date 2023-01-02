@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -19,7 +20,6 @@ import java.util.Optional;
 @RequestMapping("/person")
 public class PersonController extends AbstractController {
 
-    private final PersonRepository personRepository;
 
     public PersonController(PersonRepository personRepository) {
         this.personRepository = personRepository;
@@ -29,7 +29,7 @@ public class PersonController extends AbstractController {
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<List<Person>> getAllPerson() {
         logger.info("call for all person {}", personRepository.findAll());
-        return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll());
+        return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll().stream().map(personMapper::toDomain).collect(Collectors.toList()));
     }
 
     @RequestMapping("/{id}")
@@ -37,17 +37,17 @@ public class PersonController extends AbstractController {
     public ResponseEntity<Optional<Person>> getPersonById(@PathVariable("id") int id) {
 
         if (personRepository.findById(id).isPresent()) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id));
+            return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id).map(personMapper::toDomain));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @RequestMapping("/")
     @PostMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Person> createPerson(@RequestBody @NonNull Person body) {
+    public ResponseEntity<Person> createPerson(@RequestBody @NonNull PersonEntity body) {
         if (!body.getFirstname().isBlank()) {
-            addressRepository.saveAll(body.getAddress());
-            Person person = personRepository.save(body);
+//            addressRepository.saveAll(body.getAddress());
+            Person person = personMapper.toDomain(personRepository.save(body));
             logger.info("A person was added: {}", person);
             return ResponseEntity.status(HttpStatus.CREATED).body(person);
         }
@@ -55,14 +55,14 @@ public class PersonController extends AbstractController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable("id") Integer id, @RequestBody @NonNull Person body) {
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") Integer id, @RequestBody @NonNull PersonEntity body) {
         Person person = personRepository.findById(id).map(address -> {
             address.setFirstname(body.getFirstname());
             address.setSecondname(body.getSecondname());
             address.setLastname(body.getLastname());
             return personRepository.save(address);
-        }).orElseGet(() -> {
-            return personRepository.save(body);
+        }).map(personMapper::toDomain).orElseGet(() -> {
+            return personMapper.toDomain(personRepository.save(body));
         });
         logger.info("A person was updated: {}", person);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(person);

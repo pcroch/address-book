@@ -1,5 +1,6 @@
 package api.addressbook.service;
 
+import api.addressbook.entity.AddressEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import com.google.zxing.BarcodeFormat;
@@ -31,7 +32,7 @@ public class QRCodeGeneratorService {
         return out.toByteArray();
     }
 
-    public static String generateQRCodeName(Person person, Address address) {
+    public static String generateQRCodeName(Person person, AddressEntity address) {
          return String.format("%s_%s_%s_%s_%s",
                  person.getFirstname(),
                  person.getLastname(),

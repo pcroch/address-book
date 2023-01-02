@@ -1,7 +1,10 @@
 package api.addressbook.controller;
 
 
+import api.addressbook.mapper.AddressMapper;
+import api.addressbook.mapper.PersonAddressMapper;
 import api.addressbook.mapper.PersonMapper;
+import api.addressbook.mapper.QRCodeMapper;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
@@ -17,8 +20,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public abstract class AbstractController {
+        // todo quand mettre autowired
+    // todo abtract class necessaire?
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
+
     @Autowired
     protected PersonRepository personRepository;
 
@@ -34,14 +40,23 @@ public abstract class AbstractController {
     @Autowired
     protected QRCodeGeneratorService qrcodeGeneratorService;
 
-    @Autowired
+
     protected PersonMapper personMapper;
+
+
+    protected AddressMapper addressMapper;
+
+
+    protected PersonAddressMapper personAddressMapper;
+
+
+    protected QRCodeMapper qrcodeMapper;
 
     @RequestMapping("/ping")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<String> ping() {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Custom-Header", this.getClass().getSimpleName() +  " endpoints has been pinged");
+        headers.add("Custom-Header", this.getClass().getSimpleName() + " endpoints has been pinged");
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .headers(headers)
                 .body(this.getClass().getSimpleName() + " Ping");

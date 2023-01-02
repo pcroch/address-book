@@ -14,8 +14,6 @@ public interface PersonMapper {
     @Mapping(source = "lastname", target = "lastname")
     @Mapping(source = "address", target = "address")
     Person toDomain(PersonEntity e);
+    PersonEntity toMap(Person e);
 }
 
-
-// mapper but why?
-// demander un petit resume?

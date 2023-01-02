@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan({"controller", "repository", "entity", "model"})
+//@ComponentScan({"controller", "repository", "entity", "model"})
 public class AddressBookApplication {
 
     public static void main(String[] args) {
