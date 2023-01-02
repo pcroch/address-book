@@ -2,6 +2,7 @@ package api.addressbook.repository;
 
 import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.QRCodeEntity;
+import api.addressbook.mapper.QRCodeMapper;
 import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
 import org.assertj.core.api.Assertions;
@@ -29,8 +30,10 @@ class QRCodeRepositoryTest {
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
+    @Autowired
+    private QRCodeMapper qRCodeMapper;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         personAddress = PersonAddress.builder()
@@ -52,38 +55,36 @@ class QRCodeRepositoryTest {
     @Order(1)
     @Rollback
     void test_save_qr_code_repository() {
-        QRCode qrcodeSaved = qrcodeRepository.save(qrcode);
+        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode));
         Assertions.assertThat(qrcodeRepository.count()).isEqualTo(1L);
         assertEquals(qrcode.getQrCodeName(), qrcodeSaved.getQrCodeName());
     }
 
     @DisplayName("Get a QR-Code")
     @Test
-    @Order(1)
+    @Order(2)
     @Rollback
     void test_get_qr_code_repository() {
-        Integer id = qrcodeRepository.save(qrcode).getPersonAddressId();
-        QRCode qrcodeSaved = qrcodeRepository.findById(id).get();
+        int id = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode)).getPersonAddressId();
+        QRCodeEntity qrcodeSaved = qrcodeRepository.findById(id).get();
         assertEquals(qrcode.getQrCodeName(), qrcodeSaved.getQrCodeName());
 
     }
 
     @DisplayName("Delete a specific QR-Code")
     @Test
-    @Order(1)
+    @Order(3)
     @Rollback
     void test_delete_qr_code_repository() {
-        QRCode qrcodeSaved = qrcodeRepository.save(qrcode);
+        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode));
         qrcodeRepository.delete(qrcodeSaved);
 
-        QRCode qrcode1 = null;
-        Optional<QRCode> optionalQrcode1 = qrcodeRepository.findById(1);
+        QRCodeEntity qrcode1 = null;
+        Optional<QRCodeEntity> optionalQrcode1 = qrcodeRepository.findById(1);
 
         if (optionalQrcode1.isPresent()) {
             qrcode1 = optionalQrcode1.get();
         }
         Assertions.assertThat(qrcode1).isNull();
     }
-
-
 }

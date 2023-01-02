@@ -3,6 +3,7 @@ package api.addressbook.controller;
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.QRCodeEntity;
+import api.addressbook.mapper.QRCodeMapper;
 import api.addressbook.model.Person;
 import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
@@ -37,6 +38,8 @@ class QRCodeControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private QRCodeRepository qrcodeRepository;
+    @Autowired
+    private QRCodeMapper qRCodeMapper;
 
     @BeforeAll
     public void setUp() {
@@ -66,7 +69,7 @@ class QRCodeControllerTest {
     @Test
     @DisplayName("testing get a QRCode per id ")
     void getAddressById() throws Exception {
-        when(qrcodeRepository.findById(1)).thenReturn(Optional.of(qrcode));
+        when(qrcodeRepository.findById(1)).thenReturn(Optional.of(qRCodeMapper.EntityToModel(qrcode)));
         mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/1"))
                 .andExpect(status().isFound());
     }

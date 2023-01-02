@@ -1,6 +1,7 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.PersonEntity;
+import api.addressbook.mapper.PersonMapper;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import api.addressbook.repository.PersonRepository;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -54,6 +56,8 @@ class PersonControllerTest {
 
     @MockBean
     PersonRepository personRepository;
+    @Autowired
+    private PersonMapper personMapper;
 
     @BeforeEach
     public void setup() {
@@ -102,7 +106,7 @@ class PersonControllerTest {
         personList.add(person1);
         personList.add(person2);
 
-        when(personRepository.findAll()).thenReturn(personList);
+        when(personRepository.findAll()).thenReturn(personList.stream().map(personMapper::toMap).collect(Collectors.toList()));
         mockMvc.perform(MockMvcRequestBuilders.get("/person"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"},{\"personId\":2,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}]"));
@@ -112,7 +116,7 @@ class PersonControllerTest {
     @Test
     @DisplayName("testing get a person per id ")
     void getPersonById() throws Exception {
-        when(personRepository.findById(1)).thenReturn(Optional.of(person1));
+        when(personRepository.findById(1)).thenReturn(Optional.of(person1).map(personMapper::toMap));
         mockMvc.perform(MockMvcRequestBuilders.get("/person/1"))
                 .andExpect(status().isFound())
                 .andExpect(content().json("{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}"));
@@ -127,8 +131,8 @@ class PersonControllerTest {
     @DisplayName("testing adding a person")
     void create() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        when(personRepository.save(any(Person.class))).thenReturn(person3);
-        when(personRepository.findById(1)).thenReturn(Optional.of(person3));
+        when(personRepository.save(any(PersonEntity.class))).thenReturn(personMapper.toMap(person3));
+        when(personRepository.findById(1)).thenReturn(Optional.of(personMapper.toMap(person3)));
         mockMvc.perform(MockMvcRequestBuilders.post("/person/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -141,8 +145,8 @@ class PersonControllerTest {
     @DisplayName("testing updating a person")
     void update() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        when(personRepository.save(any(Person.class))).thenReturn(person3);
-        when(personRepository.findById(1)).thenReturn(Optional.of(person3));
+        when(personRepository.save(any(PersonEntity.class))).thenReturn(personMapper.toMap(person3));
+        when(personRepository.findById(1)).thenReturn(Optional.of(personMapper.toMap(person3)));
         mockMvc.perform(MockMvcRequestBuilders.put("/person/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

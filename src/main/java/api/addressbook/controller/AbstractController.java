@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 public abstract class AbstractController {
-        // todo quand mettre autowired
-    // todo abtract class necessaire?
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 

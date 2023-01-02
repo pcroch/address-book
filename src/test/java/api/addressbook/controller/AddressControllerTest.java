@@ -1,6 +1,7 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
+import api.addressbook.mapper.AddressMapper;
 import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
@@ -53,6 +54,8 @@ class AddressControllerTest {
 
     @MockBean
     PersonRepository personRepository;
+    @Autowired
+    private AddressMapper addressMapper;
 
 //    @BeforeEach
 //    public void setUp() {
@@ -98,11 +101,11 @@ class AddressControllerTest {
     @Test
     @DisplayName("testing get all address ")
     void getAllAddresses() throws Exception {
-        List<Address> addressList = new ArrayList<>();
-        addressList.add(address1);
-        addressList.add(address2);
+        List<AddressEntity> addressEntityList = new ArrayList<>();
+        addressEntityList.add(addressMapper.toMap(address1));
+        addressEntityList.add(addressMapper.toMap(address2));
 
-        when(addressRepository.findAll()).thenReturn(addressList);
+        when(addressRepository.findAll()).thenReturn(addressEntityList);
         mockMvc.perform(MockMvcRequestBuilders.get("/address"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[" +
@@ -115,7 +118,7 @@ class AddressControllerTest {
     @Test
     @DisplayName("testing get a address per id ")
     void getAddressById() throws Exception {
-        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/address/1"))
                 .andExpect(status().isFound())
@@ -127,8 +130,8 @@ class AddressControllerTest {
     @DisplayName("testing adding a address")
     void createAddress() throws Exception {
         String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        when(addressRepository.save(any(Address.class))).thenReturn(address1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
+        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.post("/address/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -141,8 +144,8 @@ class AddressControllerTest {
     @DisplayName("testing updating a address")
     void updateAddress() throws Exception {
         String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        when(addressRepository.save(any(Address.class))).thenReturn(address1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(address1));
+        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.put("/address/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
