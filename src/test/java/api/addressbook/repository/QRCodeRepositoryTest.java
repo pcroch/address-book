@@ -8,6 +8,9 @@ import api.addressbook.model.QRCode;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,7 +21,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@DataJpaTest
+//@DataJpaTest
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -30,7 +34,7 @@ class QRCodeRepositoryTest {
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
-    @Autowired
+    @Mock
     private QRCodeMapper qRCodeMapper;
 
     @BeforeEach

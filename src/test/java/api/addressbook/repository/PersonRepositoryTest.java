@@ -10,6 +10,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,16 +34,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * tuto with:
  * <a href="https://www.javaguides.net/2021/07/crud-junit-tests-for-spring-data-jpa.html">...</a>
  */
-@DataJpaTest
-@RunWith(SpringRunner.class)
+//@DataJpaTest
+//@RunWith(SpringRunner.class)
 @ExtendWith(MockitoExtension.class)
+//@RunWith(MockitoJUnitRunner.class)
+//@SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on Person Repository ")
 class PersonRepositoryTest {
 
-    @Autowired
+    @Mock
     private PersonMapper personMapper;
 
     private Person person1, person2, person3, personSaved = Person.builder().build();
