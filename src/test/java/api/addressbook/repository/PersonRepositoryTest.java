@@ -42,13 +42,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("Unit Testing on Person Repository ")
 class PersonRepositoryTest {
 
-    @Mock
+    @Autowired
     private PersonMapper personMapper;
 
     private Person person1, person2, person3, personSaved = Person.builder().build();
 
     public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
-    @Mock
+    @Autowired
     private PersonRepository personRepository;
 
     @BeforeEach

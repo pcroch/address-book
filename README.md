@@ -92,15 +92,19 @@ I tried here to have a 100% coverage for the testing
 
 **A- HOW TO**
 
-      Run: mvn clean test
-      
-      It will launch all the Unit testing and Integration testing
+    *It will launch all the Unit testing and Integration testing*
 
-    To run a specific test
+    Run: mvn clean test
+     
+    *To run a specific test class*
     For example: PersonRepositoryTest
 
     mvn -Dtest=PersonRepositoryTest test
 
+    *To run a specific test caes in a class*
+    For example: test_save_person_repository method in PersonRepositoryTest
+
+    mvn -Dtest=PersonRepositoryTest#test_save_person_repository test
 
 **B- Integration Testing Description**
 
