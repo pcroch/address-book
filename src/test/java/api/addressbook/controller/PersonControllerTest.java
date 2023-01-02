@@ -1,6 +1,9 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.PersonEntity;
+import api.addressbook.mapper.PersonMapper;
+import api.addressbook.model.Address;
+import api.addressbook.model.Person;
 import api.addressbook.repository.PersonRepository;
 import org.junit.jupiter.api.*;
 import org.slf4j.Logger;
@@ -18,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -40,6 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Person endpoints ")
 class PersonControllerTest {
+
+    private Address address1, address2, addressSaved = Address.builder().build();
+    private Person person1, person2, person3, personSaved = Person.builder().build();
     public static final Logger logger = LoggerFactory.getLogger(PersonControllerTest.class);
     @Autowired
     private MockMvc mockMvc; // the error is normal
@@ -49,10 +56,38 @@ class PersonControllerTest {
 
     @MockBean
     PersonRepository personRepository;
+    @Autowired
+    private PersonMapper personMapper;
 
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new PersonController(this.personRepository = personRepository)).build();
+    }
+
+    @BeforeAll
+    public void prepareMock(){
+
+        person1 = Person.builder()
+                .personId(1)
+                .firstname("Test")
+                .lastname(null)
+                .lastname("Tester")
+                .address(null)
+                .build();
+        person2 = Person.builder()
+                .personId(1)
+                .firstname("Test2")
+                .lastname(null)
+                .lastname("Tester2")
+                .address(null)
+                .build();
+        person3 = Person.builder()
+                .personId(1)
+                .firstname("Alpha")
+                .lastname("Beta")
+                .lastname("Gamma")
+                .address(null)
+                .build();
     }
 
     @Order(1)
@@ -67,13 +102,11 @@ class PersonControllerTest {
     @Test
     @DisplayName("testing get all person ")
     void getAllPerson() throws Exception {
-        List<PersonEntity> personEntityList = new ArrayList<>();
-        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin", null);
-        PersonEntity personEntity2 = new PersonEntity(2, "Test", "nom", "Fin", null);
-        personEntityList.add(personEntity1);
-        personEntityList.add(personEntity2);
+        List<Person> personList = new ArrayList<>();
+        personList.add(person1);
+        personList.add(person2);
 
-        when(personRepository.findAll()).thenReturn(personEntityList);
+        when(personRepository.findAll()).thenReturn(personList.stream().map(personMapper::toMap).collect(Collectors.toList()));
         mockMvc.perform(MockMvcRequestBuilders.get("/person"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"},{\"personId\":2,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}]"));
@@ -83,9 +116,7 @@ class PersonControllerTest {
     @Test
     @DisplayName("testing get a person per id ")
     void getPersonById() throws Exception {
-        PersonEntity personEntity1 = new PersonEntity(1, "Test", "nom", "Fin", null);
-        when(personRepository.findById(1)).thenReturn(Optional.of(personEntity1));
-
+        when(personRepository.findById(1)).thenReturn(Optional.of(person1).map(personMapper::toMap));
         mockMvc.perform(MockMvcRequestBuilders.get("/person/1"))
                 .andExpect(status().isFound())
                 .andExpect(content().json("{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}"));
@@ -100,9 +131,8 @@ class PersonControllerTest {
     @DisplayName("testing adding a person")
     void create() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma",null);
-        when(personRepository.save(any(PersonEntity.class))).thenReturn(personEntity3);
-        when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
+        when(personRepository.save(any(PersonEntity.class))).thenReturn(personMapper.toMap(person3));
+        when(personRepository.findById(1)).thenReturn(Optional.of(personMapper.toMap(person3)));
         mockMvc.perform(MockMvcRequestBuilders.post("/person/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
@@ -115,9 +145,8 @@ class PersonControllerTest {
     @DisplayName("testing updating a person")
     void update() throws Exception {
         String json = "{\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"} ";
-        PersonEntity personEntity3 = new PersonEntity(1, "Alpha", "Beta", "Gamma", null);
-        when(personRepository.save(personEntity3)).thenReturn(personEntity3);
-        when(personRepository.findById(1)).thenReturn(Optional.of(personEntity3));
+        when(personRepository.save(any(PersonEntity.class))).thenReturn(personMapper.toMap(person3));
+        when(personRepository.findById(1)).thenReturn(Optional.of(personMapper.toMap(person3)));
         mockMvc.perform(MockMvcRequestBuilders.put("/person/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))

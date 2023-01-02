@@ -1,5 +1,6 @@
 package api.addressbook.entity;
 
+import api.addressbook.model.PersonAddress;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,10 +28,8 @@ public class QRCodeEntity implements Serializable {
     @Column(name = "qr_code_image")
     private byte[] qrCodeImage;
 
-
     @Transient
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id")
-    private PersonAddressEntity personAddress;
-
+    private PersonAddress personAddress;
 }

@@ -86,14 +86,25 @@ Render:
     * CRUD actions on both controllers to be described *
 
 ## IV. Testing description
+mvn -Dtest=AcademyTest test
 
 I tried here to have a 100% coverage for the testing
 
 **A- HOW TO**
 
-      Run: mvn clean test
-      
-      It will launch the Unit testing and Integration testing
+    *It will launch all the Unit testing and Integration testing*
+
+    Run: mvn clean test
+     
+    *To run a specific test class*
+    For example: PersonRepositoryTest
+
+    mvn -Dtest=PersonRepositoryTest test
+
+    *To run a specific test caes in a class*
+    For example: test_save_person_repository method in PersonRepositoryTest
+
+    mvn -Dtest=PersonRepositoryTest#test_save_person_repository test
 
 **B- Integration Testing Description**
 
@@ -101,4 +112,4 @@ I tried here to have a 100% coverage for the testing
 
 **C- Unit Testing Description**
 
-    Basic Crud testing of the repository
+    Basic Crud testing of the repository and mappers

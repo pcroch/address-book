@@ -1,8 +1,8 @@
 package api.addressbook.service;
 
-
 import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.PersonEntity;
+import api.addressbook.model.Address;
+import api.addressbook.model.Person;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -32,13 +32,13 @@ public class QRCodeGeneratorService {
         return out.toByteArray();
     }
 
-    public static String generateQRCodeName(PersonEntity personEntity, AddressEntity addressEntity) {
+    public static String generateQRCodeName(Person person, AddressEntity address) {
          return String.format("%s_%s_%s_%s_%s",
-                personEntity.getFirstname(), //get().
-                personEntity.getLastname(),
-                personEntity.getPersonId(),
-                addressEntity.getCountry(),
-                addressEntity.getAddressId());
+                 person.getFirstname(),
+                 person.getLastname(),
+                 person.getPersonId(),
+                 address.getCountry(),
+                 address.getAddressId());
     }
 
 }

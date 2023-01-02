@@ -1,10 +1,8 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.PersonEntity;
-import api.addressbook.repository.AddressRepository;
-import api.addressbook.repository.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import api.addressbook.model.Address;
+import api.addressbook.model.Person;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,32 +17,19 @@ import static api.addressbook.service.AddressService.concatAddress;
 
 @Controller
 @RequestMapping("/person-address")
-public class PersonAddressController {
-
-    @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
-    private PersonRepository personRepository;
-
-    @RequestMapping("/ping")
-    @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<String> getPingPersonAddress() {
-        HttpHeaders headers = new HttpHeaders();
-        return new ResponseEntity<>("You have reached on PersonAddress Endpoints", headers, HttpStatus.ACCEPTED);
-    }
+public class PersonAddressController extends AbstractController{
 
     @RequestMapping("/concat/{addressId}/{personId}")
-    @GetMapping(value = "/url", produces = "application/json")
+    @GetMapping(value = "/url")
     public ResponseEntity<String> concatPersonAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) {
-        Optional<AddressEntity> addressEntity = addressRepository.findById(addressId);
-        Optional<PersonEntity> personEntity = personRepository.findById(personId);
+        Optional<AddressEntity> address = addressRepository.findById(addressId);
+        Optional<Person> person= personRepository.findById(personId).map(personMapper::toDomain);
 
-        if (personEntity.isEmpty() || addressEntity.isEmpty()) {
+        if (person.isEmpty() || address.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.CONTENT_DISPOSITION).body(concatAddress(addressEntity.get(), personEntity.get()));
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.CONTENT_DISPOSITION).body(concatAddress(address.get(), person.get()));
     }
 }
 

@@ -1,8 +1,8 @@
 package api.addressbook.service;
 
-
 import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.PersonEntity;
+import api.addressbook.model.Address;
+import api.addressbook.model.Person;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
 import org.slf4j.Logger;
@@ -23,33 +23,33 @@ public class AddressService {
     @Autowired
     private PersonRepository personRepository;
 
-    public static String concatAddress(AddressEntity addressEntity) throws MalformedURLException {
-        String interpolation = addressEntity.getStreetName() + "+" + addressEntity.getStreetNumber() + ",+" + addressEntity.getZipcode() + "+" + addressEntity.getLocality() + "+" + addressEntity.getCountry();
+    public static String concatAddress(AddressEntity address) throws MalformedURLException {
+        String interpolation = address.getStreetName() + "+" + address.getStreetNumber() + ",+" + address.getZipcode() + "+" + address.getLocality() + "+" + address.getCountry();
         URL url = new URL("https://www.google.com/maps/place/" + interpolation);
         logger.info("URL: {}", new URL(url.toString()));
         return url.toString();
     }
 
-    public static String concatAddress(AddressEntity addressEntity, PersonEntity personEntity) {
+    public static String concatAddress(AddressEntity address, Person person) {
 
         String box = " ";
-        if (addressEntity.getBoxNumber() != null) {
-            box = String.format(" %s ", addressEntity.getBoxNumber());
+        if (address.getBoxNumber() != null) {
+            box = String.format(" %s ", address.getBoxNumber());
         }
-        String address = addressEntity.getStreetName() + " " + addressEntity.getStreetNumber() + box + System.lineSeparator() + addressEntity.getZipcode() + " " + addressEntity.getLocality() + System.lineSeparator() + addressEntity.getCountry();
+        String tmpAddress = address.getStreetName() + " " + address.getStreetNumber() + box + System.lineSeparator() + address.getZipcode() + " " + address.getLocality() + System.lineSeparator() + address.getCountry();
 
-        StringBuilder person = new StringBuilder(personEntity.getFirstname());
-        if (personEntity.getSecondname() != null) {
-            person.append(" ");
-            person.append(personEntity.getSecondname());
+        StringBuilder tmpPerson = new StringBuilder(person.getFirstname());
+        if (person.getSecondname() != null) {
+            tmpPerson.append(" ");
+            tmpPerson.append(person.getSecondname());
         }
 
-        if (personEntity.getLastname() != null) {
-            person.append(" ");
-            person.append(personEntity.getLastname());
+        if (person.getLastname() != null) {
+            tmpPerson.append(" ");
+            tmpPerson.append(person.getLastname());
         }
 
         logger.info("Concat Address");
-        return person + System.lineSeparator() + address;
+        return tmpPerson + System.lineSeparator() + tmpAddress;
     }
 }

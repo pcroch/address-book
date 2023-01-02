@@ -27,7 +27,4 @@ public class PersonAddressEntity implements Serializable {
 
     @Column(name = "person_id")
     private Integer personId;
-
-    // should I add a one-to-many relationship or not?
-
 }
