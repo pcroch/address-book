@@ -64,7 +64,6 @@ class PersonRepositoryTest {
     @Order(1)
     void test_save_person_repository() {
         PersonEntity personSaved = personRepository.save(person3);
-        logger.info("list repo {}", personRepository.findAll());
         Assertions.assertThat(personRepository.count()).isEqualTo(personRepositoryCount + 1);
         assertEquals(person3.getFirstname(), personSaved.getFirstname());
     }
@@ -82,10 +81,7 @@ class PersonRepositoryTest {
     @Test
     @Order(3)
     void test_findAll_person_repository() {
-        List<PersonEntity> personEntityList = new ArrayList<>();
-//        personEntityList.add(personMapper.toMap(person1));
-//        personEntityList.add(personMapper.toMap(person2));
-//        personRepository.saveAll(personEntityList);
+        List<PersonEntity> personEntityList;
         personEntityList = personRepository.findAll();
         assertEquals(personRepositoryCount, personEntityList.size());
         assertEquals(person1.getFirstname(), personEntityList.get(0).getFirstname());
@@ -106,7 +102,7 @@ class PersonRepositoryTest {
     @Test
     @Order(5)
     @Rollback
-    void deletePersonTest() {
+    void test_delete_person_repository() {
         int id = personRepository.save(person3).getPersonId();
         PersonEntity personSaved1 = personRepository.findById(id).get();
         personRepository.delete(personSaved1);
@@ -124,7 +120,7 @@ class PersonRepositoryTest {
     @Test
     @Order(6)
     @Rollback(value = true)
-    void deleteAllPersonTest() {
+    void test_delete_all_person_repository() {
         personRepository.deleteAll();
         assertEquals(0, personRepository.count());
     }
