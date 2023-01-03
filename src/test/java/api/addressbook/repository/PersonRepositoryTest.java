@@ -39,75 +39,43 @@ import static org.mockito.Mockito.mock;
 class PersonRepositoryTest {
 
 //    @Autowired
-    private PersonMapper personMapper;
     long  personRepositoryCount = 0;
-    private PersonEntity person1;
+    private PersonEntity person1, person2, person3;
     public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
     @Autowired
     private PersonRepository personRepository;
 
     @BeforeEach
     public void setUp() {
-        personRepositoryCount = personRepository.count();
-//        personMapper = mock(PersonMapper.class);
-//        address = Address.builder()
-//                .addressId(1)
-//                .streetName("1")
-//                .boxNumber(null)
-//                .streetName("test street")
-//                .zipcode("1111")
-//                .locality("Test City")
-//                .country("Test Country")
-//                .isPrivate(false)
-//                .person(null)
-//                .build();
-//        addressSet.add(address);
-//        person1 = Person.builder()
-//                .personId(1)
-//                .firstname("Test")
-//                .lastname(null)
-//                .lastname("Tester")
-//                .address(null)
-//                .build();
-//        person2 = Person.builder()
-//                .personId(1)
-//                .firstname("Test2")
-//                .lastname(null)
-//                .lastname("Tester2")
-//                .address(addressSet)
-//                .build();
-//        person3 = Person.builder()
-//                .personId(1)
-//                .firstname("Alpha")
-//                .lastname("Beta")
-//                .lastname("Gamma")
-//                .address(addressSet)
-//                .build();
 
-        person1 = new PersonEntity(4, "Test", "aaa", "aaaa", null);
-//        person4 = personMapper.toMap(person1);
+        person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
+        person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);
+        person3 = new PersonEntity(1, "Batman", "null", "Steve", null);
+
+        List<PersonEntity> personEntityList = new ArrayList<>();
+        personEntityList.add(person1);
+        personEntityList.add(person2);
+        personRepository.saveAll(personEntityList);
+        personRepositoryCount = personRepository.count();
     }
 
     @DisplayName("Save a person")
     @Test
     @Order(1)
-    @Rollback
-        // not sure if it is usefully bcse the rool back is automatic but good to keep in mind
     void test_save_person_repository() {
-
-        PersonEntity personSaved = personRepository.save(person1);
+        PersonEntity personSaved = personRepository.save(person3);
         logger.info("list repo {}", personRepository.findAll());
         Assertions.assertThat(personRepository.count()).isEqualTo(personRepositoryCount + 1);
-        assertEquals(person1.getFirstname(), personSaved.getFirstname());
+        assertEquals(person3.getFirstname(), personSaved.getFirstname());
     }
 
     @DisplayName("Get a person")
     @Test
     @Order(2)
     void test_get_person_per_id_repository() {
-//       int id = personRepository.save(personMapper.toMap(person1)).getPersonId();
-        PersonEntity personSaved1 = personRepository.findById(1).get();
-        assertEquals(1, personSaved1.getPersonId());
+       int id = personRepository.save(person3).getPersonId();
+        PersonEntity personSaved1 = personRepository.findById(id).get();
+        assertEquals(id, personSaved1.getPersonId());
     }
 
     @DisplayName("Get list of  persons")
@@ -120,8 +88,8 @@ class PersonRepositoryTest {
 //        personRepository.saveAll(personEntityList);
         personEntityList = personRepository.findAll();
         assertEquals(personRepositoryCount, personEntityList.size());
-        assertEquals(1, personEntityList.get(0).getPersonId());
-        assertEquals(2, personEntityList.get(1).getPersonId());
+        assertEquals(person1.getFirstname(), personEntityList.get(0).getFirstname());
+        assertEquals(person2.getFirstname(), personEntityList.get(1).getFirstname());
     }
 
     @DisplayName("Update person's field")
@@ -139,7 +107,8 @@ class PersonRepositoryTest {
     @Order(5)
     @Rollback
     void deletePersonTest() {
-        PersonEntity personSaved1 = personRepository.findById(1).get();
+        int id = personRepository.save(person3).getPersonId();
+        PersonEntity personSaved1 = personRepository.findById(id).get();
         personRepository.delete(personSaved1);
 
         PersonEntity personEntity2 = null;
