@@ -8,4 +8,4 @@
 
 
 
-GRANT ALL ON ALL SEQUENCES IN SCHEMA "address-book" TO admin;
+--GRANT ALL ON ALL SEQUENCES IN SCHEMA "address-book" TO admin;

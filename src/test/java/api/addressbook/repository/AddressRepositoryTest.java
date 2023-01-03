@@ -1,131 +1,120 @@
-//package api.addressbook.repository;
-//
-//import api.addressbook.entity.AddressEntity;
-//import api.addressbook.model.Address;
-//import org.assertj.core.api.Assertions;
-//import org.junit.jupiter.api.*;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-//import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-//import org.springframework.test.annotation.Rollback;
-//import org.springframework.test.context.ActiveProfiles;
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
-//
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//
-//@DataJpaTest
-//@ActiveProfiles("test")
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-//@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-//@DisplayName("Unit Testing on Address Repository ")
-//class AddressRepositoryTest {
-//
-//    private Address address1;
-//    private Address address2;
-//    public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
-//    @Autowired
-//    private AddressRepository addressRepository;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        address1 = Address.builder()
-//                .addressId(1)
-//                .streetName("1")
-//                .boxNumber(null)
-//                .streetName("test street")
-//                .zipcode("1111")
-//                .locality("Test City")
-//                .country("Test Country")
-//                .isPrivate(false)
-//                .person(null)
-//                .build();
-//        address2 = Address.builder()
-//                .addressId(1)
-//                .streetName("1")
-//                .boxNumber(null)
-//                .streetName("test street")
-//                .zipcode("1111")
-//                .locality("Test City")
-//                .country("Test Country")
-//                .isPrivate(false)
-//                .person(null)
-//                .build();
-//    }
-//
-//    @DisplayName("Save a address")
-//    @Test
-//    @Order(1)
-//    @Rollback(value = false)
-//    void test_save_address_repository() { // making abstract class for the testing et repo
-//        AddressEntity addressSaved = addressRepository.save(address1);
-//        Assertions.assertThat(addressRepository.count()).isEqualTo(1L);
-//        assertEquals(address1.getCountry(), addressSaved.getCountry());
-//    }
-//
-//    @DisplayName("Get a address")
-//    @Test
-//    @Order(2)
-//    @Rollback(value = false)
-//    void test_get_address_per_id_repository() {
-//        Integer id = addressRepository.save(address1).getAddressId();
-//        Address addressSaved1 = addressRepository.findById(id).get();
-//        assertEquals(address1.getAddressId(), addressSaved1.getAddressId());
-//    }
-//
-//    @DisplayName("Get list of  addresss")
-//    @Test
-//    @Order(3)
-//    void test_findAll_address_repository() {
-//        List<AddressEntity> addressList = new ArrayList<>();
-//        addressList.add(address1);
-//        addressList.add(address2);
-//        addressRepository.saveAll(addressList);
-//        addressList = addressRepository.findAll();
-//        assertEquals(2, addressList.size());
-//        assertEquals(address1.getAddressId(), addressList.get(0).getAddressId());
-//        assertEquals(address2.getAddressId(), addressList.get(1).getAddressId());
-//    }
-//
-//    @DisplayName("Update address's field")
-//    @Test
-//    @Order(4)
-//    @Rollback(value = false)
-//    void test_update_address_repository() {
-//        addressRepository.save(address1);
-//        address1.setCountry("Dream Land");
-//        Address addressUpdated = addressRepository.save(address1);
-//        assertEquals("Dream Land", addressUpdated.getCountry());
-//    }
-//
-//    @DisplayName("Delete a specific addresss")
-//    @Test
-//    @Order(5)
-//    @Rollback(value = false)
-//    void deleteaddressTest() {
-//        Address addressSaved1 = addressRepository.save(address1);
-//        addressRepository.delete(addressSaved1);
-//
-//        Address address2 = null;
-//        Optional<Address> optionalAddress2 = addressRepository.findById(1);
-//
-//        if (optionalAddress2.isPresent()) {
-//            address2 = optionalAddress2.get();
-//        }
-//        Assertions.assertThat(address2).isNull();
-//    }
-//
-//    @DisplayName("Delete all addresss")
-//    @Test
-//    @Order(5)
-//    @Rollback(value = false)
-//    void deleteAlladdressTest() {
-//        addressRepository.save(address1);
-//        addressRepository.deleteAll();
-//        assertEquals(0, addressRepository.count());
-//    }
-//}
+package api.addressbook.repository;
+
+import api.addressbook.entity.AddressEntity;
+import api.addressbook.entity.PersonEntity;
+import api.addressbook.model.Address;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@DisplayName("Unit Testing on Address Repository ")
+class AddressRepositoryTest {
+
+    long addressRepositoryCount = 0;
+    private AddressEntity address1, address2, address3;
+    public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @BeforeEach
+    public void setUp() {
+
+
+        address1 = new AddressEntity(1, "1", "4B", "rue du trone", "1000", "Bruxelles", "Belgium", false, null);
+        address2 = new AddressEntity(2, "12", null, "rue du roi", "5852", "Namur", "Belgium", false, null);
+        address3 = new AddressEntity(3, "13", "5", "rue du lac", "7200", "Anvers", "Belgium", false, null);
+
+        List<AddressEntity> addressEntityList = new ArrayList<>();
+        addressEntityList.add(address1);
+        addressEntityList.add(address2);
+        addressRepository.saveAll(addressEntityList);
+        addressRepositoryCount = addressRepository.count();
+    }
+
+    @DisplayName("Save a address")
+    @Test
+    @Order(1)
+    @Rollback(value = false)
+    void test_save_address_repository() {
+        AddressEntity addressSaved = addressRepository.save(address1);
+        Assertions.assertThat(addressRepository.count()).isEqualTo(addressRepositoryCount + 1);
+        assertEquals(address3.getCountry(), addressSaved.getCountry());
+    }
+
+    @DisplayName("Get a address")
+    @Test
+    @Order(2)
+    @Rollback(value = false)
+    void test_get_address_per_id_repository() {
+        Integer id = addressRepository.save(address3).getAddressId();
+        AddressEntity addressSaved1 = addressRepository.findById(id).get();
+        assertEquals(id, addressSaved1.getAddressId());
+    }
+
+    @DisplayName("Get list of addresses")
+    @Test
+    @Order(3)
+    void test_findAll_address_repository() {
+        List<AddressEntity> addressList;
+        addressList = addressRepository.findAll();
+        assertEquals(addressRepositoryCount, addressList.size());
+        assertEquals(address1.getCountry(), addressList.get(0).getCountry());
+        assertEquals(address2.getCountry(), addressList.get(1).getCountry());
+    }
+
+    @DisplayName("Update address's field")
+    @Test
+    @Order(4)
+    @Rollback(value = false)
+    void test_update_address_repository() {
+        address1.setCountry("Dream Land");
+        AddressEntity addressUpdated = addressRepository.save(address1);
+        assertEquals("Dream Land", addressUpdated.getCountry());
+    }
+
+    @DisplayName("Delete a specific addresss")
+    @Test
+    @Order(5)
+    @Rollback(value = false)
+    void test_delete_address_repository() {
+       Integer id = addressRepository.save(address3).getAddressId();
+        AddressEntity addressSaved1 = addressRepository.findById(id).get();
+        addressRepository.delete(addressSaved1);
+
+        AddressEntity address2 = null;
+        Optional<AddressEntity> optionalAddress2 = addressRepository.findById(1);
+
+        if (optionalAddress2.isPresent()) {
+            address2 = optionalAddress2.get();
+        }
+        Assertions.assertThat(address2).isNull();
+    }
+
+    @DisplayName("Delete all addresss")
+    @Test
+    @Order(5)
+    @Rollback(value = false)
+    void test_delete_all_address_repository() {
+        addressRepository.deleteAll();
+        assertEquals(0, addressRepository.count());
+    }
+}
