@@ -29,6 +29,8 @@ import static org.mockito.Mockito.mock;
 /**
  * tuto with:
  * <a href="https://www.javaguides.net/2021/07/crud-junit-tests-for-spring-data-jpa.html">...</a>
+ * and
+ * <a href="https://howtodoinjava.com/spring-boot2/testing/spring-boot-2-junit-5/">...</a>
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -38,7 +40,6 @@ import static org.mockito.Mockito.mock;
 @DisplayName("Unit Testing on Person Repository ")
 class PersonRepositoryTest {
 
-//    @Autowired
     long  personRepositoryCount = 0;
     private PersonEntity person1, person2, person3;
     public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
