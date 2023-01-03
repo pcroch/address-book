@@ -1,12 +1,12 @@
 package api.addressbook.repository;
 
 import api.addressbook.entity.PersonAddressEntity;
+import api.addressbook.entity.PersonEntity;
 import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.mapper.QRCodeMapper;
 import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -16,42 +16,40 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-//@DataJpaTest
-@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+@DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on Qr_code Repository ")
 class QRCodeRepositoryTest {
 
-    PersonAddress personAddress = PersonAddress.builder().build();
-    QRCode qrcode = QRCode.builder().build();
+    private QRCodeEntity qrcode1, qrcode2, qrcode3;
+    private long qrcodeRepositoryCount=0;
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
-    @Mock
-    private QRCodeMapper qRCodeMapper;
 
     @BeforeEach
     public void setUp() {
+        byte[] qrCodeImage = new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
+        qrcode1 = new QRCodeEntity(1, "Code1", qrCodeImage, null);
+        qrcode2 = new QRCodeEntity(2, "Code2", qrCodeImage, null);
+        qrcode3 = new QRCodeEntity(3, "Code3", qrCodeImage, null);
+        List<QRCodeEntity> qrcodeEntityList = new ArrayList<>();
+        qrcodeEntityList.add(qrcode1);
+        qrcodeEntityList.add(qrcode2);
+        qrcodeRepository.saveAll(qrcodeEntityList);
+        qrcodeRepositoryCount = qrcodeRepository.count();
 
-        personAddress = PersonAddress.builder()
-                .personId(1)
-                .addressId(1)
-                .personAddressId(1)
-                .build();
-
-        qrcode = QRCode.builder()
-                .personAddressId(1)
-                .qrCodeName("TestImage")
-                .qrCodeImage(new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20})
-                .personAddress(personAddress)
-                .build();
     }
 
     @DisplayName("Save a QR-Code")
@@ -59,9 +57,9 @@ class QRCodeRepositoryTest {
     @Order(1)
     @Rollback
     void test_save_qr_code_repository() {
-        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode));
-        Assertions.assertThat(qrcodeRepository.count()).isEqualTo(1L);
-        assertEquals(qrcode.getQrCodeName(), qrcodeSaved.getQrCodeName());
+        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qrcode3);
+        Assertions.assertThat(qrcodeRepository.count()).isEqualTo(qrcodeRepositoryCount + 1);
+        assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
     }
 
     @DisplayName("Get a QR-Code")
@@ -69,9 +67,9 @@ class QRCodeRepositoryTest {
     @Order(2)
     @Rollback
     void test_get_qr_code_repository() {
-        int id = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode)).getPersonAddressId();
+        int id = qrcodeRepository.save(qrcode3).getPersonAddressId();
         QRCodeEntity qrcodeSaved = qrcodeRepository.findById(id).get();
-        assertEquals(qrcode.getQrCodeName(), qrcodeSaved.getQrCodeName());
+        assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
 
     }
 
@@ -80,7 +78,7 @@ class QRCodeRepositoryTest {
     @Order(3)
     @Rollback
     void test_delete_qr_code_repository() {
-        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qRCodeMapper.EntityToModel(qrcode));
+        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qrcode3);
         qrcodeRepository.delete(qrcodeSaved);
 
         QRCodeEntity qrcode1 = null;
