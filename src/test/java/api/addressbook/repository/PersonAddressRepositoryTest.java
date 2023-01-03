@@ -28,11 +28,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on PersonAddress Repository ")
 @Disabled //todo foreign key error when running the testing
-class PersonAddressRepositoryTest {
+class PersonAddressRepositoryTest extends AbstractRepository {
 
-    private long  repositoryCount = 0; //todo add this into a abstract class
     private PersonAddressEntity personAddress1, personAddress2, personAddress3;
-    public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
 
     @Autowired
     private PersonAddressRepository personAddressRepository;
@@ -70,7 +68,7 @@ class PersonAddressRepositoryTest {
         personAddressEntityList.add(personAddress1);
         personAddressEntityList.add(personAddress2);
         personAddressRepository.saveAll(personAddressEntityList);
-//        repositoryCount = personAddressRepository.findAll().size();
+        repositoryCount = personAddressRepository.findAll().size();
     }
 
     @DisplayName("Save a person")
@@ -78,7 +76,7 @@ class PersonAddressRepositoryTest {
     @Order(1)
     void test_save_person_repository() {
         PersonAddressEntity personAddressSaved = personAddressRepository.save(personAddress3);
-//        Assertions.assertThat(personAddressRepository.count()).isEqualTo(repositoryCount + 1);
+        Assertions.assertThat(personAddressRepository.count()).isEqualTo(repositoryCount + 1);
         assertEquals(personAddress3.getPersonId(), personAddressSaved.getPersonId());
     }
 

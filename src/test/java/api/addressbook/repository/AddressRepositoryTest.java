@@ -27,9 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on Address Repository ")
-class AddressRepositoryTest {
+class AddressRepositoryTest  extends AbstractRepository {
 
-    long addressRepositoryCount = 0;
     private AddressEntity address1, address2, address3;
     public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
     @Autowired
@@ -47,7 +46,7 @@ class AddressRepositoryTest {
         addressEntityList.add(address1);
         addressEntityList.add(address2);
         addressRepository.saveAll(addressEntityList);
-        addressRepositoryCount = addressRepository.count();
+        repositoryCount = addressRepository.count();
     }
 
     @DisplayName("Save a address")
@@ -56,7 +55,7 @@ class AddressRepositoryTest {
     @Rollback(value = false)
     void test_save_address_repository() {
         AddressEntity addressSaved = addressRepository.save(address1);
-        Assertions.assertThat(addressRepository.count()).isEqualTo(addressRepositoryCount + 1);
+        Assertions.assertThat(addressRepository.count()).isEqualTo(repositoryCount + 1);
         assertEquals(address3.getCountry(), addressSaved.getCountry());
     }
 
@@ -76,7 +75,7 @@ class AddressRepositoryTest {
     void test_findAll_address_repository() {
         List<AddressEntity> addressList;
         addressList = addressRepository.findAll();
-        assertEquals(addressRepositoryCount, addressList.size());
+        assertEquals(repositoryCount, addressList.size());
         assertEquals(address1.getCountry(), addressList.get(0).getCountry());
         assertEquals(address2.getCountry(), addressList.get(1).getCountry());
     }

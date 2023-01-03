@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on Qr_code Repository ")
-class QRCodeRepositoryTest {
+class QRCodeRepositoryTest extends AbstractRepository {
 
     private QRCodeEntity qrcode1, qrcode2, qrcode3;
     private long qrcodeRepositoryCount=0;
