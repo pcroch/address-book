@@ -40,6 +40,8 @@ class QRCodeRepositoryTest extends AbstractRepository {
 
     @BeforeEach
     public void setUp() {
+        qrcodeRepository.deleteAll();
+
         byte[] qrCodeImage = new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
         qrcode1 = new QRCodeEntity(1, "Code1", qrCodeImage, null);
         qrcode2 = new QRCodeEntity(2, "Code2", qrCodeImage, null);

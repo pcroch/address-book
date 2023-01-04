@@ -36,7 +36,7 @@ class AddressRepositoryTest  extends AbstractRepository {
 
     @BeforeEach
     public void setUp() {
-
+        addressRepository.deleteAll();
 
         address1 = new AddressEntity(1, "1", "4B", "rue du trone", "1000", "Bruxelles", "Belgium", false, null);
         address2 = new AddressEntity(2, "12", null, "rue du roi", "5852", "Namur", "Belgium", false, null);

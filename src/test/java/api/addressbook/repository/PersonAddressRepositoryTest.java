@@ -43,6 +43,8 @@ class PersonAddressRepositoryTest extends AbstractRepository {
 
     @BeforeEach
     public void setUp() {
+        addressRepository.deleteAll();
+        personRepository.deleteAll();
 
         PersonEntity person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
         PersonEntity person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);

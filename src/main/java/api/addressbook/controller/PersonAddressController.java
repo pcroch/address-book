@@ -3,6 +3,8 @@ package api.addressbook.controller;
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.model.Address;
 import api.addressbook.model.Person;
+import api.addressbook.repository.AddressRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ import static api.addressbook.service.AddressService.concatAddress;
 @Controller
 @RequestMapping("/person-address")
 public class PersonAddressController extends AbstractController{
+
+    @Autowired
+    protected AddressRepository addressRepository;
 
     @RequestMapping("/concat/{addressId}/{personId}")
     @GetMapping(value = "/url")
