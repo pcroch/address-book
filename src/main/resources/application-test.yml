@@ -4,8 +4,6 @@
 debug: false
 spring:
   spring:
-#    main:
-#      allow-bean-definition-overriding: true
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/address-book-db
