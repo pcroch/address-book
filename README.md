@@ -92,24 +92,25 @@ I tried here to have a 100% coverage for the testing
 
 **A- HOW TO**
 
-    *It will launch all the Unit testing and Integration testing*
+*It will launch all the Unit testing and Integration testing*
 
-    Run: mvn clean test
-     
-    *To run a specific test class*
-    For example: PersonRepositoryTest
+      Run: mvn clean test
 
-    mvn -Dtest=PersonRepositoryTest test
+*To run a specific test class*
+For example: PersonRepositoryTest
 
-    *To run a specific test caes in a class*
-    For example: test_save_person_repository method in PersonRepositoryTest
+      mvn -Dtest=PersonRepositoryTest test
 
-    mvn -Dtest=PersonRepositoryTest#test_save_person_repository test
+*To run a specific test caes in a class*
+For example: test_save_person_repository method in PersonRepositoryTest
 
-**B- Integration Testing Description**
+      mvn -Dtest=PersonRepositoryTest#test_save_person_repository test
 
-    We are testing the endpoints of each controllers
+**B- Jacoco Analysis**
 
-**C- Unit Testing Description**
+When runninng mvn test, it will create html reports with a full analysis of the testing.
+you can find that reports in: 
 
-    Basic Crud testing of the repository and mappers
+      address-book/target/site/jacoco
+
+Not that the purpose of that app is to reach a 95% test corevage
