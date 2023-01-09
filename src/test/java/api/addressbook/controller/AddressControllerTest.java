@@ -52,11 +52,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-//@SpringBootTest
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+//@ExtendWith(MockitoExtension.class)
 //@ActiveProfiles("test")
-//@AutoConfigureMockMvc
-@Disabled
+@AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Address endpoints ")
 class AddressControllerTest {
@@ -101,6 +100,7 @@ class AddressControllerTest {
 
     @Order(2)
     @Test
+    @Disabled
     @DisplayName("testing get all address ")
     void getAllAddresses() throws Exception {
         List<AddressEntity> addressEntityList = new ArrayList<>();

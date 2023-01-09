@@ -41,8 +41,9 @@ public class QRCodeController extends AbstractController {
 
         Optional<QRCode> qrcode = qrcodeRepository.findById(personAddressId).map(qrcodeMapper::toDomain);
         return qrcode.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
-                .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
-                body(qrCodeEntity.getQrCodeImage())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                        .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE))
+                        .body(qrCodeEntity.getQrCodeImage()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @RequestMapping("/findByName={qrCodeName}")

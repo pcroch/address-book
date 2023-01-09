@@ -20,6 +20,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
@@ -28,8 +29,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+//@SpringBootTest
+//@Disabled
 @SpringBootTest
-@Disabled
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -43,11 +45,16 @@ class QRCodeControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private QRCodeRepository qrcodeRepository;
+
+    @MockBean
+    QRCodeController qrcodeController;
     @Mock
     private QRCodeMapper qRCodeMapper;
 
     @BeforeEach
     public void init() {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new QRCodeController()).build();
+
         personAddress = PersonAddress.builder()
                 .personId(1)
                 .addressId(1)
@@ -71,10 +78,11 @@ class QRCodeControllerTest {
 
     @Order(2)
     @Test
+    @Disabled
     @DisplayName("testing get a QRCode per id ")
     void getAddressById() throws Exception {
         Optional<QRCodeEntity> test = Optional.of(new QRCodeEntity(1, "test", null, null));
-        doReturn(test).when(qrcodeRepository).findById(1);
+        doReturn(test).when(qrcodeRepository).findById(test.get().getPersonAddressId());
         mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/1"))
                 .andExpect(status().isFound());
     }
