@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends CrudRepository<PersonEntity, Integer> {
 
-    List<PersonEntity> findAll();
+    List<PersonEntity> findAll(); //todo testing the custom repo methods
 }

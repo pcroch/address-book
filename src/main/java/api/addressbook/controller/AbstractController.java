@@ -26,8 +26,7 @@ public abstract class AbstractController {
     @Autowired
     protected PersonRepository personRepository;
 
-    @Autowired
-    protected AddressRepository addressRepository;
+
 
     @Autowired
     protected PersonAddressRepository personAddressRepository;

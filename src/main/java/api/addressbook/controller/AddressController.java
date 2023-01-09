@@ -5,6 +5,7 @@ import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ public class AddressController extends AbstractController {
 //        this.addressRepository = addressRepository;
 //    }
 //
+
+    @Autowired
+    protected AddressRepository addressRepository;
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")

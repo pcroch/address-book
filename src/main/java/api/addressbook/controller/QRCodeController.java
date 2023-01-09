@@ -6,8 +6,10 @@ import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
+import api.addressbook.repository.AddressRepository;
 import api.addressbook.service.QRCodeGeneratorService;
 import com.google.zxing.WriterException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,6 +29,9 @@ import static api.addressbook.service.QRCodeGeneratorService.generateQRCodeImage
 @RequestMapping("/qr-code")
 public class QRCodeController extends AbstractController {
 
+    @Autowired
+    protected AddressRepository addressRepository;
+
     /**
      * It will get a  QR code based on qr_code id
      */
@@ -36,8 +41,9 @@ public class QRCodeController extends AbstractController {
 
         Optional<QRCode> qrcode = qrcodeRepository.findById(personAddressId).map(qrcodeMapper::toDomain);
         return qrcode.map(qrCodeEntity -> ResponseEntity.status(HttpStatus.FOUND)
-                .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE)).
-                body(qrCodeEntity.getQrCodeImage())).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                        .contentType(MediaType.parseMediaType(MediaType.IMAGE_PNG_VALUE))
+                        .body(qrCodeEntity.getQrCodeImage()))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @RequestMapping("/findByName={qrCodeName}")
