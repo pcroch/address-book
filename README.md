@@ -106,10 +106,10 @@ I tried here to have a 100% coverage for the testing
 
     mvn -Dtest=PersonRepositoryTest#test_save_person_repository test
 
-**B- Integration Testing Description**
+**B- Jacoco Analysis
 
-    We are testing the endpoints of each controllers
+When runninng mvn test, it will create html reports with a full analysis of the testing.
+you can find that reports in: 
+      address-book/target/site/jacoco
 
-**C- Unit Testing Description**
-
-    Basic Crud testing of the repository and mappers
+Not that the purpose of that app is to reach a 95% test corevage
