@@ -107,7 +107,7 @@ public class QRCodeController extends AbstractController {
                 .qrCodeName(qrCodeName)
                 .personAddress(personAddress)
                 .build();
-        logger.info("qrcode saved {}", qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode)));
+        log.info("qrcode saved {}", qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode)));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)

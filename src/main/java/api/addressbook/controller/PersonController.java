@@ -35,7 +35,7 @@ public class PersonController extends AbstractController {
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<List<Person>> getAllPerson() {
-        logger.info("call for all person {}", personRepository.findAll());
+        log.info("call for all person {}", personRepository.findAll());
         return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findAll().stream().map(personMapper::toDomain).collect(Collectors.toList()));
     }
 
@@ -55,7 +55,7 @@ public class PersonController extends AbstractController {
         if (!body.getFirstname().isBlank()) {
 //            addressRepository.saveAll(body.getAddress());
             Person person = personMapper.toDomain(personRepository.save(body));
-            logger.info("A person was added: {}", person);
+            log.info("A person was added: {}", person);
             return ResponseEntity.status(HttpStatus.CREATED).body(person);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -71,7 +71,7 @@ public class PersonController extends AbstractController {
         }).map(personMapper::toDomain).orElseGet(() -> {
             return personMapper.toDomain(personRepository.save(body));
         });
-        logger.info("A person was updated: {}", person);
+        log.info("A person was updated: {}", person);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(person);
     }
 

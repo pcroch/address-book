@@ -2,7 +2,6 @@ package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.mapper.AddressMapper;
-import api.addressbook.mapper.PersonMapper;
 import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
@@ -29,7 +28,6 @@ public class AddressController extends AbstractController {
     private final PersonRepository personRepository;
 
  private final AddressMapper addressMapper;
-    PersonMapper personMapper;
 
     @Autowired
     public AddressController(AddressRepository addressRepository, PersonRepository personRepository, AddressMapper addressMapper) {
@@ -41,7 +39,7 @@ public class AddressController extends AbstractController {
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<List<Address>> getAllPerson() {
-        logger.info("call for all address {}", addressRepository.findAll());
+        log.info("call for all address {}", addressRepository.findAll());
         return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll().stream().map(addressMapper::toDomain).collect(Collectors.toList()));
     }
 
@@ -61,7 +59,7 @@ public class AddressController extends AbstractController {
         if (!body.getStreetNumber().isBlank()) {
             Address address = addressMapper.toDomain(addressRepository.save(body));
             personRepository.saveAll(body.getPerson());
-            logger.info("An address was added: {}", address);
+            log.info("An address was added: {}", address);
             return ResponseEntity.status(HttpStatus.CREATED).body(address);
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -81,7 +79,7 @@ public class AddressController extends AbstractController {
         }).map(addressMapper::toDomain).orElseGet(() -> {
             return addressMapper.toDomain(addressRepository.save(body));
         });
-        logger.info("An address has been updated: {}", address);
+        log.info("An address has been updated: {}", address);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(address);
     }
 

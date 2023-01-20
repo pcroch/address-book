@@ -4,6 +4,7 @@ import api.addressbook.entity.AddressEntity;
 import api.addressbook.mapper.AddressMapper;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -40,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @SpringBootTest
+@Slf4j
 //@ExtendWith(MockitoExtension.class)
 //@ActiveProfiles("test")
 @AutoConfigureMockMvc
@@ -104,7 +106,7 @@ class AddressControllerTest {
         AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
         AddressEntity addressEntity2 = new AddressEntity(2, "2", "A", "Test street 2", "2222", "Test City 2", "Test Country 2", true, null);
         addressEntityList.add(addressEntity1);
-        logger.info("repo address {}", this.addressRepository);
+        log.info("repo address {}", this.addressRepository);
         addressEntityList.add(addressEntity2);
         this.addressRepository.saveAll(addressEntityList);
 //        doReturn(addressEntityList).when(addressRepository).findAll();

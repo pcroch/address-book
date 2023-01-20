@@ -4,6 +4,7 @@ import api.addressbook.entity.PersonEntity;
 import api.addressbook.mapper.PersonMapper;
 import api.addressbook.model.Person;
 import api.addressbook.repository.PersonRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@ExtendWith(SpringExtension.class)
 //@SpringBootTest
 //@ActiveProfiles("test")
+@Slf4j
 @WebMvcTest(PersonController.class)
 @Disabled
 @AutoConfigureMockMvc
@@ -93,7 +95,7 @@ class PersonControllerTest {
 //        when(personRepository.findAll()).thenReturn(personEntityList);
 //        when(personRepository.findAll().stream().map(personMapper::toDomain)).thenReturn(personEntityList.stream().map(personMapper::toDomain));
 //        when(personMapper.toDomain(personEntity1)).thenReturn(personMapper.toDomain(personEntity1));
-        logger.info("mockMvc + 1  {}", mockMvc);
+        log.info("mockMvc + 1  {}", mockMvc);
         mockMvc.perform(get("/person"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{\"personId\":1,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"},{\"personId\":2,\"firstname\":\"Test\",\"secondname\":\"nom\",\"lastname\":\"Fin\"}]"));
