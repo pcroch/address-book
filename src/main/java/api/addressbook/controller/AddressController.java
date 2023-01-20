@@ -1,8 +1,11 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
+import api.addressbook.mapper.AddressMapper;
+import api.addressbook.mapper.PersonMapper;
 import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +22,21 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/address")
 public class AddressController extends AbstractController {
+    // should it be final?
 
-//    private final AddressRepository addressRepository;
-//
-//    public AddressController(AddressRepository addressRepository) {
-//        this.addressRepository = addressRepository;
-//    }
-//
+    private final AddressRepository addressRepository;
+
+    private final PersonRepository personRepository;
+
+ private final AddressMapper addressMapper;
+    PersonMapper personMapper;
 
     @Autowired
-    protected AddressRepository addressRepository;
+    public AddressController(AddressRepository addressRepository, PersonRepository personRepository, AddressMapper addressMapper) {
+        this.addressRepository = addressRepository;
+        this.personRepository = personRepository;
+        this.addressMapper = addressMapper;
+    }
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
@@ -63,7 +71,7 @@ public class AddressController extends AbstractController {
     public ResponseEntity<Address> updateAddress(@PathVariable("id") Integer id, @RequestBody @NonNull AddressEntity body) {
         Address address = addressRepository.findById(id).map(ad -> {
             ad.setCountry(body.getCountry());
-            ad.setPrivate(body.isPrivate());
+            ad.setIsPrivate(body.getIsPrivate());
             ad.setLocality(body.getLocality());
             ad.setPerson(body.getPerson());
             ad.setStreetName(body.getStreetName());

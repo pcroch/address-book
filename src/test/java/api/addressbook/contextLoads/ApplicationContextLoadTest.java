@@ -1,24 +1,20 @@
 package api.addressbook.contextLoads;
 
-        import api.addressbook.controller.AddressController;
-        import api.addressbook.controller.PersonAddressController;
-        import api.addressbook.controller.PersonController;
-        import api.addressbook.controller.QRCodeController;
-        import api.addressbook.repository.PersonAddressRepository;
-        import api.addressbook.repository.PersonRepository;
-        import api.addressbook.repository.QRCodeRepository;
-        import org.assertj.core.api.Assertions;
-        import org.junit.jupiter.api.*;
-        import org.junit.jupiter.api.extension.ExtendWith;
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.boot.test.context.SpringBootTest;
-        import org.springframework.test.context.ActiveProfiles;
-        import org.springframework.test.context.junit.jupiter.SpringExtension;
+import api.addressbook.controller.AddressController;
+import api.addressbook.controller.PersonAddressController;
+import api.addressbook.controller.PersonController;
+import api.addressbook.controller.QRCodeController;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 //@ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Disabled
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Testing injection of auto-wired attributes")

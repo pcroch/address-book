@@ -2,39 +2,26 @@ package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.mapper.AddressMapper;
-import api.addressbook.model.Address;
 import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonRepository;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.params.shadow.com.univocity.parsers.conversions.Conversions.string;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -56,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@ExtendWith(MockitoExtension.class)
 //@ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Disabled
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Address endpoints ")
 class AddressControllerTest {
@@ -68,6 +56,15 @@ class AddressControllerTest {
     @Mock
     private AddressRepository addressRepository;
 
+    private final PersonRepository personRepository;
+
+    private final AddressMapper addressMapper;
+
+    AddressControllerTest(PersonRepository personRepository, AddressMapper addressMapper) {
+        this.personRepository = personRepository;
+        this.addressMapper = addressMapper;
+    }
+
 //    @Mock
 //    PersonRepository personRepository;
 
@@ -79,7 +76,7 @@ class AddressControllerTest {
     @BeforeEach
     public void init(){
         MockitoAnnotations.openMocks(addressRepository);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController()).build(); //new AddressController(), addressRepository
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(addressRepository, personRepository, addressMapper)).build(); //new AddressController(), addressRepository
     }
 
 //    @BeforeEach

@@ -1,10 +1,12 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.PersonEntity;
+import api.addressbook.mapper.PersonMapper;
 import api.addressbook.model.Person;
 import api.addressbook.repository.PersonRepository;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,9 +22,14 @@ import java.util.stream.Collectors;
 @RequestMapping("/person")
 public class PersonController extends AbstractController {
 
+    private final PersonRepository personRepository;
 
-    public PersonController(PersonRepository personRepository) {
+    private final  PersonMapper personMapper;
+
+    @Autowired
+    public PersonController(PersonRepository personRepository, PersonMapper personMapper) {
         this.personRepository = personRepository;
+        this.personMapper = personMapper;
     }
 
     @RequestMapping("")

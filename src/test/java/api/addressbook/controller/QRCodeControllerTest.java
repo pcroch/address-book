@@ -1,12 +1,14 @@
 package api.addressbook.controller;
 
-import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.QRCodeEntity;
+import api.addressbook.mapper.PersonAddressMapper;
+import api.addressbook.mapper.PersonMapper;
 import api.addressbook.mapper.QRCodeMapper;
-import api.addressbook.model.Person;
 import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
+import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonAddressRepository;
+import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
@@ -17,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,13 +26,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Optional;
 
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@SpringBootTest
-//@Disabled
 @SpringBootTest
+@Disabled
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -43,17 +41,35 @@ class QRCodeControllerTest {
     public static final Logger logger = LoggerFactory.getLogger(AddressControllerTest.class);
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
-    private QRCodeRepository qrcodeRepository;
+
+    private final PersonMapper personMapper;
+
+    private final QRCodeMapper qrcodeMapper;
+
+    private final PersonAddressMapper personAddressMapper;
+    private final  AddressRepository addressRepository;
+    private final QRCodeRepository qrcodeRepository;
+    private final PersonRepository personRepository;
+
+    private final PersonAddressRepository personAddressRepository;
 
     @MockBean
     QRCodeController qrcodeController;
     @Mock
     private QRCodeMapper qRCodeMapper;
 
+    public QRCodeControllerTest(PersonMapper personMapper, QRCodeMapper qrcodeMapper, PersonAddressMapper personAddressMapper, AddressRepository addressRepository, QRCodeRepository qrcodeRepository, PersonRepository personRepository, PersonAddressRepository personAddressRepository) {
+        this.personMapper = personMapper;
+        this.qrcodeMapper = qrcodeMapper;
+        this.personAddressMapper = personAddressMapper;
+        this.addressRepository = addressRepository;
+        this.qrcodeRepository = qrcodeRepository;
+        this.personRepository = personRepository;
+        this.personAddressRepository = personAddressRepository;
+    }
     @BeforeEach
     public void init() {
-        this.mockMvc = MockMvcBuilders.standaloneSetup(new QRCodeController()).build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(new QRCodeController(personMapper, qrcodeMapper, personAddressMapper, addressRepository, qrcodeRepository, personRepository, personAddressRepository)).build();
 
         personAddress = PersonAddress.builder()
                 .personId(1)

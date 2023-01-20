@@ -20,6 +20,6 @@ public class Address implements Serializable {
     private String zipcode;
     private String locality;
     private String country;
-    private boolean isPrivate;
+    private Boolean isPrivate;
     private Set<Person> person;
 }

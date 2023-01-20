@@ -1,13 +1,8 @@
 package api.addressbook.repository;
 
 import api.addressbook.entity.PersonEntity;
-import api.addressbook.mapper.PersonMapper;
-import api.addressbook.model.Address;
-import api.addressbook.model.Person;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +13,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -29,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Disabled
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

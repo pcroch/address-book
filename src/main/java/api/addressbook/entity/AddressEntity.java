@@ -49,7 +49,7 @@ public class AddressEntity implements Serializable {
     private String country;
 
     @Column(name = "is_private")
-    private boolean isPrivate = true;
+    private Boolean isPrivate = true;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "address")

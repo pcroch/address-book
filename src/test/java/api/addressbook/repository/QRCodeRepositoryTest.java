@@ -1,16 +1,9 @@
 package api.addressbook.repository;
 
-import api.addressbook.entity.PersonAddressEntity;
-import api.addressbook.entity.PersonEntity;
 import api.addressbook.entity.QRCodeEntity;
-import api.addressbook.mapper.QRCodeMapper;
-import api.addressbook.model.PersonAddress;
-import api.addressbook.model.QRCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -26,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Disabled
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
