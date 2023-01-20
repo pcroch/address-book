@@ -38,14 +38,14 @@ public class AddressController extends AbstractController {
 
     @RequestMapping("")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<List<Address>> getAllPerson() {
+    public ResponseEntity<List<Address>> getAllAddress() {
         log.info("call for all address {}", addressRepository.findAll());
         return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findAll().stream().map(addressMapper::toDomain).collect(Collectors.toList()));
     }
 
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
-    public ResponseEntity<Optional<Address>> getPersonById(@PathVariable("id") int id) {
+    public ResponseEntity<Optional<Address>> getAddressById(@PathVariable("id") int id) {
         if (addressRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(addressRepository.findById(id).map(addressMapper::toDomain));
         }

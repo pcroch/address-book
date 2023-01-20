@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 //@ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Disabled
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Testing injection of auto-wired attributes")

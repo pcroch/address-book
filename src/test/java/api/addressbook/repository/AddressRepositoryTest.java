@@ -4,8 +4,6 @@ import api.addressbook.entity.AddressEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -21,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@Disabled
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -29,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class AddressRepositoryTest  extends AbstractRepository {
 
     private AddressEntity address1, address2, address3;
-    public static final Logger logger = LoggerFactory.getLogger(AddressRepository.class);
     @Autowired
     private AddressRepository addressRepository;
 
