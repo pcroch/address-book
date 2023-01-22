@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -30,19 +29,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 /**
- * Note that in this test Class the "delete" endpoints are not properly tested
- * On my point of view: those specifics tests are useless
- * I keep them to remember to work of them
+ * I wanted to use mockito for learning purpose but it implies  big issue as I mock the DB whence I can not test the http method delete
+ * Note that the profil test is useless here ad I mock all the interactions with the Repository
  */
+
 @SpringBootTest
 @Slf4j
 @Transactional
-//@ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Integration Testing on Address endpoints ")
 class AddressControllerTest {
+
+    /**
+     * Note that in this test Class the "delete" endpoints are not properly tested
+     * On my point of view: those specifics tests are useless
+     * I keep them to remember to work of them
+     * The problem comes from the Mocking of  the repo
+     */
 
     private Address address1, address2, addressSaved = Address.builder().build();
     private String json;
@@ -66,13 +70,11 @@ class AddressControllerTest {
 
     @BeforeEach
     public void init() {
-        log.info("deleteAll init {}", addressRepository.count());
         this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(
                 addressRepository,
                 personRepository,
                 addressMapper)
         ).build();
-        log.info("deleteAll init {}", addressRepository.count());
         address1 = Address.builder()
                 .addressId(1)
                 .streetNumber("1")
@@ -110,10 +112,8 @@ class AddressControllerTest {
 
     @Order(2)
     @Test
-
-    @DisplayName("testing get all address ")
+    @DisplayName("get all address ")
     void getAllAddresses() throws Exception {
-        addressRepository.deleteAll();
         List<AddressEntity> addressEntityList = new ArrayList<>();
         addressEntityList.add(addressMapper.toMap(address1));
         addressEntityList.add(addressMapper.toMap(address2));
@@ -127,11 +127,9 @@ class AddressControllerTest {
 
     @Order(3)
     @Test
-    @DisplayName("testing get a address per id ")
+    @DisplayName("get a address per id ")
     void getAddressById() throws Exception {
-        addressRepository.deleteAll();
         when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
-        log.info("optionaaaaa {}", addressRepository.findById(1));
         mockMvc.perform(MockMvcRequestBuilders.get("/address/1"))
                 .andExpect(status().isFound())
                 .andExpect(jsonPath("$['streetNumber']", Matchers.is("1")));
@@ -139,9 +137,8 @@ class AddressControllerTest {
 
     @Order(4)
     @Test
-    @DisplayName("testing adding a address")
+    @DisplayName("adding a address")
     void createAddress() throws Exception {
-        addressRepository.deleteAll();
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
         when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.post("/address/")
@@ -153,11 +150,8 @@ class AddressControllerTest {
 
     @Order(5)
     @Test
-    @DisplayName("testing updating a address")
+    @DisplayName("updating a address")
     void updateAddress() throws Exception {
-        log.info("deleteAll {}", addressRepository.count());
-        addressRepository.deleteAll();
-        log.info("emptyEmpt {}", addressRepository.count());
         when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
         when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.put("/address/{id}", 1)
@@ -169,7 +163,7 @@ class AddressControllerTest {
 
     @Order(6)
     @Test
-    @DisplayName("testing delete a specific address but not found")
+    @DisplayName("delete a specific address but not found")
     void deleteAddressPerIDWhenNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/address/{id}", 1))
                 .andExpect(status().isNotFound());
@@ -178,7 +172,7 @@ class AddressControllerTest {
     @Order(7)
     @Test
     @Disabled
-    @DisplayName("testing delete a specific address and it is found")
+    @DisplayName("delete a specific address and it is found")
     void deleteAddressPerIdWithContent() throws Exception {
 //        Mockito.doNothing().when(addressRepository).deleteById(1);
         mockMvc.perform(MockMvcRequestBuilders.delete("/address/{id}", 1))
@@ -188,7 +182,7 @@ class AddressControllerTest {
 
     @Order(8)
     @Test
-    @DisplayName("testing delete all addresses but empty repository")
+    @DisplayName("delete all addresses but empty repository")
     void deleteAllAddressesWithNoContent() throws Exception {
         when(addressRepository.count()).thenReturn((long) 0);
         mockMvc.perform(MockMvcRequestBuilders.delete("/address/deleteAll"))
@@ -199,12 +193,10 @@ class AddressControllerTest {
     @Order(9)
     @Test
     @Disabled
-    @DisplayName("testing delete all addresses")
+    @DisplayName("delete all addresses")
     void deleteAllAddresses() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/address/deleteAll"))
                 .andExpect(status().isAccepted());
 
     }
-
-
 }

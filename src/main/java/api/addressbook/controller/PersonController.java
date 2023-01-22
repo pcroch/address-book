@@ -42,7 +42,6 @@ public class PersonController extends AbstractController {
     @RequestMapping("/{id}")
     @GetMapping(value = "/url", produces = "application/json")
     public ResponseEntity<Optional<Person>> getPersonById(@PathVariable("id") int id) {
-
         if (personRepository.findById(id).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND).body(personRepository.findById(id).map(personMapper::toDomain));
         }
@@ -63,6 +62,9 @@ public class PersonController extends AbstractController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Person> updatePerson(@PathVariable("id") Integer id, @RequestBody @NonNull PersonEntity body) {
+        if (personRepository.findById(id).isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         Person person = personRepository.findById(id).map(address -> {
             address.setFirstname(body.getFirstname());
             address.setSecondname(body.getSecondname());
@@ -85,6 +87,9 @@ public class PersonController extends AbstractController {
 
     @DeleteMapping("/deleteAll")
     public ResponseEntity<Integer> deletePersonPerId() {
+        if (personRepository.count() == 0 ){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         personRepository.deleteAll();
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
