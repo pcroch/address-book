@@ -96,6 +96,9 @@ public class AddressController extends AbstractController {
 
     @DeleteMapping("/deleteAll")
     public ResponseEntity<Integer> deleteAddressPerId() {
+        if (addressRepository.count() == 0) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
         addressRepository.deleteAll();
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
