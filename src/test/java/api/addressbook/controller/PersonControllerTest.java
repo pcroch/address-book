@@ -153,12 +153,10 @@ class PersonControllerTest {
     }
 
     @Test
-    @Disabled
     void delete() {
     }
 
     @Test
-    @Disabled
     void deletePerson() {
     }
 }

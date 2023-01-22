@@ -27,7 +27,7 @@ public class AddressController extends AbstractController {
 
     private final PersonRepository personRepository;
 
- private final AddressMapper addressMapper;
+    private final AddressMapper addressMapper;
 
     @Autowired
     public AddressController(AddressRepository addressRepository, PersonRepository personRepository, AddressMapper addressMapper) {
@@ -86,6 +86,7 @@ public class AddressController extends AbstractController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Integer> deleteAllAddress(@PathVariable("id") Integer id) {
         if (addressRepository.existsById(id)) {
+            addressRepository.deleteById(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

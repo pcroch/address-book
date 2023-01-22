@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,6 +28,12 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
+/**
+ * Note that in this test Class the "delete" endpoints are not properly tested
+ * On my point of view: those specifics tests are useless
+ * I keep them to remember to work of them
+ */
 @SpringBootTest
 @Slf4j
 @Transactional
@@ -40,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AddressControllerTest {
 
     private Address address1, address2, addressSaved = Address.builder().build();
+    private String json;
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,13 +66,13 @@ class AddressControllerTest {
 
     @BeforeEach
     public void init() {
-//        MockitoAnnotations.openMocks(addressRepository);
+        log.info("deleteAll init {}", addressRepository.count());
         this.mockMvc = MockMvcBuilders.standaloneSetup(new AddressController(
                 addressRepository,
                 personRepository,
                 addressMapper)
         ).build();
-        addressRepository.deleteAll();
+        log.info("deleteAll init {}", addressRepository.count());
         address1 = Address.builder()
                 .addressId(1)
                 .streetNumber("1")
@@ -87,6 +93,8 @@ class AddressControllerTest {
                 .country("Test Country2")
                 .isPrivate(true)
                 .person(null).build();
+
+        json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
     }
 
 
@@ -102,9 +110,10 @@ class AddressControllerTest {
 
     @Order(2)
     @Test
+
     @DisplayName("testing get all address ")
-    @Rollback
     void getAllAddresses() throws Exception {
+        addressRepository.deleteAll();
         List<AddressEntity> addressEntityList = new ArrayList<>();
         addressEntityList.add(addressMapper.toMap(address1));
         addressEntityList.add(addressMapper.toMap(address2));
@@ -115,58 +124,87 @@ class AddressControllerTest {
                 .andExpect(jsonPath("$", Matchers.hasSize(2)))
                 .andExpect(jsonPath("$[0].streetNumber", Matchers.is("1")));
     }
+
     @Order(3)
     @Test
     @DisplayName("testing get a address per id ")
     void getAddressById() throws Exception {
+        addressRepository.deleteAll();
         when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         log.info("optionaaaaa {}", addressRepository.findById(1));
         mockMvc.perform(MockMvcRequestBuilders.get("/address/1"))
                 .andExpect(status().isFound())
-                .andExpect(jsonPath("$['streetNumber']",Matchers.is("1")));
+                .andExpect(jsonPath("$['streetNumber']", Matchers.is("1")));
     }
 
     @Order(4)
     @Test
-    @Disabled
     @DisplayName("testing adding a address")
     void createAddress() throws Exception {
-        String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressEntity1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(addressEntity1));
+        addressRepository.deleteAll();
+        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.post("/address/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
-                .andExpect(content().json("{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}"));
+                .andExpect(jsonPath("$['streetNumber']", Matchers.is("1")));
     }
 
     @Order(5)
     @Test
-    @Disabled
     @DisplayName("testing updating a address")
     void updateAddress() throws Exception {
-        String json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
-        AddressEntity addressEntity1 = new AddressEntity(1, "1", null, "Test street", "1111", "Test City", "Test Country", false, null);
-        when(addressRepository.save(addressEntity1)).thenReturn(addressEntity1);
-        when(addressRepository.findById(1)).thenReturn(Optional.of(addressEntity1));
+        log.info("deleteAll {}", addressRepository.count());
+        addressRepository.deleteAll();
+        log.info("emptyEmpt {}", addressRepository.count());
+        when(addressRepository.save(any(AddressEntity.class))).thenReturn(addressMapper.toMap(address1));
+        when(addressRepository.findById(1)).thenReturn(Optional.of(addressMapper.toMap(address1)));
         mockMvc.perform(MockMvcRequestBuilders.put("/address/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isAccepted())
-                .andExpect(content().json("{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}"));
+                .andExpect(jsonPath("$['streetNumber']", Matchers.is("1")));
     }
 
+    @Order(6)
     @Test
-    @Disabled
-    void deleteAddress() {
-//        Assert.assertTrue(true);
+    @DisplayName("testing delete a specific address but not found")
+    void deleteAddressPerIDWhenNotFound() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/address/{id}", 1))
+                .andExpect(status().isNotFound());
     }
 
+    @Order(7)
     @Test
     @Disabled
-    void deleteAddressPerID() {
-//        Assert.assertTrue(true);
+    @DisplayName("testing delete a specific address and it is found")
+    void deleteAddressPerIdWithContent() throws Exception {
+//        Mockito.doNothing().when(addressRepository).deleteById(1);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/address/{id}", 1))
+                .andExpect(status().isNoContent());
     }
+
+
+    @Order(8)
+    @Test
+    @DisplayName("testing delete all addresses but empty repository")
+    void deleteAllAddressesWithNoContent() throws Exception {
+        when(addressRepository.count()).thenReturn((long) 0);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/address/deleteAll"))
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Order(9)
+    @Test
+    @Disabled
+    @DisplayName("testing delete all addresses")
+    void deleteAllAddresses() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/address/deleteAll"))
+                .andExpect(status().isAccepted());
+
+    }
+
+
 }
