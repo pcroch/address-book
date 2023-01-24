@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 /**
- * I wanted to use mockito for learning purpose but it implies  big issue as I mock the DB whence I can not test the http method delete
- * Note that the profil test is useless here ad I mock all the interactions with the Repository
+ * I wanted to use mockito for learning purpose, but it implies  big issue as I mock the DB whence I can not test the http method delete
+ * Note that the profile test is useless here ad I mock all the interactions with the Repository
  */
 
 @SpringBootTest
@@ -84,7 +84,7 @@ class AddressControllerTest {
                 .locality("Test City")
                 .country("Test Country")
                 .isPrivate(false)
-                .person(null).build();
+                .personAddressEntity(null).build();
         address2 = Address.builder()
                 .addressId(2)
                 .streetNumber("2")
@@ -94,7 +94,7 @@ class AddressControllerTest {
                 .locality("Test City2")
                 .country("Test Country2")
                 .isPrivate(true)
-                .person(null).build();
+                .personAddressEntity(null).build();
 
         json = "{\"addressId\":1,\"streetNumber\":\"1\",\"boxNumber\":null,\"streetName\":\"Test street\",\"zipcode\":\"1111\",\"locality\":\"Test City\",\"country\":\"Test Country\",\"personEntity\":null,\"private\":false}";
     }

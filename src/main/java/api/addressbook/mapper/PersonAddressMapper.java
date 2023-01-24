@@ -9,8 +9,8 @@ import org.mapstruct.Mapping;
 public interface PersonAddressMapper {
 
     @Mapping(source = "personAddressId", target = "personAddressId")
-    @Mapping(source = "addressId", target = "addressId")
-    @Mapping(source = "personId", target = "personId")
+//    @Mapping(source = "addressId", target = "addressId")
+//    @Mapping(source = "personId", target = "personId")
     PersonAddress toDomain(PersonAddressEntity e);
 }
 

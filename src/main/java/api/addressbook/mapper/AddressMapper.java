@@ -16,7 +16,7 @@ public interface AddressMapper {
     @Mapping(source = "locality", target = "locality")
     @Mapping(source = "country", target = "country")
     @Mapping(source = "isPrivate", target = "isPrivate")
-    @Mapping(source = "person", target = "person")
+    @Mapping(source = "personAddressEntity", target = "personAddressEntity")
     Address toDomain(AddressEntity e);
     AddressEntity toMap(Address e);
 }

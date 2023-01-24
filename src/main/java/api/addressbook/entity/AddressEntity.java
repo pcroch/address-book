@@ -50,8 +50,9 @@ public class AddressEntity implements Serializable {
     private Boolean isPrivate = true;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "address")
-    private Set<PersonEntity> person= new HashSet<>();
+//    @ManyToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "addressEntity")
+    private  Set<PersonAddressEntity> personAddressEntity =  new HashSet<>();
 
 //    @Override
 //    public String toString() {

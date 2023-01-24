@@ -70,11 +70,11 @@ class QRCodeControllerTest {
     public void init() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new QRCodeController(personMapper, qrcodeMapper, personAddressMapper, addressRepository, qrcodeRepository, personRepository, personAddressRepository)).build();
 
-        personAddress = PersonAddress.builder()
-                .personId(1)
-                .addressId(1)
-                .personAddressId(1)
-                .build();
+//        personAddress = PersonAddress.builder()
+//                .personId(1)
+//                .addressId(1)
+//                .personAddressId(1)
+//                .build();
 
         qrcode = QRCode.builder()
                 .personAddressId(1)

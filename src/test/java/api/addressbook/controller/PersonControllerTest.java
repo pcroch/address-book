@@ -65,7 +65,7 @@ class PersonControllerTest {
                 .firstname("Test 1")
                 .lastname(null)
                 .lastname("Tester 1")
-                .address(null)
+                .personAddressEntity(null)
                 .build();
         personRepository.save(personMapper.toMap(person1));
 
@@ -73,7 +73,7 @@ class PersonControllerTest {
                 .firstname("Test 2")
                 .lastname("Tester Name 2")
                 .lastname("Tester 2")
-                .address(null)
+                .personAddressEntity(null)
                 .build();
         personRepository.save(personMapper.toMap(person2));
 

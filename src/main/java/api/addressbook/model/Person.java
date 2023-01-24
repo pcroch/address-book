@@ -1,9 +1,10 @@
 package api.addressbook.model;
 
+import api.addressbook.entity.PersonAddressEntity;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 import java.io.Serializable;
 import java.util.Set;
 
@@ -16,6 +17,6 @@ public class Person implements Serializable {
     private String firstname;
     private String secondname;
     private String lastname;
-    private Set<Address> address;
+    private Set<PersonAddressEntity> personAddressEntity;
 
 }

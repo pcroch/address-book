@@ -58,7 +58,7 @@ public class AddressController extends AbstractController {
     public ResponseEntity<Address> createAddress(@RequestBody @NonNull AddressEntity body) {
         if (!body.getStreetNumber().isBlank()) {
             Address address = addressMapper.toDomain(addressRepository.save(body));
-            personRepository.saveAll(body.getPerson());
+//            personRepository.saveAll(body.getPersonAddressEntity().);
             log.info("An address was added: {}", address);
             return ResponseEntity.status(HttpStatus.CREATED).body(address);
         }
@@ -71,7 +71,7 @@ public class AddressController extends AbstractController {
             ad.setCountry(body.getCountry());
             ad.setIsPrivate(body.getIsPrivate());
             ad.setLocality(body.getLocality());
-            ad.setPerson(body.getPerson());
+//            ad.setPerson(body.getPerson());
             ad.setStreetName(body.getStreetName());
             ad.setBoxNumber(body.getBoxNumber());
             ad.setStreetNumber(body.getStreetNumber());

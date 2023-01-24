@@ -1,6 +1,7 @@
 package api.addressbook.model;
 
 
+import api.addressbook.entity.PersonAddressEntity;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -21,5 +22,5 @@ public class Address implements Serializable {
     private String locality;
     private String country;
     private Boolean isPrivate;
-    private Set<Person> person;
+    private Set<PersonAddressEntity> personAddressEntity;
 }

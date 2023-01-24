@@ -4,8 +4,6 @@ import api.addressbook.entity.PersonEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -34,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PersonRepositoryTest extends AbstractRepository {
 
     private PersonEntity person1, person2, person3;
-    public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
     @Autowired
     private PersonRepository personRepository;
 
