@@ -14,7 +14,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -28,20 +30,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @DisplayName("Unit Testing on PersonAddress Repository ")
 class PersonAddressRepositoryTest extends AbstractRepository {
 
-    private PersonAddressEntity PersonAddressEntity1, PersonAddressEntity2, PersonAddressEntity3;
-
-    private PersonEntity person1, person2, person3;
-    private AddressEntity address1, address2, address3;
-
-    private PersonEntity PersonEntity1;
-
-    private AddressEntity addressEntity1;
-
+    private PersonAddressEntity PersonAddressEntity2;
     int personId, addressId, personAddressId;
-    private Set<AddressEntity> address = new HashSet<>();
-    private Set<PersonEntity> person = new HashSet<>();
-    private    List<PersonAddressEntity>  personAddressEntityFindAll = new ArrayList<>();
-    private    List<PersonAddressEntity> personAddressEntityList = new ArrayList<>();
+    private List<PersonAddressEntity> personAddressEntityList = new ArrayList<>();
     @Autowired
     private PersonAddressRepository personAddressRepository;
 
@@ -57,40 +48,34 @@ class PersonAddressRepositoryTest extends AbstractRepository {
         personRepository.deleteAll();
         personAddressRepository.deleteAll();
 
-
-        address1 = new AddressEntity(1, "1", "4B", "rue du trone", "1000", "Bruxelles", "Belgium", false, null);
-        address2 = new AddressEntity(2, "12", null, "rue du roi", "5852", "Namur", "Belgium", false, null);
-        address3 = new AddressEntity(3, "13", "5", "rue du lac", "7200", "Anvers", "Belgium", false, null);
+        AddressEntity address1 = new AddressEntity(1, "1", "4B", "rue du trone", "1000", "Bruxelles", "Belgium", false, null);
+        AddressEntity address2 = new AddressEntity(2, "12", null, "rue du roi", "5852", "Namur", "Belgium", false, null);
 
         List<AddressEntity> addressEntityList = new ArrayList<>();
         addressEntityList.add(address1);
         addressEntityList.add(address2);
         addressRepository.saveAll(addressEntityList);
-        log.info("addressRepositoryfindAll {}", addressRepository.findAll().get(0));
 
-        person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
-        person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);
-        person3 = new PersonEntity(1, "Batman", "null", "Steve", null);
+        PersonEntity person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
+        PersonEntity person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);
 
         List<PersonEntity> personEntityList = new ArrayList<>();
         personEntityList.add(person1);
         personEntityList.add(person2);
         personRepository.saveAll(personEntityList);
-        log.info("personRepositoryfindAll {}", personRepository.findAll().get(0));
 
-        PersonAddressEntity1 = new PersonAddressEntity(1, addressRepository.findAll().get(0), personRepository.findAll().get(0));
+        PersonAddressEntity personAddressEntity1 = new PersonAddressEntity(1, addressRepository.findAll().get(0), personRepository.findAll().get(0));
         PersonAddressEntity2 = new PersonAddressEntity(2, addressRepository.findAll().get(1), personRepository.findAll().get(1));
-        PersonAddressEntity3 = new PersonAddressEntity(3, addressRepository.findAll().get(1), personRepository.findAll().get(0));
-//
+
         List<PersonAddressEntity> tmpList = new ArrayList<>();
-        tmpList.add(PersonAddressEntity1);
+        tmpList.add(personAddressEntity1);
         tmpList.add(PersonAddressEntity2);
         personAddressEntityList = Lists.newArrayList(personAddressRepository.saveAll(tmpList));
-        log.info("personAddressRepositoryfindAll {}", personAddressRepository.findAll());
 
         personId = personRepository.findAll().get(0).getPersonId();
         addressId = addressRepository.findAll().get(0).getAddressId();
         personAddressId = personAddressRepository.findAll().get(0).getPersonAddressId();
+
         repositoryCount = personAddressRepository.count();
     }
 
@@ -116,7 +101,7 @@ class PersonAddressRepositoryTest extends AbstractRepository {
     @Test
     @Order(3)
     void test_findAll_person_repository() {
-        personAddressEntityFindAll = personAddressRepository.findAll();
+        List<PersonAddressEntity> personAddressEntityFindAll = personAddressRepository.findAll();
         assertEquals(repositoryCount, personAddressEntityFindAll.size());
         assertEquals(personAddressEntityFindAll.get(0).getPersonAddressId(), personAddressEntityList.get(0).getPersonAddressId());
         assertEquals(personAddressEntityFindAll.get(1).getPersonAddressId(), personAddressEntityList.get(1).getPersonAddressId());
