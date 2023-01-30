@@ -77,7 +77,7 @@ class QRCodeControllerTest {
 //                .build();
 
         qrcode = QRCode.builder()
-                .personAddressId(1)
+                .qrCodeId(1)
                 .qrCodeName("TestImage")
                 .qrCodeImage(new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20})
                 .personAddress(personAddress)
@@ -97,7 +97,7 @@ class QRCodeControllerTest {
     @DisplayName("testing get a QRCode per id ")
     void getAddressById() throws Exception {
         Optional<QRCodeEntity> test = Optional.of(new QRCodeEntity(1, "test", null, null));
-        doReturn(test).when(qrcodeRepository).findById(test.get().getPersonAddressId());
+        doReturn(test).when(qrcodeRepository).findById(test.get().getQrCodeId());
         mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/1"))
                 .andExpect(status().isFound());
     }

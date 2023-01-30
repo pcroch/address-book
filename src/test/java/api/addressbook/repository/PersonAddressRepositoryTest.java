@@ -64,8 +64,8 @@ class PersonAddressRepositoryTest extends AbstractRepository {
         personEntityList.add(person2);
         personRepository.saveAll(personEntityList);
 
-        PersonAddressEntity personAddressEntity1 = new PersonAddressEntity(1, addressRepository.findAll().get(0), personRepository.findAll().get(0));
-        PersonAddressEntity2 = new PersonAddressEntity(2, addressRepository.findAll().get(1), personRepository.findAll().get(1));
+        PersonAddressEntity personAddressEntity1 = new PersonAddressEntity(1, addressRepository.findAll().get(0), personRepository.findAll().get(0), null);
+        PersonAddressEntity2 = new PersonAddressEntity(2, addressRepository.findAll().get(1), personRepository.findAll().get(1), null);
 
         List<PersonAddressEntity> tmpList = new ArrayList<>();
         tmpList.add(personAddressEntity1);

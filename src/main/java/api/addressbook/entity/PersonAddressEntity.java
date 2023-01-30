@@ -17,14 +17,8 @@ public class PersonAddressEntity implements Serializable {
 
     @Id
     @Column(name = "person_address_id")
-    @GeneratedValue(strategy= GenerationType.TABLE)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer personAddressId;
-
-//    @Column(name = "address_id")
-//    private Integer addressId;
-//
-//    @Column(name = "person_id")
-//    private Integer personId;
 
     @ManyToOne
     @JoinColumn(name = "address_id")
@@ -34,9 +28,11 @@ public class PersonAddressEntity implements Serializable {
     @JoinColumn(name = "person_id")
     private PersonEntity personEntity;
 
-//    @Column(name = "address_fk")
-//    private Integer addressFk;
-//
-//    @Column(name = "person_fk")
-//    private Integer personFk;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "person_address_per_code",
+            joinColumns =
+                    { @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id") },
+            inverseJoinColumns =
+                    { @JoinColumn(name = "qr_code_id", referencedColumnName = "qr_code_id") })
+    private QRCodeEntity qrcodeEntity;
 }
