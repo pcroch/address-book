@@ -35,8 +35,10 @@ class QRCodeRepositoryTest extends AbstractRepository {
     private long qrcodeRepositoryCount;
 
     private PersonAddressEntity PersonAddressEntity2;
-    int personId, addressId, personAddressId;
+    int personId, addressId, personAddressId, qrcodeId;
     private List<PersonAddressEntity> personAddressEntityList = new ArrayList<>();
+
+    private List<QRCodeEntity> qrcodeEntityList = new ArrayList<>();
 
     @Autowired
     private QRCodeRepository qrcodeRepository;
@@ -93,45 +95,14 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
         qrcode3 = new QRCodeEntity(3, "Code3", qrCodeImage, personAddressRepository.findAll().get(0));
         log.info("qrcode1qrcode1 {} ", qrcode1);
 
-        List<QRCodeEntity> qrcodeEntityList = new ArrayList<>();
-        qrcodeEntityList.add(qrcode1);
-        qrcodeEntityList.add(qrcode2);
-        qrcodeRepository.saveAll(qrcodeEntityList);
+        List<QRCodeEntity> tmpCodeList = new ArrayList<>();
+        tmpCodeList.add(qrcode1);
+        tmpCodeList.add(qrcode2);
+        qrcodeEntityList = Lists.newArrayList((qrcodeRepository.saveAll(tmpCodeList)));
         log.info("qrcodeRepositoryqrcodeRepository {} ", qrcodeRepository.findAll());
 //
+        qrcodeId = qrcodeRepository.findAll().get(0).getQrCodeId();
         qrcodeRepositoryCount = qrcodeRepository.count();
-
-    }
-
-    @DisplayName("Save a person")
-    @Test
-    @Order(1)
-    void test_save_person_repository() {
-        PersonAddressEntity personAddressSaved = personAddressRepository.save(PersonAddressEntity2);
-        assertEquals(PersonAddressEntity2.getPersonEntity(), personAddressSaved.getPersonEntity());
-        assertEquals(personAddressRepository.count(), repositoryCount + 1);
-    }
-
-    @DisplayName("Get a QR-Code")
-    @Test
-    @Order(2)
-    @Rollback
-    void test_get_qr_code_repository() {
-        int id = qrcodeRepository.save(qrcode3).getQrCodeId();
-        QRCodeEntity qrcodeSaved = qrcodeRepository.findById(id).get();
-        assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
-
-    }
-
-
-    @DisplayName("Get list of qrcodes")
-    @Test
-    @Order(3)
-    void test_findAll_qrcode_repository() {
-        List<PersonAddressEntity> personAddressEntityFindAll = personAddressRepository.findAll();
-        assertEquals(repositoryCount, personAddressEntityFindAll.size());
-        assertEquals(personAddressEntityFindAll.get(0).getPersonAddressId(), personAddressEntityList.get(0).getPersonAddressId());
-        assertEquals(personAddressEntityFindAll.get(1).getPersonAddressId(), personAddressEntityList.get(1).getPersonAddressId());
 
     }
 
@@ -145,29 +116,59 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
         assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
     }
 
-    @DisplayName("Update person's field")
+    @DisplayName("Get a QR-Code")
     @Test
-    @Order(4)
+    @Order(2)
+    void test_get_qr_code_repository() {
+        int id = qrcodeRepository.save(qrcode3).getQrCodeId();
+        QRCodeEntity qrcodeSaved = qrcodeRepository.findById(id).get();
+        assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
+    }
+
+
+    @DisplayName("Get list of qrcodes")
+    @Test
+    @Order(3)
+    void test_findAll_qrcode_repository() {
+        List<QRCodeEntity> qrcodeFindAll= qrcodeRepository.findAll();
+        assertEquals(qrcodeRepositoryCount, qrcodeFindAll.size());
+        assertEquals(qrcodeFindAll.get(0).getQrCodeName(), qrcodeEntityList.get(1).getQrCodeName());
+        assertEquals(qrcodeFindAll.get(1).getQrCodeName(), qrcodeEntityList.get(0).getQrCodeName());
+    }
+
+//    @DisplayName("Save a QR-Code")
+//    @Test
+//    @Order(4)
+//    @Rollback
+//    void test_save_qr_code_repository() {
+//        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qrcode3);
+//        Assertions.assertThat(qrcodeRepository.count()).isEqualTo(qrcodeRepositoryCount + 1);
+//        assertEquals(qrcode3.getQrCodeName(), qrcodeSaved.getQrCodeName());
+//    }
+
+    @DisplayName("Update qrcode's field")
+    @Test
+    @Order(5)
     @Rollback
-    void test_update_person_repository() {
-        PersonAddressEntity personAddressSaved = personAddressRepository.findById(personAddressId).get();
-        personAddressSaved.getPersonEntity().setFirstname("New Name");
-        PersonAddressEntity personAddressUpdated = personAddressRepository.save(personAddressSaved);
-        assertEquals("New Name", personAddressUpdated.getPersonEntity().getFirstname());
+    void test_update_qr_code_repository() {
+        QRCodeEntity qrcodeSaved = qrcodeRepository.findById(qrcodeId).get();
+        qrcodeSaved.setQrCodeName("New Name");
+        QRCodeEntity qrcodeUpdated = qrcodeRepository.save(qrcodeSaved);
+        assertEquals("New Name", qrcodeUpdated.getQrCodeName());
     }
 
 
 
     @DisplayName("Delete a specific QR-Code")
     @Test
-    @Order(3)
+    @Order(6)
     @Rollback
     void test_delete_qr_code_repository() {
-        QRCodeEntity qrcodeSaved = qrcodeRepository.save(qrcode3);
+        QRCodeEntity qrcodeSaved =  qrcodeRepository.findById(qrcodeId).get();
         qrcodeRepository.delete(qrcodeSaved);
 
         QRCodeEntity qrcode1 = null;
-        Optional<QRCodeEntity> optionalQrcode1 = qrcodeRepository.findById(1);
+        Optional<QRCodeEntity> optionalQrcode1 = qrcodeRepository.findById(qrcodeSaved.getQrCodeId());
 
         if (optionalQrcode1.isPresent()) {
             qrcode1 = optionalQrcode1.get();
@@ -177,10 +178,10 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
 
     @DisplayName("Delete all persons")
     @Test
-    @Order(6)
+    @Order(7)
     @Rollback
     void test_delete_all_person_repository() {
-        personAddressRepository.deleteAll();
-        assertEquals(0, personAddressRepository.count());
+        qrcodeRepository.deleteAll();
+        assertEquals(0, qrcodeRepository.count());
     }
 }
