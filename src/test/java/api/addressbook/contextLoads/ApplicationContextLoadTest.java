@@ -6,8 +6,6 @@ import api.addressbook.controller.PersonController;
 import api.addressbook.controller.QRCodeController;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -18,8 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Testing injection of auto-wired attributes")
 class ApplicationContextLoadTest {
-
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass().getSimpleName());
 
     @Autowired
     AddressController addressController;

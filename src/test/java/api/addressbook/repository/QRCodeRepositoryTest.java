@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
@@ -86,7 +87,7 @@ class QRCodeRepositoryTest extends AbstractRepository {
         personId = personRepository.findAll().get(0).getPersonId();
         addressId = addressRepository.findAll().get(0).getAddressId();
         personAddressId = personAddressRepository.findAll().get(0).getPersonAddressId();
-log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository.findAll().get(0));
+        log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository.findAll().get(0));
         log.info("personAddressIdpersonAddressId {} ", personAddressId);
         byte[] qrCodeImage = new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20};
 
@@ -130,7 +131,7 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
     @Test
     @Order(3)
     void test_findAll_qrcode_repository() {
-        List<QRCodeEntity> qrcodeFindAll= qrcodeRepository.findAll();
+        List<QRCodeEntity> qrcodeFindAll = qrcodeRepository.findAll();
         assertEquals(qrcodeRepositoryCount, qrcodeFindAll.size());
         assertEquals(qrcodeFindAll.get(0).getQrCodeName(), qrcodeEntityList.get(1).getQrCodeName());
         assertEquals(qrcodeFindAll.get(1).getQrCodeName(), qrcodeEntityList.get(0).getQrCodeName());
@@ -158,13 +159,12 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
     }
 
 
-
     @DisplayName("Delete a specific QR-Code")
     @Test
     @Order(6)
     @Rollback
     void test_delete_qr_code_repository() {
-        QRCodeEntity qrcodeSaved =  qrcodeRepository.findById(qrcodeId).get();
+        QRCodeEntity qrcodeSaved = qrcodeRepository.findById(qrcodeId).get();
         qrcodeRepository.delete(qrcodeSaved);
 
         QRCodeEntity qrcode1 = null;
@@ -184,4 +184,21 @@ log.info("personAddressRepository.findAll().get(0) {} ", personAddressRepository
         qrcodeRepository.deleteAll();
         assertEquals(0, qrcodeRepository.count());
     }
+
+    @DisplayName("Find a Qrcode with its name")
+    @Test
+    @Order(8)
+    void test_find_by_name_qrcode_repository() {
+        QRCodeEntity qrcodeSaved = qrcodeRepository.findByQrCodeName("Code1");
+        assertEquals("Code1", qrcodeSaved.getQrCodeName());
+    }
+
+    @DisplayName("Find if a Qrcode exists")
+    @Test
+    @Order(9)
+    void test_find_qrcode_repository() {
+        boolean hasExistingCode = qrcodeRepository.existsByQrCodeName("Code1");
+        assertTrue(hasExistingCode);
+    }
+
 }

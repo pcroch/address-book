@@ -48,7 +48,7 @@ class AddressControllerTest {
      * The problem comes from the Mocking of  the repo
      */
 
-    private Address address1, address2, addressSaved = Address.builder().build();
+    private Address address1, address2 = Address.builder().build();
     private String json;
 
     @Autowired
@@ -169,6 +169,9 @@ class AddressControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    /**
+     * The two following "delete" tests are disabled  bcse the mock is not make for that but I keep it for learning purpose
+     */
     @Order(7)
     @Test
     @Disabled
