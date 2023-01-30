@@ -1,7 +1,6 @@
 package api.addressbook.service;
 
 import api.addressbook.entity.AddressEntity;
-import api.addressbook.model.Address;
 import api.addressbook.model.Person;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -10,6 +9,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+@Slf4j
 @Service("QRCodeGeneratorService")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QRCodeGeneratorService {
@@ -28,7 +29,7 @@ public class QRCodeGeneratorService {
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", out);
-        logger.info("byteArray {}", out.toByteArray());
+        log.info("byteArray {}", out.toByteArray());
         return out.toByteArray();
     }
 

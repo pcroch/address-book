@@ -1,14 +1,18 @@
 package api.addressbook.controller;
 
 import api.addressbook.entity.AddressEntity;
-import api.addressbook.entity.QRCodeEntity;
-import api.addressbook.model.Address;
+import api.addressbook.mapper.PersonAddressMapper;
+import api.addressbook.mapper.PersonMapper;
+import api.addressbook.mapper.QRCodeMapper;
 import api.addressbook.model.Person;
-import api.addressbook.model.PersonAddress;
 import api.addressbook.model.QRCode;
 import api.addressbook.repository.AddressRepository;
+import api.addressbook.repository.PersonAddressRepository;
+import api.addressbook.repository.PersonRepository;
+import api.addressbook.repository.QRCodeRepository;
 import api.addressbook.service.QRCodeGeneratorService;
 import com.google.zxing.WriterException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,11 +30,32 @@ import static api.addressbook.service.AddressService.concatAddress;
 import static api.addressbook.service.QRCodeGeneratorService.generateQRCodeImage;
 
 @Controller
+@Slf4j
 @RequestMapping("/qr-code")
 public class QRCodeController extends AbstractController {
 
+
+    private final PersonMapper personMapper;
+    private final QRCodeMapper qrcodeMapper;
+
+    private final PersonAddressMapper personAddressMapper;
+
+    private final AddressRepository addressRepository;
+    private final QRCodeRepository qrcodeRepository;
+    private final PersonRepository personRepository;
+
+    private final PersonAddressRepository personAddressRepository;
+
     @Autowired
-    protected AddressRepository addressRepository;
+    public QRCodeController(PersonMapper personMapper, QRCodeMapper qrcodeMapper, PersonAddressMapper personAddressMapper, AddressRepository addressRepository, QRCodeRepository qrcodeRepository, PersonRepository personRepository, PersonAddressRepository personAddressRepository) {
+        this.personMapper = personMapper;
+        this.qrcodeMapper = qrcodeMapper;
+        this.personAddressMapper = personAddressMapper;
+        this.addressRepository = addressRepository;
+        this.qrcodeRepository = qrcodeRepository;
+        this.personRepository = personRepository;
+        this.personAddressRepository = personAddressRepository;
+    }
 
     /**
      * It will get a  QR code based on qr_code id
@@ -60,11 +85,11 @@ public class QRCodeController extends AbstractController {
 
     @RequestMapping("/{addressId}/{personId}")
     @GetMapping(value = "/url", produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException {
+    public ResponseEntity<byte[]> createQRCodePerPersonAndAddress(@PathVariable("addressId") int addressId, @PathVariable("personId") int personId) throws IOException, WriterException, IOException, WriterException {
 
         Optional<AddressEntity> address = addressRepository.findById(addressId);
         Optional<Person> person = personRepository.findById(personId).map(personMapper::toDomain);
-        PersonAddress personAddress = personAddressMapper.toDomain(personAddressRepository.findByPersonIdAndAddressId(personId, addressId));
+//        PersonAddress personAddress = personAddressMapper.toDomain(personAddressRepository.findByPersonIdAndAddressId(personId, addressId));
         if (person.isEmpty() || address.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -79,9 +104,9 @@ public class QRCodeController extends AbstractController {
         QRCode qrcode = QRCode.builder()
                 .qrCodeImage(qrCodeImage)
                 .qrCodeName(qrCodeName)
-                .personAddress(personAddress)
+//                .personAddress(personAddress)
                 .build();
-        logger.info("qrcode saved {}", qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode)));
+        log.info("qrcode saved {}", qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode)));
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .header(HttpHeaders.CONTENT_DISPOSITION)

@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @ToString
 public class QRCode implements Serializable {
-    private Integer personAddressId;
+    private Integer qrCodeId;
     private String qrCodeName;
     private byte[] qrCodeImage;
     private PersonAddress personAddress;

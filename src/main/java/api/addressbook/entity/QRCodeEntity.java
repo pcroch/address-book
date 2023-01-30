@@ -1,16 +1,13 @@
 package api.addressbook.entity;
 
-import api.addressbook.model.PersonAddress;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -18,9 +15,9 @@ import java.io.Serializable;
 public class QRCodeEntity implements Serializable {
 
     @Id
-    @Column(name = "person_address_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer personAddressId;
+    @Column(name = "qr_code_id")
+//    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer qrCodeId;
 
     @Column(name = "qr_code_name", unique=true)
     private String qrCodeName;
@@ -28,8 +25,7 @@ public class QRCodeEntity implements Serializable {
     @Column(name = "qr_code_image")
     private byte[] qrCodeImage;
 
-    @Transient
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id")
-    private PersonAddress personAddress;
+//    @Transient
+    @OneToOne(mappedBy = "qrcodeEntity")
+    private PersonAddressEntity personAddressEntity;
 }

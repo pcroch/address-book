@@ -1,0 +1,4 @@
+--insert into person_address (person_address_id, address_id, person_id, person_fk, address_fk) values (1, 1,1, 1,1);
+--insert into person_address (person_address_id, address_id, person_id, person_fk, address_fk) values  (2, 2,2, 2,2);
+--insert into person_address (person_address_id, address_id, person_id, person_fk, address_fk) values  (3, 3,1, 3,1);
+--insert into person_address (person_address_id, address_id, person_id, person_fk, address_fk) values  (4, 1,2, 1,2);

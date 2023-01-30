@@ -2,14 +2,12 @@ package api.addressbook.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.io.Serializable;
 
 @Entity
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,12 +17,22 @@ public class PersonAddressEntity implements Serializable {
 
     @Id
     @Column(name = "person_address_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer personAddressId;
 
-    @Column(name = "address_id")
-    private Integer addressId;
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private AddressEntity addressEntity;
 
-    @Column(name = "person_id")
-    private Integer personId;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private PersonEntity personEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "person_address_per_code",
+            joinColumns =
+                    { @JoinColumn(name = "person_address_id", referencedColumnName = "person_address_id") },
+            inverseJoinColumns =
+                    { @JoinColumn(name = "qr_code_id", referencedColumnName = "qr_code_id") })
+    private QRCodeEntity qrcodeEntity;
 }

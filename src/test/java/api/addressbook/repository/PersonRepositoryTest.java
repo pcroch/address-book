@@ -1,16 +1,9 @@
 package api.addressbook.repository;
 
 import api.addressbook.entity.PersonEntity;
-import api.addressbook.mapper.PersonMapper;
-import api.addressbook.model.Address;
-import api.addressbook.model.Person;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
-
-
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -18,7 +11,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -36,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class PersonRepositoryTest extends AbstractRepository {
 
     private PersonEntity person1, person2, person3;
-    public static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
     @Autowired
     private PersonRepository personRepository;
 

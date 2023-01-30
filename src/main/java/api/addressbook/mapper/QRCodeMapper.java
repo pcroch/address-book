@@ -8,10 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface QRCodeMapper {
 
-    @Mapping(source = "personAddressId", target = "personAddressId")
+    @Mapping(source = "qrCodeId", target = "qrCodeId")
     @Mapping(source = "qrCodeName", target = "qrCodeName")
     @Mapping(source = "qrCodeImage", target = "qrCodeImage")
-    @Mapping(source = "personAddress", target = "personAddress")
+    @Mapping(source = "personAddressEntity", target = "personAddress")
     QRCode toDomain(QRCodeEntity e);
     QRCodeEntity EntityToModel(QRCode e);
 }

@@ -5,6 +5,22 @@
     <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
+  <component name="DBNavigator.Project.DataExportManager">
+    <export-instructions>
+      <create-header value="true" />
+      <friendly-headers value="false" />
+      <quote-values-containing-separator value="true" />
+      <quote-all-values value="false" />
+      <value-separator value="" />
+      <file-name value="" />
+      <file-location value="" />
+      <scope value="GLOBAL" />
+      <destination value="FILE" />
+      <format value="EXCEL" />
+      <charset value="UTF-8" />
+      <charset value="UTF-8" />
+    </export-instructions>
+  </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
@@ -26,17 +42,20 @@ INSERT INTO person (person_id, firstname, secondname,lastname) VALUES (2, 'Tom',
   </component>
   <component name="DBNavigator.Project.DatasetFilterManager">
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.flyway_schema_history" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.person" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.person" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.flyway_schema_history" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="&quot;$user&quot;, public.flyway_schema_history" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="public.flyway_schema_history" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="public.person" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="testdb.person_address" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.person_address" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="public.person_address" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.person" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.person" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="testdb.address" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="public.flyway_schema_history" active-filter-id="EMPTY_FILTER" />
+    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="testdb.person" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.address" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.person_address" active-filter-id="EMPTY_FILTER" />
     <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="addressBook.address" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="address-book.person_address" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="3bdbfa71-63dc-423d-845a-eae859923cb6" dataset="public.person_address" active-filter-id="EMPTY_FILTER" />
   </component>
   <component name="DBNavigator.Project.ExecutionManager">
     <retain-sticky-names value="false" />

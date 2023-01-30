@@ -3,11 +3,10 @@ package api.addressbook.repository;
 import api.addressbook.entity.AddressEntity;
 import api.addressbook.entity.PersonAddressEntity;
 import api.addressbook.entity.PersonEntity;
-import org.assertj.core.api.Assertions;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,18 +19,20 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @ExtendWith(SpringExtension.class)
+@Slf4j
 @DataJpaTest
 @ActiveProfiles("test")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DisplayName("Unit Testing on PersonAddress Repository ")
-@Disabled //todo foreign key error when running the testing
 class PersonAddressRepositoryTest extends AbstractRepository {
 
-    private PersonAddressEntity personAddress1, personAddress2, personAddress3;
-
+    private PersonAddressEntity PersonAddressEntity2;
+    int personId, addressId, personAddressId;
+    private List<PersonAddressEntity> personAddressEntityList = new ArrayList<>();
     @Autowired
     private PersonAddressRepository personAddressRepository;
 
@@ -45,14 +46,7 @@ class PersonAddressRepositoryTest extends AbstractRepository {
     public void setUp() {
         addressRepository.deleteAll();
         personRepository.deleteAll();
-
-        PersonEntity person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
-        PersonEntity person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);
-
-        List<PersonEntity> personEntityList = new ArrayList<>();
-        personEntityList.add(person1);
-        personEntityList.add(person2);
-        personRepository.saveAll(personEntityList);
+        personAddressRepository.deleteAll();
 
         AddressEntity address1 = new AddressEntity(1, "1", "4B", "rue du trone", "1000", "Bruxelles", "Belgium", false, null);
         AddressEntity address2 = new AddressEntity(2, "12", null, "rue du roi", "5852", "Namur", "Belgium", false, null);
@@ -62,44 +56,56 @@ class PersonAddressRepositoryTest extends AbstractRepository {
         addressEntityList.add(address2);
         addressRepository.saveAll(addressEntityList);
 
-        personAddress1 = new PersonAddressEntity(1, address2.getAddressId(), person1.getPersonId());
-        personAddress2 = new PersonAddressEntity(2, address1.getAddressId(), person1.getPersonId());
-        personAddress3 = new PersonAddressEntity(3, address1.getAddressId(), person2.getPersonId());
+        PersonEntity person1 = new PersonEntity(1, "Joe", "aaa", "aaaa", null);
+        PersonEntity person2 = new PersonEntity(2, "Jane", "aaa", "aaaa", null);
 
-        List<PersonAddressEntity> personAddressEntityList = new ArrayList<>();
-        personAddressEntityList.add(personAddress1);
-        personAddressEntityList.add(personAddress2);
-        personAddressRepository.saveAll(personAddressEntityList);
-        repositoryCount = personAddressRepository.findAll().size();
+        List<PersonEntity> personEntityList = new ArrayList<>();
+        personEntityList.add(person1);
+        personEntityList.add(person2);
+        personRepository.saveAll(personEntityList);
+
+        PersonAddressEntity personAddressEntity1 = new PersonAddressEntity(1, addressRepository.findAll().get(0), personRepository.findAll().get(0), null);
+        PersonAddressEntity2 = new PersonAddressEntity(2, addressRepository.findAll().get(1), personRepository.findAll().get(1), null);
+
+        List<PersonAddressEntity> tmpList = new ArrayList<>();
+        tmpList.add(personAddressEntity1);
+        tmpList.add(PersonAddressEntity2);
+        personAddressEntityList = Lists.newArrayList(personAddressRepository.saveAll(tmpList));
+
+        personId = personRepository.findAll().get(0).getPersonId();
+        addressId = addressRepository.findAll().get(0).getAddressId();
+        personAddressId = personAddressRepository.findAll().get(0).getPersonAddressId();
+
+        repositoryCount = personAddressRepository.count();
     }
 
     @DisplayName("Save a person")
     @Test
     @Order(1)
     void test_save_person_repository() {
-        PersonAddressEntity personAddressSaved = personAddressRepository.save(personAddress3);
-        Assertions.assertThat(personAddressRepository.count()).isEqualTo(repositoryCount + 1);
-        assertEquals(personAddress3.getPersonId(), personAddressSaved.getPersonId());
+        PersonAddressEntity personAddressSaved = personAddressRepository.save(PersonAddressEntity2);
+        assertEquals(PersonAddressEntity2.getPersonEntity(), personAddressSaved.getPersonEntity());
+        assertEquals(personAddressRepository.count(), repositoryCount + 1);
     }
+
 
     @DisplayName("Get a person")
     @Test
     @Order(2)
     void test_get_person_per_id_repository() {
-       int id = personAddressRepository.save(personAddress3).getPersonId();
-        PersonAddressEntity personAddressSaved = personAddressRepository.findById(id).get();
-        assertEquals(id, personAddressSaved.getPersonId());
+        PersonAddressEntity personAddressSaved = personAddressRepository.findById(personAddressId).get();
+        assertEquals(personAddressId, personAddressSaved.getPersonAddressId());
     }
 
     @DisplayName("Get list of  persons")
     @Test
     @Order(3)
     void test_findAll_person_repository() {
-        List<PersonAddressEntity> personAddressEntityList;
-        personAddressEntityList = personAddressRepository.findAll();
-        assertEquals(repositoryCount, personAddressEntityList.size());
-        assertEquals(personAddress1.getPersonId(), personAddressEntityList.get(0).getPersonId());
-        assertEquals(personAddress2.getPersonId(), personAddressEntityList.get(1).getPersonId());
+        List<PersonAddressEntity> personAddressEntityFindAll = personAddressRepository.findAll();
+        assertEquals(repositoryCount, personAddressEntityFindAll.size());
+        assertEquals(personAddressEntityFindAll.get(0).getPersonAddressId(), personAddressEntityList.get(0).getPersonAddressId());
+        assertEquals(personAddressEntityFindAll.get(1).getPersonAddressId(), personAddressEntityList.get(1).getPersonAddressId());
+
     }
 
     @DisplayName("Update person's field")
@@ -107,9 +113,10 @@ class PersonAddressRepositoryTest extends AbstractRepository {
     @Order(4)
     @Rollback
     void test_update_person_repository() {
-        personAddress1.setPersonId(3);
-        PersonAddressEntity personAddressUpdated = personAddressRepository.save(personAddress1);
-        assertEquals(3, personAddressUpdated.getPersonId());
+        PersonAddressEntity personAddressSaved = personAddressRepository.findById(personAddressId).get();
+        personAddressSaved.getPersonEntity().setFirstname("New Name");
+        PersonAddressEntity personAddressUpdated = personAddressRepository.save(personAddressSaved);
+        assertEquals("New Name", personAddressUpdated.getPersonEntity().getFirstname());
     }
 
     @DisplayName("Delete a specific persons")
@@ -117,8 +124,7 @@ class PersonAddressRepositoryTest extends AbstractRepository {
     @Order(5)
     @Rollback
     void test_delete_person_repository() {
-        int id = personAddressRepository.save(personAddress3).getPersonId();
-        PersonAddressEntity personAddressSaved = personAddressRepository.findById(id).get();
+        PersonAddressEntity personAddressSaved = personAddressRepository.findById(personAddressId).get();
         personAddressRepository.delete(personAddressSaved);
 
         PersonAddressEntity personAddressEntity2 = null;
@@ -127,7 +133,7 @@ class PersonAddressRepositoryTest extends AbstractRepository {
         if (optionalPersonAddress2.isPresent()) {
             personAddressEntity2 = optionalPersonAddress2.get();
         }
-        Assertions.assertThat(personAddressEntity2).isNull();
+        assertNull(personAddressEntity2);
     }
 
     @DisplayName("Delete all persons")

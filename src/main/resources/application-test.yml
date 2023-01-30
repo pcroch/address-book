@@ -14,9 +14,13 @@ spring:
   flyway:
     defaultSchema: testdb
     baseline-on-migrate: true
+    enabled: true
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
+      # Hibernate ddl auto (create, create-drop, update): with "update" the database
+      # schema will be automatically updated accordingly to java entities found in
+      # the project
       ddl-auto: update
     properties:
       hibernate:

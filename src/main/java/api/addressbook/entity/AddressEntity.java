@@ -2,10 +2,7 @@ package api.addressbook.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -17,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString
 @Table(name = "address")
 public class AddressEntity implements Serializable {
 
@@ -49,14 +47,15 @@ public class AddressEntity implements Serializable {
     private String country;
 
     @Column(name = "is_private")
-    private boolean isPrivate = true;
+    private Boolean isPrivate = true;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "address")
-    private Set<PersonEntity> person= new HashSet<>();
+//    @ManyToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "addressEntity")
+    private  Set<PersonAddressEntity> personAddressEntity =  new HashSet<>();
 
-    @Override
-    public String toString() {
-        return String.format("{addressId: %s, streetNumber: %s, streetName: %s}", addressId, streetNumber, streetName);
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("{addressId: %s, streetNumber: %s, streetName: %s}", addressId, streetNumber, streetName);
+//    }
 }

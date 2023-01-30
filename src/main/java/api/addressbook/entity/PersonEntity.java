@@ -1,10 +1,7 @@
 package api.addressbook.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "person")
@@ -34,16 +32,17 @@ public class PersonEntity implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "person_address",
-            joinColumns = {@JoinColumn(name = "person_fk",
-                    referencedColumnName = "person_id")},
-            inverseJoinColumns = {@JoinColumn(name = "address_fk",
-                    referencedColumnName = "address_id")})
-    private Set<AddressEntity> address = new HashSet<>();
+    //    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "person_address",
+//            joinColumns = {@JoinColumn(name = "person_fk",
+//                    referencedColumnName = "person_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "address_fk",
+//                    referencedColumnName = "address_id")})
+    @OneToMany(mappedBy = "personEntity")
+    private  Set<PersonAddressEntity> personAddressEntity = new HashSet<>();
 
-    @Override
-    public String toString() {
-        return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s, Address' Set: %s}", personId, firstname, secondname, lastname, address);
-    }
+//    @Override
+//    public String toString() {
+//        return String.format("{personId: %s, firstname: %s, secondname: %s, lastname: %s, Address' Set: %s}", personId, firstname, secondname, lastname, address);
+//    }
 }

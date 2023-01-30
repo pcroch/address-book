@@ -12,6 +12,6 @@ import java.io.Serializable;
 public class PersonAddress implements Serializable {
 
     private Integer personAddressId;
-    private Integer personId;
-    private Integer addressId;
+    private Address address;
+    private Person person ;
 }
