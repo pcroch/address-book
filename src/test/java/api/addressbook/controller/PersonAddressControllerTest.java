@@ -28,4 +28,12 @@ class PersonAddressControllerTest {
                 .andExpect(status().isAccepted());
     }
 
+    @Order(2)
+    @Test
+    @Disabled
+    @DisplayName("Ping the personAddress endpoint")
+    void getOtherTestCase() {
+    // todo test cases of endPoints
+    }
+
 }

@@ -89,7 +89,7 @@ class QRCodeControllerTest {
 
     @Order(3)
     @Test
-    @Disabled  // i must add the data personAddress
+    @Disabled  //todo i must add the data personAddress
     @DisplayName("Finding a QRCode by name ")
     void testFindQRCodeByName() throws Exception {
         // test
@@ -97,7 +97,7 @@ class QRCodeControllerTest {
 
     @Order(4)
     @Test
-    @Disabled  // i must add the data personAddress
+    @Disabled  //todo i must add the data personAddress
     @DisplayName("Creating a QRCode ")
     void testCreateQRCodePerPersonAndAddress() throws Exception {
         // test
