@@ -1,6 +1,5 @@
 package api.addressbook.controller;
 
-import api.addressbook.entity.QRCodeEntity;
 import api.addressbook.mapper.PersonAddressMapper;
 import api.addressbook.mapper.PersonMapper;
 import api.addressbook.mapper.QRCodeMapper;
@@ -10,6 +9,7 @@ import api.addressbook.repository.AddressRepository;
 import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,9 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Optional;
-
-import static org.mockito.Mockito.doReturn;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -48,9 +46,6 @@ class QRCodeControllerTest {
 
     private final PersonAddressRepository personAddressRepository;
 
-//    @MockBean
-//    QRCodeController qrcodeController;
-
     @Autowired
     public QRCodeControllerTest(PersonMapper personMapper, QRCodeMapper qrcodeMapper, PersonAddressMapper personAddressMapper, AddressRepository addressRepository, QRCodeRepository qrcodeRepository, PersonRepository personRepository, PersonAddressRepository personAddressRepository, QRCodeMapper qRCodeMapper) {
         this.personMapper = personMapper;
@@ -65,18 +60,14 @@ class QRCodeControllerTest {
     public void init() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(new QRCodeController(personMapper, qrcodeMapper, personAddressMapper, addressRepository, qrcodeRepository, personRepository, personAddressRepository)).build();
 
-//        personAddress = PersonAddress.builder()
-//                .personId(1)
-//                .addressId(1)
-//                .personAddressId(1)
-//                .build();
-
         qrcode = QRCode.builder()
                 .qrCodeId(1)
                 .qrCodeName("TestImage")
                 .qrCodeImage(new byte[]{0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20})
                 .personAddress(personAddress)
                 .build();
+
+        qrcodeRepository.save(qrcodeMapper.EntityToModel(qrcode));
     }
     @Order(1)
     @Test
@@ -88,12 +79,27 @@ class QRCodeControllerTest {
 
     @Order(2)
     @Test
-    @Disabled
-    @DisplayName("testing get a QRCode per id ")
-    void getAddressById() throws Exception {
-        Optional<QRCodeEntity> test = Optional.of(new QRCodeEntity(1, "test", null, null));
-        doReturn(test).when(qrcodeRepository).findById(test.get().getQrCodeId());
-        mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/1"))
-                .andExpect(status().isFound());
+    @Disabled  // i must add the data personAddress
+    @DisplayName("Finding a QRCode per id ")
+    void testGetQRCodeById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/qr-code/{id}", qrcodeRepository.findAll().get(0).getQrCodeId()))
+                .andExpect(status().isFound())
+                .andExpect(jsonPath("$['qrCodeName']", Matchers.is("TestImage")));
+    }
+
+    @Order(3)
+    @Test
+    @Disabled  // i must add the data personAddress
+    @DisplayName("Finding a QRCode by name ")
+    void testFindQRCodeByName() throws Exception {
+        // test
+    }
+
+    @Order(4)
+    @Test
+    @Disabled  // i must add the data personAddress
+    @DisplayName("Creating a QRCode ")
+    void testCreateQRCodePerPersonAndAddress() throws Exception {
+        // test
     }
 }

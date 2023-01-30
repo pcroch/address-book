@@ -38,7 +38,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Integration Testing on Person endpoints ")
 class PersonControllerTest {
 
-    private Person person1, person2 = Person.builder().build();
     private String json;
     private int repositoryCount;
     @Autowired
@@ -61,7 +60,7 @@ class PersonControllerTest {
                 personRepository,
                 personMapper)
         ).build();
-        person1 = Person.builder()
+        Person person1 = Person.builder()
                 .firstname("Test 1")
                 .lastname(null)
                 .lastname("Tester 1")
@@ -69,7 +68,7 @@ class PersonControllerTest {
                 .build();
         personRepository.save(personMapper.toMap(person1));
 
-        person2 = Person.builder()
+        Person person2 = Person.builder()
                 .firstname("Test 2")
                 .lastname("Tester Name 2")
                 .lastname("Tester 2")
@@ -121,7 +120,7 @@ class PersonControllerTest {
     }
 
     /**
-     * https://stackoverflow.com/questions/56246445/org-springframework-http-converter-httpmessagenotreadableexception-when-running
+     * <a href="https://stackoverflow.com/questions/56246445/org-springframework-http-converter-httpmessagenotreadableexception-when-running">...</a>
      * Could be the solution on body issue
      **/
     @Order(5)

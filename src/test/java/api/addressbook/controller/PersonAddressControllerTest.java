@@ -1,8 +1,6 @@
 package api.addressbook.controller;
 
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +17,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayName("Integration Testing on PersonAddress endpoints ")
 class PersonAddressControllerTest {
 
-    public static final Logger logger = LoggerFactory.getLogger(AddressControllerTest.class);
     @Autowired
-    private MockMvc mockMvc; // the error is normal
+    private MockMvc mockMvc;
 
     @Order(1)
     @Test
