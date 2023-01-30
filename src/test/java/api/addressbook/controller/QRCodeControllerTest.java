@@ -11,13 +11,9 @@ import api.addressbook.repository.PersonAddressRepository;
 import api.addressbook.repository.PersonRepository;
 import api.addressbook.repository.QRCodeRepository;
 import org.junit.jupiter.api.*;
-import org.mockito.Mock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -37,7 +33,7 @@ class QRCodeControllerTest {
 
     PersonAddress personAddress = PersonAddress.builder().build();
     QRCode qrcode = QRCode.builder().build();
-    public static final Logger logger = LoggerFactory.getLogger(AddressControllerTest.class);
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -52,12 +48,11 @@ class QRCodeControllerTest {
 
     private final PersonAddressRepository personAddressRepository;
 
-    @MockBean
-    QRCodeController qrcodeController;
-    @Mock
-    private QRCodeMapper qRCodeMapper;
+//    @MockBean
+//    QRCodeController qrcodeController;
 
-    public QRCodeControllerTest(PersonMapper personMapper, QRCodeMapper qrcodeMapper, PersonAddressMapper personAddressMapper, AddressRepository addressRepository, QRCodeRepository qrcodeRepository, PersonRepository personRepository, PersonAddressRepository personAddressRepository) {
+    @Autowired
+    public QRCodeControllerTest(PersonMapper personMapper, QRCodeMapper qrcodeMapper, PersonAddressMapper personAddressMapper, AddressRepository addressRepository, QRCodeRepository qrcodeRepository, PersonRepository personRepository, PersonAddressRepository personAddressRepository, QRCodeMapper qRCodeMapper) {
         this.personMapper = personMapper;
         this.qrcodeMapper = qrcodeMapper;
         this.personAddressMapper = personAddressMapper;
