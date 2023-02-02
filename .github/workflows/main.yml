@@ -13,8 +13,10 @@ jobs:
         with:
           java-version: 17.0.6+10
       - name: Run Coverage
-        run: |
-          mvn clean test
+        run: | 
+          sudo apt-get install -y postgresql
+          sudo psql -d address-book-db
+          | mvn clean test
 
       - name: Add coverage to PR
         id: jacoco
