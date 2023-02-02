@@ -115,4 +115,4 @@ you can find that reports in:
 
 Not that the purpose of that app is to reach a 95% test corevage
 
-![alt text](./target/site/jacoco/index.html)
+![plot](./target/site/jacoco/index.html)
