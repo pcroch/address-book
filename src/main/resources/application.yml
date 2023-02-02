@@ -10,12 +10,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/address-book-db
     password: admin
     username: admin
-#    testOnBorrow: true
-#    testWhileIdle: true
     schema: address-book
-#    hikari:
-#      maximum-pool-size: 5
-#      idle-timeout: 600000
   flyway:
     defaultSchema: address-book
     baseline-on-migrate: true
