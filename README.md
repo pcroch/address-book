@@ -114,3 +114,5 @@ you can find that reports in:
       address-book/target/site/jacoco
 
 Not that the purpose of that app is to reach a 95% test corevage
+
+![alt text](./target/site/jacoco/index.html)
